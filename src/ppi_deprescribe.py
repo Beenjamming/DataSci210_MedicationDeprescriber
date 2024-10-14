@@ -22,12 +22,16 @@ def ppi_deprescribe(patient_diagnosis: dict):
         recommendation = 0
     if patient_diagnosis["Documented history of bleeding GI ulcer"]:
         recommendation = 0
+    if recommendation == 0:
+        return recommendation_dict[recommendation]
 
     # Check for decrease but continue PPI criteria
     if patient_diagnosis["Mild to moderate esophagitis"]:
         recommendation = 1
     if patient_diagnosis["GERD"]:
         recommendation = 1
+    if recommendation == 1:
+        return recommendation_dict[recommendation]
 
     # check for stop PPI criteria
     if patient_diagnosis["Peptic Ulcer Disease"]:
@@ -36,6 +40,8 @@ def ppi_deprescribe(patient_diagnosis: dict):
         recommendation = 2
     if patient_diagnosis["ICU Stress Ulcer Prophylaxis"]:
         recommendation = 2
+    if recommendation == 2:
+        return recommendation_dict[recommendation]
 
     # if PPI cause is still unknown, recommend decrease
     if recommendation == -1:
