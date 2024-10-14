@@ -1,8 +1,8 @@
-import numpy as np
-import pandas as pd
 import json
 import re
 from pathlib import Path
+
+import pandas as pd
 
 
 class DataLoader:

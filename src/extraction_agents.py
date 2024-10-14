@@ -1,13 +1,9 @@
-import os
 import json
-import numpy as np
-import pandas as pd
 from pathlib import Path
 
+from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_groq import ChatGroq
-
-from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 from data_query import DataLoader
@@ -141,7 +137,6 @@ class LLMAgent:
 
         retriever = vector_store.as_retriever(search_type="similarity", k=5)
 
-        from langchain_core.documents import Document
         from langchain_core.output_parsers import StrOutputParser
         from langchain_core.runnables import RunnablePassthrough
 
@@ -213,32 +208,34 @@ class LLMAgent:
         # resulting json output
         result_json = LLMAgent.extract_json_from_content(result["answer"])
 
-        # from the result["answer"] extract only #10. Reasoning key value pair
-        reasoning_str = LLMAgent.extract_json_from_content(result["answer"])[
-            "10. Reasoning"
-        ]
+        # # from the result["answer"] extract only #10. Reasoning key value pair
+        # reasoning_str = LLMAgent.extract_json_from_content(
+        #     result["answer"]["10. Reasoning"]
+        # )
 
-        # # #   Just provide an explanation given the notes as context   # # #
-        system = f"""You are a knowledgeable medical provider who specializes in medication management. 
-        Given a list of note context, explain the reasoning with cited parts of the note that support this answer: {reasoning}.
+        # # # #   Just provide an explanation given the notes as context   # # #
+        # system = f"""You are a knowledgeable medical provider who specializes in medication management.
+        # Given a list of note context, explain the reasoning with cited parts of the note that support this answer: {reasoning}.
 
-        An example response would be in this format:
+        # An example response would be in this format:
 
-        The patient has severe esophagitis. This is supported by the following parts of the note:
+        # The patient has severe esophagitis. This is supported by the following parts of the note:
 
-        "The patient has been experiencing severe heartburn for the past 3 weeks." from the note on 2022-01-01 by the Provider Type Resident.
+        # "The patient has been experiencing severe heartburn for the past 3 weeks." from the note on 2022-01-01 by the Provider Type Resident.
 
+        # """
+        # mstr_prompt = ChatPromptTemplate.from_messages(
+        #     [("system", system), ("human", "{input}")]
+        # )
 
-        """
-        mstr_prompt = ChatPromptTemplate.from_messages(
-            [("system", system), ("human", "{input}")]
-        )
+        # mstr_chain = (
+        #     {"input": RunnablePassthrough()}
+        #     | mstr_prompt
+        #     | self.llm
+        #     | StrOutputParser()
+        # )
 
-        mstr_chain = (
-            {"input": RunnablePassthrough()}
-            | mstr_prompt
-            | self.llm
-            | StrOutputParser()
-        )
+        # mstr_answer = mstr_chain.invoke({"input": result["context"]})
 
-        mstr_answer = mstr_chain.invoke({"input": result["context"]})
+        return result_json
+

@@ -1,6 +1,6 @@
-import pandas as pd
-import numpy as np
 import re
+
+import pandas as pd
 
 
 # Function to extract surrounding words
@@ -9,6 +9,7 @@ def extract_surrounding_text(text, notes_rm_debug=False):
     # if match:
     #     print(match.group(0))
     return match.group(0) if match else None
+
 
 def get_labled_encounters(data_path):
     """
