@@ -27,8 +27,10 @@ into #encs
   left join DurationDim age on ef.AgeKey = age.DurationKey
   left join DrgDim drg on ef.DrgKey = drg.DrgKey
   left join DiagnosisDim pdiag on ef.PrimaryCodedDiagnosisKey = pdiag.DiagnosisKey
-  where disdt.DateValue between '09/01/2023' and '09/30/2023' and ef.DischargePatientClass = 'Inpatient' 
-  
+  where disdt.DateValue between '09/01/2023' and '09/30/2023' 
+  and ef.DischargePatientClass = 'Inpatient' 
+  and isnull(age.Years,datediff(year,pat.birthdate,admitdt.datevalue)) > 17
+
 
 IF OBJECT_ID('tempdb.dbo.#orders', 'U') IS NOT NULL  DROP TABLE #orders;
 select mof.EncounterKey
@@ -50,7 +52,7 @@ select mof.EncounterKey
 		,erx.PharmaceuticalSubclass
 		,erx.TherapeuticClass
 		,mof.AssociatedDiagnosisComboKey
-		
+		,mof.AuthorizedByProviderKey
 into #orders 
 from CDW_NEW.deid.MedicationOrderFact mof 
 join datedim orderdt on mof.OrderedDateKey = orderdt.DateKey
@@ -71,7 +73,7 @@ join DiagnosisDim dd on db.DiagnosisKey = dd.DiagnosisKey
 --encounters
 select * 
 from #encs 
-where #encs.EncounterKey in (select EncounterKey from #orders where #orders.Mode = 'Outpatient' and #orders.DischargeOrder = 1)
+where #encs.EncounterKey in (select EncounterKey from #orders)--where #orders.Mode = 'Outpatient' and #orders.DischargeOrder = 1)
 
 --orders
 select	o.*
@@ -81,32 +83,39 @@ select	o.*
 from #orders o 
 where o.EncounterKey in (select EncounterKey 
 						from #encs 
-						where #encs.EncounterKey in (select EncounterKey from #orders where #orders.Mode = 'Outpatient' and #orders.DischargeOrder = 1))
+						where #encs.EncounterKey in (select EncounterKey from #orders)) -- where #orders.Mode = 'Outpatient' and #orders.DischargeOrder = 1))
 
 
 --hosp acquired dx 
 select e.EncounterKey
-		,dd.*  
+		,dd.Name "DxName"
 
 from #encs e 
 left join DiagnosisBridge db on e.HospitalAcquiredDiagnosisComboKey = db.DiagnosisComboKey
 left join DiagnosisDim dd on db.DiagnosisKey = dd.DiagnosisKey
+where e.EncounterKey in (select EncounterKey from #orders)
 order by 1 
 
 --present on admit dx
 select e.EncounterKey
-		,dd.*  
+		,dd.Name "DxName"
 
 from #encs e 
 left join DiagnosisBridge db on e.PresentOnAdmissionDiagnosisComboKey = db.DiagnosisComboKey
 left join DiagnosisDim dd on db.DiagnosisKey = dd.DiagnosisKey
+where e.EncounterKey in (select EncounterKey from #orders)
 order by 1 
 
 --note_text
-select nm.deid_note_key,nm.EncounterKey, replace(nt.note_text,'|','') "NoteText"
+select nm.deid_note_key,nm.EncounterKey
+,cast(nm.deid_service_date as date) "NoteDate"
+,nm.enc_dept_specialty "DepartmentSpecialty"
+,nm.prov_specialty "ProviderSpecialty"
+,nm.auth_prov_type "ProviderType"
+,replace(replace(nt.note_text,'|',''),',','') "NoteText"
 from (select nm.* 
 from CDW_Notes.notes.note_metadata nm
-where nm.EncounterKey in (select #encs.EncounterKey from #encs)) nm
+where nm.EncounterKey in (select #encs.EncounterKey from #encs where #encs.EncounterKey in (select EncounterKey from #orders))) nm
 join CDW_Notes.notes.note_text nt on nm.deid_note_key = nt.deid_note_key
 order by 1 
 
@@ -117,3 +126,4 @@ from CDW_Notes.notes.note_metadata nm
 where nm.EncounterKey in (select #encs.EncounterKey from #encs)) nm
 join CDW_Notes.notes.note_concepts nc on nm.deid_note_key = nc.deid_note_key
 order by 1 
+
