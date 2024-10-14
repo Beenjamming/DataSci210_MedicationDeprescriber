@@ -6,13 +6,13 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_groq import ChatGroq
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-from data_query import DataLoader
+from query import DataLoader
 
 embeddings = HuggingFaceEmbeddings(model_name="NeuML/pubmedbert-base-embeddings")
 text_splitter = RecursiveCharacterTextSplitter()
 
 
-class LLMAgent:
+class llmAgent:
     """ """
 
     def __init__(self, groq_key: str, data_path: Path) -> None:
@@ -28,7 +28,7 @@ class LLMAgent:
         return "\n\n".join(doc.page_content for doc in docs)
 
     @staticmethod
-    def extract_json_from_content(content) -> json:
+    def extract_json_from_content(content):
         """ """
         # Find the JSON part within the content
         start_index = content.find("{")
@@ -40,7 +40,7 @@ class LLMAgent:
 
         return parsed_json
 
-    def extract_diagnosis(self, encounter_key: str) -> dict:
+    def extract_diagnosis(self, encounter_key: str):
         """
         Extraction Agent/Step 1
 
@@ -77,9 +77,9 @@ class LLMAgent:
                     Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 9.  For the final question, return a string with the reasoning for your answer."""
             }
         )
-        return LLMAgent.extract_json_from_content(response.content)
+        return llmAgent.extract_json_from_content(response.content)
 
-    def extract_encounter_info(self, encounter_key: str) -> dict:
+    def extract_encounter_info(self, encounter_key: str):
         """
         Extraction Agent/Step 2
 
@@ -112,9 +112,9 @@ class LLMAgent:
                     Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 9.  For the final question, return a string with the reasoning for your answer."""
             }
         )
-        return LLMAgent.extract_json_from_content(response.content)
+        return llmAgent.extract_json_from_content(response.content)
 
-    def extract_notes(self, encounter_key: str) -> dict:
+    def extract_notes(self, encounter_key: str):
         """
         Extraction Agent/Step 3
 
@@ -148,7 +148,7 @@ class LLMAgent:
         # # #   Approach 1   # # #
         # rag_chain = (
         #     {
-        #         "context": retriever | LLMAgent.format_docs,
+        #         "context": retriever | llmAgent.format_docs,
         #         "input": RunnablePassthrough(),
         #     }
         #     | prompt
@@ -171,7 +171,7 @@ class LLMAgent:
         # # #   Approach 2   # # #
         rag_chain = (
             RunnablePassthrough.assign(
-                context=(lambda x: LLMAgent.format_docs(x["context"]))
+                context=(lambda x: llmAgent.format_docs(x["context"]))
             )
             | prompt
             | self.llm
@@ -179,7 +179,7 @@ class LLMAgent:
         )
 
         retrieve_docs = {
-            "context": retriever | LLMAgent.format_docs,
+            "context": retriever | llmAgent.format_docs,
             "input": RunnablePassthrough(),
         }
 
@@ -206,10 +206,10 @@ class LLMAgent:
             }
         )
         # resulting json output
-        result_json = LLMAgent.extract_json_from_content(result["answer"])
+        result_json = llmAgent.extract_json_from_content(result["answer"])
 
         # # from the result["answer"] extract only #10. Reasoning key value pair
-        # reasoning_str = LLMAgent.extract_json_from_content(
+        # reasoning_str = llmAgent.extract_json_from_content(
         #     result["answer"]["10. Reasoning"]
         # )
 
@@ -238,4 +238,27 @@ class LLMAgent:
         # mstr_answer = mstr_chain.invoke({"input": result["context"]})
 
         return result_json
+    
+    def summarize_reasonings(self, results_dict):
+        """Summarize the reasonings from the three sources."""
+        diagnosis_dict = results_dict["diagnosis_dict"]
+        encounter_dict = results_dict["encounter_dict"]
+        notes_dict = results_dict["notes_dict"]
+        
+        system = "You are a knowledgeable medical provider who specializes in medication management."
+        human = "{text}"
+        prompt = ChatPromptTemplate.from_messages(
+            [("system", system), ("human", human)]
+        )
 
+        chain = prompt | self.llm
+        response = chain.invoke(
+            {
+                "text": f"""Based on the following json files, please provide a single explanation of the reasoning given by the 'Reasoning' key. Summarize given equal 
+                weight to each. Do not add any additional information, only summarize what is given.
+                {diagnosis_dict}
+                {encounter_dict}
+                {notes_dict}"""
+            }
+        )
+        return response.content

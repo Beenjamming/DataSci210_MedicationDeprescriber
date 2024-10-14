@@ -1,4 +1,3 @@
-import json
 import re
 from pathlib import Path
 
@@ -12,7 +11,7 @@ class DataLoader:
         self.data_path = data_path
 
     def get_data(self, encounter_key: str) -> dict:
-        """ """
+        """Load and return all data."""
         noteConcepts = pd.read_csv(self.data_path / "noteConcepts.txt", sep="|")
         encounters = pd.read_csv(self.data_path / "encounters.txt", sep="|")
         orders = pd.read_csv(self.data_path / "orders.txt", sep="|")
@@ -44,10 +43,10 @@ class DataLoader:
         }
         return data_dict
 
-    def get_label(self, encounter_key: str) -> str:
-        """ """
+    def get_label_df(self, encounter_key: str):
+        """Return a single row with the key, reason and recommendation."""
         labels_df = pd.read_csv(self.data_path / "LabeledResponses.csv")
-        return labels_df  # [labels_df["key"] == encounter_key]
+        return labels_df.loc[labels_df["key"] == encounter_key]
 
     def get_diagnosis_data(self, encounter_key: str) -> dict:
         """Return only diagnosis data filtered by encounter_key."""
@@ -73,7 +72,7 @@ class DataLoader:
 
         return data_dict
 
-    def get_encounter_data(self, encounter_key: str) -> json:
+    def get_encounter_data(self, encounter_key: str) -> str:
         """Return only encounter data filtered by encounter_key."""
 
         encounters = pd.read_csv(self.data_path / "encounters.txt", sep="|")

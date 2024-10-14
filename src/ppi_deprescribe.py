@@ -1,4 +1,4 @@
-def PPIDeprescribe(patient_diagnosis: dict):
+def ppi_deprescribe(patient_diagnosis: dict):
     """Given a patient diagnosis dictionary, recommend that the PPI be continued, decreased at a lower dose, or stopped.
 
     Inputs:
