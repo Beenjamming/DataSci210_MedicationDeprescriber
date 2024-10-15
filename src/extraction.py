@@ -74,7 +74,7 @@ class llmAgent:
                     8. Severe esophagitis
                     9. Documented history of bleeding GI ulcer
                     10. Explain the reasoning for your answer
-                    Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 9.  For the final question, return a string with the reasoning for your answer."""
+                    Return the answer for each of these as a formatted JSON object with the key being the condition without the number in front and the value being a boolean value for the first 9.  For the final question, return a string with the reasoning for your answer."""
             }
         )
         return llmAgent.extract_json_from_content(response.content)
@@ -109,7 +109,7 @@ class llmAgent:
                     8. Severe esophagitis
                     9. Documented history of bleeding GI ulcer
                     10. Explain the reasoning for your answer
-                    Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 9.  For the final question, return a string with the reasoning for your answer."""
+                    Return the answer for each of these as a formatted JSON object with the key being the condition without the number in front and the value being a boolean value for the first 9.  For the final question, return a string with the reasoning for your answer."""
             }
         )
         return llmAgent.extract_json_from_content(response.content)
@@ -185,6 +185,9 @@ class llmAgent:
 
         retrieve_docs = (lambda x: x["input"]) | retriever
 
+        print("retrieve_docs")
+        print(retrieve_docs)
+
         chain = RunnablePassthrough.assign(context=retrieve_docs).assign(
             answer=rag_chain
         )
@@ -202,7 +205,7 @@ class llmAgent:
               8. Severe esophagitis
               9. Documented history of bleeding GI ulcer
               10. Explain the reasoning for your answer
-            Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 9.  For the final question, return a string with the reasoning for your answer."""
+            Return the answer for each of these as a formatted JSON object with the key being the condition without the number in front and the value being a boolean value for the first 9.  For the final question, return a string with the reasoning for your answer."""
             }
         )
         # resulting json output
@@ -238,13 +241,13 @@ class llmAgent:
         # mstr_answer = mstr_chain.invoke({"input": result["context"]})
 
         return result_json
-    
+
     def summarize_reasonings(self, results_dict):
         """Summarize the reasonings from the three sources."""
         diagnosis_dict = results_dict["diagnosis_dict"]
         encounter_dict = results_dict["encounter_dict"]
         notes_dict = results_dict["notes_dict"]
-        
+
         system = "You are a knowledgeable medical provider who specializes in medication management."
         human = "{text}"
         prompt = ChatPromptTemplate.from_messages(
