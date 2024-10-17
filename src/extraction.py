@@ -69,11 +69,12 @@ class llmAgent:
                     3. Peptic Ulcer Disease
                     4. Upper GI symptoms
                     5. ICU Stress Ulcer Prophylaxis
-                    6. Barrett's Esophagus
-                    7. Chronic NSAID use with bleeding risk
-                    8. Severe esophagitis
-                    9. Documented history of bleeding GI ulcer
-                    10. Explain the reasoning for your answer
+                    6. Uncomplicated H. pylori
+                    7. Barrett's Esophagus
+                    8. Chronic NSAID use with bleeding risk
+                    9. Severe esophagitis
+                    10. Documented history of bleeding GI ulcer
+                    11. Explain the reasoning for your answer
                     Return the answer for each of these as a formatted JSON object with the key being the condition without the number in front and the value being a boolean value for the first 9.  For the final question, return a string with the reasoning for your answer."""
             }
         )
@@ -104,11 +105,12 @@ class llmAgent:
                     3. Peptic Ulcer Disease
                     4. Upper GI symptoms
                     5. ICU Stress Ulcer Prophylaxis
-                    6. Barrett's Esophagus
-                    7. Chronic NSAID use with bleeding risk
-                    8. Severe esophagitis
-                    9. Documented history of bleeding GI ulcer
-                    10. Explain the reasoning for your answer
+                    6. Uncomplicated H. pylori
+                    7. Barrett's Esophagus
+                    8. Chronic NSAID use with bleeding risk
+                    9. Severe esophagitis
+                    10. Documented history of bleeding GI ulcer
+                    11. Explain the reasoning for your answer
                     Return the answer for each of these as a formatted JSON object with the key being the condition without the number in front and the value being a boolean value for the first 9.  For the final question, return a string with the reasoning for your answer."""
             }
         )
@@ -195,16 +197,17 @@ class llmAgent:
         result = chain.invoke(
             {
                 "input": """Based on the information from the note context, does the patient have any of the following:
-              1. Mild to moderate esophagitis
+              1. Mild to moderate esoophagitis
               2. GERD 
               3. Peptic Ulcer Disease
               4. Upper GI symptoms
               5. ICU Stress Ulcer Prophylaxis
-              6. Barrett's Esophagus
-              7. Chronic NSAID use with bleeding risk
-              8. Severe esophagitis
-              9. Documented history of bleeding GI ulcer
-              10. Explain the reasoning for your answer
+              6. Uncomplicated H. pylori
+              7. Barrett's Esophagus
+              8. Chronic NSAID use with bleeding risk
+              9. Severe esophagitis
+              10. Documented history of bleeding GI ulcer
+              11. Explain the reasoning for your answer
             Return the answer for each of these as a formatted JSON object with the key being the condition without the number in front and the value being a boolean value for the first 9.  For the final question, return a string with the reasoning for your answer."""
             }
         )
