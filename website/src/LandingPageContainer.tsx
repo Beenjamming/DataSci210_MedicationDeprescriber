@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Link as RouterLink } from "react-router-dom";
 
-export default function ContainerWithButton() {
+export default function LandingPageContainer() {
   return (
     <React.Fragment>
       <Box
@@ -23,7 +23,7 @@ export default function ContainerWithButton() {
         </Typography>
         <Button
           component={RouterLink}
-          to="/Demo"
+          to="/DataSci210_MedicationDeprescriber/Demo"
           variant="contained"
           color="primary"
         >

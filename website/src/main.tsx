@@ -1,7 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
-import ContainerWithButton from "./ContainerWithButton.tsx";
 import Demo from "./Demo.tsx";
 import "./index.css";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
@@ -11,6 +10,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { Route } from "react-router-dom";
+import LandingPageContainer from "./LandingPageContainer.tsx";
 
 const theme = createTheme({
   palette: { primary: { main: "#1f7a8c" } },
@@ -18,12 +18,13 @@ const theme = createTheme({
     fontFamily: "Gill Sans",
   },
 });
+const BASE_PATH = "/DataSci210_MedicationDeprescriber/";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<App />}>
-      <Route path="/" element={<ContainerWithButton />} />
-      <Route path="/Demo" element={<Demo />} />
+    <Route path={BASE_PATH} element={<App />}>
+      <Route path={BASE_PATH} element={<LandingPageContainer />} />
+      <Route path={`${BASE_PATH}Demo`} element={<Demo />} />
     </Route>,
   ),
 );

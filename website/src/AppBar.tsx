@@ -1,8 +1,8 @@
+import { Toolbar } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
+import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
 import { Link as RouterLink } from "react-router-dom";
 
 export default function ButtonAppBar() {
@@ -13,7 +13,11 @@ export default function ButtonAppBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             RxReduce
           </Typography>
-          <Button component={RouterLink} to="/Demo" color="inherit">
+          <Button
+            component={RouterLink}
+            to="/DataSci210_MedicationDeprescriber/Demo"
+            color="inherit"
+          >
             Demo
           </Button>
           <Button color="inherit"> About </Button>
