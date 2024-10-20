@@ -11,6 +11,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import PatientSummary from "./Demo_summary";
+import PatientNotes from "./Demo_note";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -42,7 +43,7 @@ export default function Demo() {
   // for tabs
   const [value, setValue] = React.useState(0);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChange = (_: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
@@ -52,7 +53,7 @@ export default function Demo() {
   }));
 
   return (
-    <Grid container spacing={0.2}>
+    <Grid container spacing={0.2} sx={{ height: "100vh", overflow: "hidden" }}>
       <Grid size={12}>
         <Box
           height="2.5vh"
@@ -121,7 +122,7 @@ export default function Demo() {
           </Box>
         </Box>
       </Grid>
-      <Grid size={10}>
+      <Grid size={10} sx={{ height: "100vh", overflow: "hidden" }}>
         <Box
           display="flex"
           flexDirection="column"
@@ -139,7 +140,7 @@ export default function Demo() {
             <PatientSummary patient="Donald" />
           </CustomTabPanel>
           <CustomTabPanel value={value} index={1}>
-            Item Two
+            <PatientNotes patient="Donald" />
           </CustomTabPanel>
           <CustomTabPanel value={value} index={2}>
             Item Three

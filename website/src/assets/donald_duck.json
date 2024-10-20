@@ -49,6 +49,112 @@
         "resolved": false,
         "treatment": "Metformin 500 mg, insulin as needed."
       }
+    ],
+    "medications": [
+    {
+      "name": "Lactulose",
+      "dosage": "30 mL twice daily",
+      "reason": "To reduce ammonia levels and prevent hepatic encephalopathy."
+    },
+    {
+      "name": "Rifaximin",
+      "dosage": "550 mg twice daily",
+      "reason": "To prevent hepatic encephalopathy by reducing gut bacteria."
+    },
+    {
+      "name": "Propranolol",
+      "dosage": "20 mg twice daily",
+      "reason": "To manage portal hypertension and prevent variceal bleeding."
+    },
+    {
+      "name": "Pantoprazole",
+      "dosage": "40 mg once daily",
+      "reason": "Proton pump inhibitor for gastroesophageal reflux disease (GERD) and to prevent stress ulcers."
+    },
+    {
+      "name": "Furosemide",
+      "dosage": "40 mg once daily",
+      "reason": "Diuretic to manage fluid retention associated with liver disease."
+    },
+    {
+      "name": "Spironolactone",
+      "dosage": "100 mg once daily",
+      "reason": "Diuretic to manage ascites and prevent fluid accumulation."
+    }
+  ],
+    "notes": [
+      {
+        "provider_name": "Dr. Mickey Mouse",
+        "provider_specialty": "Hepatology",
+        "note_type": "History & Physical",
+        "note_date": "2024-10-10",
+        "note_content": "Patient is a 55-year-old male with a history of liver cirrhosis secondary to alcohol use disorder, presenting for evaluation for liver transplant. Physical exam reveals mild ascites and jaundice. Lab results show elevated liver enzymes. Patient is being worked up for liver transplant eligibility."
+      },
+      {
+        "provider_name": "Nurse Goofy",
+        "provider_specialty": "Nursing",
+        "note_type": "Progress Note",
+        "note_date": "2024-10-12",
+        "note_content": "Patient appears stable, but reports mild discomfort in the abdomen. Vital signs are within normal limits, with the exception of slightly elevated blood pressure (142/90). Patient is tolerating clear liquids well. Monitoring for any signs of worsening ascites or encephalopathy."
+      },
+      {
+        "provider_name": "Dr. Minnie Mouse",
+        "provider_specialty": "Pharmacy",
+        "note_type": "Medication Reconciliation",
+        "note_date": "2024-10-11",
+        "note_content": "Reviewed current medications. Patient is on lactulose 30 mL BID for hepatic encephalopathy, spironolactone 100 mg daily for ascites, and omeprazole 20 mg daily for GERD. Plan to start tacrolimus post-transplant and discontinue spironolactone at that time."
+      },
+      {
+        "provider_name": "Daisy Duck, RD",
+        "provider_specialty": "Dietician",
+        "note_type": "Nutrition Note",
+        "note_date": "2024-10-12",
+        "note_content": "Patient is on a low-sodium diet due to cirrhosis. Appetite is adequate, and patient reports no difficulty swallowing or digesting current diet. Will continue to monitor nutritional intake and recommend protein supplementation if albumin remains low."
+      },
+      {
+        "provider_name": "Dr. Pete",
+        "provider_specialty": "Gastroenterology",
+        "note_type": "Procedure Note",
+        "note_date": "2024-10-13",
+        "note_content": "Performed a paracentesis due to increased abdominal distension and discomfort. Approximately 2 liters of ascitic fluid was removed. Fluid sent to lab for analysis. Patient tolerated the procedure well and will be monitored for signs of infection or hypotension."
+      },
+      {
+        "provider_name": "Dr. Bubbles the Elephant",
+        "provider_specialty": "Surgery",
+        "note_type": "Pre-Operative Note",
+        "note_date": "2024-10-14",
+        "note_content": "Patient is scheduled for a liver transplant. Pre-operative assessment shows stable vitals, no active infections, and normal kidney function. Blood products and medications have been ordered for the procedure. Discussed risks and benefits of surgery with the patient and family. Patient consents to the procedure."
+      },
+      {
+        "provider_name": "Nurse Toodles",
+        "provider_specialty": "Nursing",
+        "note_type": "Post-Op Progress Note",
+        "note_date": "2024-10-15",
+        "note_content": "Patient is post-op day 1 from liver transplant. Incision site clean and dry with no signs of infection. Pain is well-controlled with IV morphine. Patient has been started on clear fluids and is ambulating with assistance. Will continue to monitor vital signs and urine output."
+      },
+      {
+        "provider_name": "Dr. Chip",
+        "provider_specialty": "Infectious Disease",
+        "note_type": "Consult Note",
+        "note_date": "2024-10-15",
+        "note_content": "Consulted for post-transplant infection risk management. Patient is at high risk for bacterial and fungal infections due to immunosuppression. Initiating prophylactic antibiotics and antifungal medication. Will monitor for any signs of infection, including fever, cough, or abnormal lab values."
+      },
+      {
+        "provider_name": "Pharmacist Dale",
+        "provider_specialty": "Pharmacy",
+        "note_type": "Progress Note",
+        "note_date": "2024-10-16",
+        "note_content": "Post-liver transplant medication regimen reviewed. Tacrolimus started at 2 mg BID for immunosuppression. Continue lactulose for encephalopathy, and added pantoprazole for stress ulcer prophylaxis. Will monitor drug levels and adjust doses as necessary."
+      },
+      {
+        "provider_name": "Dietician Mrs. Claus",
+        "provider_specialty": "Dietician",
+        "note_type": "Nutrition Progress Note",
+        "note_date": "2024-10-16",
+        "note_content": "Post-transplant nutrition assessment. Patient tolerating solid food well. Continuing low-sodium, high-protein diet to promote healing and avoid fluid retention. Will recheck albumin levels tomorrow and provide supplementation if needed."
+      }
     ]
+
   }
+
   
