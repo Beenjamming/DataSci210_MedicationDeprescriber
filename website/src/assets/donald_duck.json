@@ -1,0 +1,54 @@
+{
+    "patient_id": "12345",
+    "name": "Donald Duck",
+    "age": 51,
+    "gender": "Male",
+    "race": "unknown",
+    "summary_visit": {
+      "AdmissionDate": "2024-10-18",
+      "visit_reason": "Evaluation for liver transplant",
+      "AdmissionSummary": "Patient is a 51-year-old male with a history of liver cirrhosis secondary to chronic Hepatitis C infection. He is experiencing worsening ascites and hepatic encephalopathy, requiring urgent evaluation for a liver transplant."
+    },
+    "current_diagnoses": [
+      {
+        "condition": "Liver Cirrhosis",
+        "cause": "Chronic Hepatitis C",
+        "diagnosed_on": "2020-05-10",
+        "severity": "Severe",
+        "treatment": "Currently on diuretics, beta blockers, and lactulose. MELD score: 24."
+      },
+      {
+        "condition": "Hepatic Encephalopathy",
+        "diagnosed_on": "2023-04-22",
+        "severity": "Moderate",
+        "treatment": "Lactulose and rifaximin. Cognitive function is progressively worsening."
+      },
+      {
+        "condition": "Ascites",
+        "diagnosed_on": "2023-11-15",
+        "severity": "Severe",
+        "treatment": "Paracentesis required every two weeks. On diuretics."
+      }
+    ],
+    "past_diagnoses": [
+      {
+        "condition": "Hepatitis C",
+        "diagnosed_on": "2015-07-30",
+        "resolved": true,
+        "treatment": "Successfully treated with direct-acting antivirals in 2019."
+      },
+      {
+        "condition": "Hypertension",
+        "diagnosed_on": "2010-09-18",
+        "resolved": false,
+        "treatment": "Managed with beta blockers. Under control."
+      },
+      {
+        "condition": "Type 2 Diabetes",
+        "diagnosed_on": "2018-06-25",
+        "resolved": false,
+        "treatment": "Metformin 500 mg, insulin as needed."
+      }
+    ]
+  }
+  

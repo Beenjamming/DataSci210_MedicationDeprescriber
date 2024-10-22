@@ -13,7 +13,14 @@ import { Route } from "react-router-dom";
 import LandingPageContainer from "./LandingPageContainer.tsx";
 
 const theme = createTheme({
-  palette: { primary: { main: "#1f7a8c" } },
+  palette: {
+    primary: {
+      main: "#1f7a8c",
+    },
+    secondary: {
+      main: "#8c1f7a",
+    },
+  },
   typography: {
     fontFamily: "Gill Sans",
   },

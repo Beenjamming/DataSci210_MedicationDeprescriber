@@ -8,18 +8,14 @@ from extraction import llmAgent
 from ppi_deprescribe import merge_results, ppi_deprescribe
 import os 
 from pathlib import Path 
-from config import Settings
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = FastAPI()
-path = Path('C:/Users/krisr/Masters/w210/data')
-# groq = os.environ['groqkey']
-groq = "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"
 
-@app.get("/vars")
-async def info():
-    return {
-        "groqkey": Settings.groqkey,
-    }
+path = os.getenv("datapath")
+groq = os.getenv("groqkey")
 
 @app.get('/')
 def index():
