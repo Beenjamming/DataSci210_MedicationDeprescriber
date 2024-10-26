@@ -12,6 +12,8 @@ import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import PatientSummary from "./Demo_summary";
 import PatientNotes from "./Demo_note";
+import PatientOrders from "./Demo_orders";
+import PatientMedicationDischarge from "./Demo_discharge";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -143,7 +145,10 @@ export default function Demo() {
             <PatientNotes patient="Donald" />
           </CustomTabPanel>
           <CustomTabPanel value={value} index={2}>
-            Item Three
+            <PatientOrders patient="Donald" />
+          </CustomTabPanel>
+          <CustomTabPanel value={value} index={3}>
+            <PatientMedicationDischarge patient="Donald" />
           </CustomTabPanel>
         </Box>
       </Grid>

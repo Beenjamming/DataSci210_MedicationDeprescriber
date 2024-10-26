@@ -27,6 +27,22 @@ interface Notes {
   note_content: string;
 }
 
+interface Orders {
+  medication_name: string;
+  category: string;
+  dose: string;
+  route: string;
+  frequency: string;
+  indication: string;
+  status: string;
+  date_ordered: string;
+  date_start: string;
+  date_end: string;
+  is_ongoing_for_discharge: boolean;
+  recommendation?: string;
+  recommendation_notes?: string[];
+}
+
 interface Patient {
   patient_id: string;
   name: string;
@@ -37,6 +53,7 @@ interface Patient {
   past_diagnoses: Diagnosis[];
   medications: Medication[];
   notes: Notes[];
+  medication_orders: Orders[];
 }
 
 export type PatientName = "Donald" | "Mickey";

@@ -153,7 +153,80 @@
         "note_date": "2024-10-16",
         "note_content": "Post-transplant nutrition assessment. Patient tolerating solid food well. Continuing low-sodium, high-protein diet to promote healing and avoid fluid retention. Will recheck albumin levels tomorrow and provide supplementation if needed."
       }
+    ],
+    "medication_orders": [
+    {
+      "medication_name": "Omeprazole",
+      "category": "Proton Pump Inhibitor (PPI)",
+      "dose": "40 mg",
+      "route": "Oral",
+      "frequency": "Once daily",
+      "indication": "GERD, Proton Pump Inhibitor (PPI)",
+      "status": "Ordered",
+      "date_ordered": "2024-10-01",
+      "date_start": "2024-10-02",
+      "date_end": "2024-10-16",
+      "is_ongoing_for_discharge": false,
+      "recommendation": "Deprescribe",
+      "recommendation_notes": [
+      "Patient showing decreased symptoms of GERD.",
+      "No significant acid reflux observed over the last 3 months.",
+      "Alternative non-pharmacological treatments available."
     ]
+    },
+    {
+      "medication_name": "Tacrolimus",
+      "category": "Calcineurin Inhibitor",
+      "dose": "2 mg",
+      "route": "Oral",
+      "frequency": "Twice daily",
+      "indication": "Liver transplant immunosuppression",
+      "status": "Ongoing",
+      "date_ordered": "2024-09-28",
+      "date_start": "2024-09-29",
+      "date_end": "N/A",
+      "is_ongoing_for_discharge": true
+    },
+    {
+      "medication_name": "Furosemide",
+      "category": "Diuretic",
+      "dose": "40 mg",
+      "route": "Oral",
+      "frequency": "Once daily",
+      "indication": "Fluid retention management post-transplant",
+      "status": "Reordered",
+      "date_ordered": "2024-10-18",
+      "date_start": "2024-10-19",
+      "date_end": "2024-11-02",
+      "is_ongoing_for_discharge": false
+    },
+    {
+      "medication_name": "Prednisone",
+      "category": "Corticosteroid",
+      "dose": "5 mg",
+      "route": "Oral",
+      "frequency": "Once daily",
+      "indication": "Immunosuppression post-liver transplant",
+      "status": "Canceled",
+      "date_ordered": "2024-10-05",
+      "date_start": "2024-10-06",
+      "date_end": "2024-10-15",
+      "is_ongoing_for_discharge": false
+    },
+    {
+      "medication_name": "Pantoprazole",
+      "category": "Proton Pump Inhibitor (PPI)",
+      "dose": "40 mg",
+      "route": "Oral",
+      "frequency": "Once daily",
+      "indication": "Proton Pump Inhibitor (PPI) for GERD",
+      "status": "Ordered",
+      "date_ordered": "2024-10-15",
+      "date_start": "2024-10-16",
+      "date_end": "Ongoing",
+      "is_ongoing_for_discharge": true
+    }
+  ]
 
   }
 

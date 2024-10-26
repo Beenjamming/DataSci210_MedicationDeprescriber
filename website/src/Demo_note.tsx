@@ -31,6 +31,11 @@ export default function PatientNotes(props: PatientNotesProps) {
               <ListItem
                 key={index}
                 onClick={() => handleNoteClick(note)}
+                secondaryAction={
+                  <Typography variant="body1" color="textSecondary">
+                    {note.note_date}
+                  </Typography>
+                }
                 sx={{
                   padding: "10px",
                   borderRadius: "5px",
