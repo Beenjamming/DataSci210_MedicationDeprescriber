@@ -40,6 +40,8 @@ def ppi_deprescribe(patient_diagnosis: dict):
         recommendation = 2
     if patient_diagnosis["ICU Stress Ulcer Prophylaxis"]:
         recommendation = 2
+    if patient_diagnosis["H pylori infection"]:
+        recommendation = 2    
     if recommendation == 2:
         return recommendation_dict[recommendation]
 

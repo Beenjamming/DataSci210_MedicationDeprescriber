@@ -88,7 +88,8 @@ class llmAgent:
                     7. Chronic NSAID use with bleeding risk
                     8. Severe esophagitis
                     9. Documented history of bleeding GI ulcer
-                    10. Explain the reasoning for your answer
+                    10. H pylori infection
+                    11. Explain the reasoning for your answer
                     Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 9.  For the final question, return a string with the reasoning for your answer."""
             }
         )
@@ -123,7 +124,8 @@ class llmAgent:
                     7. Chronic NSAID use with bleeding risk
                     8. Severe esophagitis
                     9. Documented history of bleeding GI ulcer
-                    10. Explain the reasoning for your answer
+                    10. H pylori infection
+                    11. Explain the reasoning for your answer
                     Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 9.  For the final question, return a string with the reasoning for your answer."""
             }
         )
@@ -169,6 +171,7 @@ class llmAgent:
             Chronic_NSAID_use_with_bleeding_risk: bool = Field(description="Chronic NSAID use with bleeding risk")
             Severe_esophagitis: bool = Field(description="Severe esophagitis")
             Documented_history_of_bleeding_GI_ulcer: bool = Field(description="Documented history of bleeding GI ulcer")
+            H_pylori_infection: bool = Field(description="H pylori infection")
             Reasoning: str = Field(description="Explain the reasoning for your answer")
 
          # You can add custom validation logic easily with Pydantic.
@@ -224,7 +227,8 @@ class llmAgent:
               7. Chronic NSAID use with bleeding risk
               8. Severe esophagitis
               9. Documented history of bleeding GI ulcer
-              10. Explain the reasoning for your answer
+              10. H pylori infection
+              11. Explain the reasoning for your answer
             Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 9.  For the final question, return a string with the reasoning for your answer."""
             }
         )
@@ -253,7 +257,8 @@ class llmAgent:
                 7. Chronic NSAID use with bleeding risk
                 8. Severe esophagitis
                 9. Documented history of bleeding GI ulcer
-                10. Explain the reasoning for your answer
+                10. H pylori infection
+                11. Explain the reasoning for your answer
                 Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 9.  For the final question, return a string with the reasoning for your answer."""
                 }
                 ) 
