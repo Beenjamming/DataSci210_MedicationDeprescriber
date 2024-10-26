@@ -79,18 +79,17 @@ class llmAgent:
         response = chain.invoke(
             {
                 "text": f"""Based on the information from this JSON information: {hospitalAcquiredDx_json}, {presentOnAdmitDx_json}, does the patient have any of the following:
-                    1. Mild to moderate esoophagitis
+                    1. Mild to moderate esophagitis
                     2. GERD 
                     3. Peptic Ulcer Disease
                     4. Upper GI symptoms
                     5. ICU Stress Ulcer Prophylaxis
-                    6. Uncomplicated H. pylori
-                    7. Barrett's Esophagus
-                    8. Chronic NSAID use with bleeding risk
-                    9. Severe esophagitis
-                    10. Documented history of bleeding GI ulcer
-                    11. Explain the reasoning for your answer
-                    Return the answer for each of these as a formatted JSON object with the key being the condition without the number in front and the value being a boolean value for the first 9.  For the final question, return a string with the reasoning for your answer."""
+                    6. Barretts Esophagus
+                    7. Chronic NSAID use with bleeding risk
+                    8. Severe esophagitis
+                    9. Documented history of bleeding GI ulcer
+                    10. Explain the reasoning for your answer
+                    Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 9.  For the final question, return a string with the reasoning for your answer."""
             }
         )
         return llmAgent.extract_json_from_content(response.content)
@@ -115,18 +114,17 @@ class llmAgent:
         response = chain.invoke(
             {
                 "text": f"""Based on the information from this JSON information: {encounters_json}, does the patient have any of the following:
-                    1. Mild to moderate esoophagitis
+                    1. Mild to moderate esophagitis
                     2. GERD 
                     3. Peptic Ulcer Disease
                     4. Upper GI symptoms
                     5. ICU Stress Ulcer Prophylaxis
-                    6. Uncomplicated H. pylori
-                    7. Barrett's Esophagus
-                    8. Chronic NSAID use with bleeding risk
-                    9. Severe esophagitis
-                    10. Documented history of bleeding GI ulcer
-                    11. Explain the reasoning for your answer
-                    Return the answer for each of these as a formatted JSON object with the key being the condition without the number in front and the value being a boolean value for the first 9.  For the final question, return a string with the reasoning for your answer."""
+                    6. Barretts Esophagus
+                    7. Chronic NSAID use with bleeding risk
+                    8. Severe esophagitis
+                    9. Documented history of bleeding GI ulcer
+                    10. Explain the reasoning for your answer
+                    Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 9.  For the final question, return a string with the reasoning for your answer."""
             }
         )
         return llmAgent.extract_json_from_content(response.content)
@@ -162,7 +160,7 @@ class llmAgent:
         from langchain_core.runnables import RunnablePassthrough
         
         class NoteResponse(BaseModel):
-            Mild_to_moderate_esoophagitis: bool = Field(description="Mild to moderate esoophagitis")
+            Mild_to_moderate_esophagitis: bool = Field(description="Mild to moderate esophagitis")
             GERD: bool = Field(description="GERD")
             Peptic_Ulcer_Disease: bool = Field(description="Peptic Ulcer Disease")
             Upper_GI_symptoms: bool = Field(description="Upper GI symptoms")
@@ -184,7 +182,7 @@ class llmAgent:
         system = "You are a knowledgeable medical provider who specializes in medication management. Given a list of diagnosis and some snippets from patients notes {context}, answer if the patient notes contain any of the diagnosis."
         parser = PydanticOutputParser(pydantic_object=NoteResponse)
         prompt = PromptTemplate(
-                template="Answer the user query.\n{format_instructions}\n{input}\n",
+                template="Answer the user query.\n{format_instructions}\n{context}\n",
                 input_variables=[("system", system), ("human", "{input}")],
                 partial_variables={"format_instructions": parser.get_format_instructions()},
             )
@@ -204,18 +202,11 @@ class llmAgent:
         )
 
         retrieve_docs = {
-            "context": retriever | llmAgent.format_docs,
+            "context": retriever | (lambda x: llmAgent.format_docs(x)),
             "input": RunnablePassthrough(),
         }
-
+        
         retrieve_docs = (lambda x: x["input"]) | retriever
-<<<<<<< HEAD
-=======
-
-        print("retrieve_docs")
-        print(retrieve_docs)
-
->>>>>>> 8128f012c012e394f4b5f28a3f95d29368c29e86
         chain = RunnablePassthrough.assign(context=retrieve_docs).assign(
             answer=rag_chain
         ) 
@@ -223,19 +214,18 @@ class llmAgent:
 
         result = chain.invoke(
             {
-                "input": """Based on the information from the note context, does the patient have any of the following:
-              1. Mild to moderate esoophagitis
+                "input": """Based on the information from the note {context}, does the patient have any of the following:
+              1. Mild to moderate esophagitis
               2. GERD 
               3. Peptic Ulcer Disease
               4. Upper GI symptoms
               5. ICU Stress Ulcer Prophylaxis
-              6. Uncomplicated H. pylori
-              7. Barrett's Esophagus
-              8. Chronic NSAID use with bleeding risk
-              9. Severe esophagitis
-              10. Documented history of bleeding GI ulcer
-              11. Explain the reasoning for your answer
-            Return the answer for each of these as a formatted JSON object with the key being the condition without the number in front and the value being a boolean value for the first 9.  For the final question, return a string with the reasoning for your answer."""
+              6. Barretts Esophagus
+              7. Chronic NSAID use with bleeding risk
+              8. Severe esophagitis
+              9. Documented history of bleeding GI ulcer
+              10. Explain the reasoning for your answer
+            Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 9.  For the final question, return a string with the reasoning for your answer."""
             }
         )
 
@@ -259,7 +249,7 @@ class llmAgent:
                 3. Peptic Ulcer Disease
                 4. Upper GI symptoms
                 5. ICU Stress Ulcer Prophylaxis
-                6. Barrett's Esophagus
+                6. Barretts Esophagus
                 7. Chronic NSAID use with bleeding risk
                 8. Severe esophagitis
                 9. Documented history of bleeding GI ulcer
@@ -269,44 +259,16 @@ class llmAgent:
                 ) 
             temp_json = llmAgent.extract_json_from_content(result["answer"])
         result_json = llmAgent.replace_underscores_in_keys(temp_json)
-        #result_json = result["answer"]
-        # # from the result["answer"] extract only #10. Reasoning key value pair
-        # reasoning_str = llmAgent.extract_json_from_content(
-        #     result["answer"]["10. Reasoning"]
-        # )
-
-        # # # #   Just provide an explanation given the notes as context   # # #
-        # system = f"""You are a knowledgeable medical provider who specializes in medication management.
-        # Given a list of note context, explain the reasoning with cited parts of the note that support this answer: {reasoning}.
-
-        # An example response would be in this format:
-
-        # The patient has severe esophagitis. This is supported by the following parts of the note:
-
-        # "The patient has been experiencing severe heartburn for the past 3 weeks." from the note on 2022-01-01 by the Provider Type Resident.
-
-        # """
-        # mstr_prompt = ChatPromptTemplate.from_messages(
-        #     [("system", system), ("human", "{input}")]
-        # )
-
-        # mstr_chain = (
-        #     {"input": RunnablePassthrough()}
-        #     | mstr_prompt
-        #     | self.llm
-        #     | StrOutputParser()
-        # )
-
-        # mstr_answer = mstr_chain.invoke({"input": result["context"]})
+    
 
         return result_json
-
+    
     def summarize_reasonings(self, results_dict):
         """Summarize the reasonings from the three sources."""
         diagnosis_dict = results_dict["diagnosis_dict"]
         encounter_dict = results_dict["encounter_dict"]
         notes_dict = results_dict["notes_dict"]
-
+        
         system = "You are a knowledgeable medical provider who specializes in medication management."
         human = "{text}"
         prompt = ChatPromptTemplate.from_messages(

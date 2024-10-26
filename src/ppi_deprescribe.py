@@ -14,7 +14,7 @@ def ppi_deprescribe(patient_diagnosis: dict):
     recommendation = -1
 
     # check for continue PPI criteria
-    if patient_diagnosis["Barrett's Esophagus"]:
+    if patient_diagnosis["Barretts Esophagus"]:
         recommendation = 0
     if patient_diagnosis["Chronic NSAID use with bleeding risk"]:
         recommendation = 0
@@ -39,8 +39,6 @@ def ppi_deprescribe(patient_diagnosis: dict):
     if patient_diagnosis["Chronic NSAID use with bleeding risk"]:
         recommendation = 2
     if patient_diagnosis["ICU Stress Ulcer Prophylaxis"]:
-        recommendation = 2
-    if patient_diagnosis["Uncomplicated H. pylori"]:
         recommendation = 2
     if recommendation == 2:
         return recommendation_dict[recommendation]
