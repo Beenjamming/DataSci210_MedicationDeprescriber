@@ -57,7 +57,6 @@ def merge_results(results_dict: dict):
     diagnosis_dict = results_dict["diagnosis_dict"]
     encounter_dict = results_dict["encounter_dict"]
     notes_dict = results_dict["notes_dict"]
-
     final_dict = {}
     for key in diagnosis_dict.keys():
         if not key == "Reasoning":

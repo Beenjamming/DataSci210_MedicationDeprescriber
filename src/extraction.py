@@ -93,7 +93,7 @@ class llmAgent:
                     Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 9.  For the final question, return a string with the reasoning for your answer."""
             }
         )
-        return llmAgent.extract_json_from_content(response.content)
+        return llmAgent.extract_json_from_content(response.content) #, response.response_metadata['token_usage']['total_tokens']
 
     def extract_encounter_info(self, encounter_key: str):
         """
@@ -129,7 +129,7 @@ class llmAgent:
                     Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 9.  For the final question, return a string with the reasoning for your answer."""
             }
         )
-        return llmAgent.extract_json_from_content(response.content)
+        return llmAgent.extract_json_from_content(response.content) #, response.response_metadata['token_usage']['total_tokens']
 
     def extract_notes(self, encounter_key: str):
         """
@@ -266,7 +266,7 @@ class llmAgent:
         result_json = llmAgent.replace_underscores_in_keys(temp_json)
     
 
-        return result_json
+        return result_json #, result.response_metadata['token_usage']['total_tokens']
     
     def summarize_reasonings(self, results_dict):
         """Summarize the reasonings from the three sources."""
