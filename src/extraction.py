@@ -89,8 +89,10 @@ class llmAgent:
                     8. Severe esophagitis
                     9. Documented history of bleeding GI ulcer
                     10. H pylori infection
-                    11. Explain the reasoning for your answer
-                    Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 9.  For the final question, return a string with the reasoning for your answer."""
+                    11. Explain the reasoning for your answer with the key being 'Reasoning'
+                    Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 10.  For the final question, return a string with the reasoning for your answer.
+
+                    """
             }
         )
         return llmAgent.extract_json_from_content(response.content) #, response.response_metadata['token_usage']['total_tokens']
@@ -125,8 +127,9 @@ class llmAgent:
                     8. Severe esophagitis
                     9. Documented history of bleeding GI ulcer
                     10. H pylori infection
-                    11. Explain the reasoning for your answer
-                    Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 9.  For the final question, return a string with the reasoning for your answer."""
+                    11. Explain the reasoning for your answer with the key being 'Reasoning'
+                    Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 10.  For the final question, return a string with the reasoning for your answer.
+                    """
             }
         )
         return llmAgent.extract_json_from_content(response.content) #, response.response_metadata['token_usage']['total_tokens']
@@ -204,10 +207,10 @@ class llmAgent:
             | StrOutputParser()
         )
 
-        retrieve_docs = {
-            "context": retriever | (lambda x: llmAgent.format_docs(x)),
-            "input": RunnablePassthrough(),
-        }
+        #retrieve_docs = {
+        #    "context": retriever | (lambda x: llmAgent.format_docs(x)),
+        #    "input": RunnablePassthrough(),
+        #}
         
         retrieve_docs = (lambda x: x["input"]) | retriever
         chain = RunnablePassthrough.assign(context=retrieve_docs).assign(
@@ -229,40 +232,42 @@ class llmAgent:
               9. Documented history of bleeding GI ulcer
               10. H pylori infection
               11. Explain the reasoning for your answer
-            Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 9.  For the final question, return a string with the reasoning for your answer."""
+            Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 10.  For the final question, return a string with the reasoning for your answer."""
             }
         )
 
         # resulting json output
-        try:
-            temp_json = llmAgent.extract_json_from_content(result["answer"])
-        except:
-            rag_chain = (
-            RunnablePassthrough.assign(
-                context=(lambda x: llmAgent.format_docs(x["context"]))
-            )
-            | prompt
-            | self.llm2
-            | StrOutputParser()
-            )
-            result = chain.invoke(
-                {
-                    "input": """Based on the information from the note context, does the patient have any of the following:
-                1. Mild to moderate esophagitis
-                2. GERD 
-                3. Peptic Ulcer Disease
-                4. Upper GI symptoms
-                5. ICU Stress Ulcer Prophylaxis
-                6. Barretts Esophagus
-                7. Chronic NSAID use with bleeding risk
-                8. Severe esophagitis
-                9. Documented history of bleeding GI ulcer
-                10. H pylori infection
-                11. Explain the reasoning for your answer
-                Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 9.  For the final question, return a string with the reasoning for your answer."""
-                }
-                ) 
-            temp_json = llmAgent.extract_json_from_content(result["answer"])
+        #try:
+        temp_json = llmAgent.extract_json_from_content(result["answer"])
+        #except:
+        #    rag_chain = (
+        #    RunnablePassthrough.assign(
+        #        context=(lambda x: llmAgent.format_docs(x["context"]))
+        #    )
+        #    | prompt
+        #    | self.llm2
+        #    | StrOutputParser()
+        #    )
+        #    result = chain.invoke(
+        #        {
+        #            "input": """Based on the information from the note context, does the patient have any of the following:
+        #        1. Mild to moderate esophagitis
+        #        2. GERD 
+        #        3. Peptic Ulcer Disease
+        #        4. Upper GI symptoms
+        #        5. ICU Stress Ulcer Prophylaxis
+        #        6. Barretts Esophagus
+        #        7. Chronic NSAID use with bleeding risk
+        #        8. Severe esophagitis
+        #        9. Documented history of bleeding GI ulcer
+        #        10. H pylori infection
+        #        11. Explain the reasoning for your answer with the key being 'Reasoning'
+        #        Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 10.  For the final question, return a string with the reasoning for your answer.
+        #            
+        #           """
+        #        }
+        #        ) 
+        #    temp_json = llmAgent.extract_json_from_content(result["answer"])
         result_json = llmAgent.replace_underscores_in_keys(temp_json)
     
 
