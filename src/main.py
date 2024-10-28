@@ -8,9 +8,9 @@ def main(
     groq_key="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",
     data_path=Path(
         "/Users/yarg/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/DataSci210_MedicationDeprescriber/Data"
-    ),
+    ),key = ''
 ):
-    encounter_key = "D6253A5CE371EA"
+    encounter_key = key
 
     # extract information
     llm_agent = llmAgent(groq_key=groq_key, data_path=data_path)
