@@ -66,12 +66,22 @@ def deprescribe(encounter_key):
     final_dict = merge_results(results_dict=results_dict)
 
     # feed the three reasonings to LLM to get a single summary
-    final_reasoning = llm_agent.summarize_reasonings(results_dict=results_dict)
+    final_reasoning, reasoning_summary_token_count = llm_agent.summarize_reasonings(
+        results_dict=results_dict
+    )
+
+    # count tokens used by LLM queries
+    total_token_count = (
+        diagnosis_token_count
+        + encounter_token_count
+        + notes_token_count
+        + reasoning_summary_token_count
+    )
 
     # # #   get recommendation from PPI algorithm   # # #
     recommendation_str = ppi_deprescribe(patient_diagnosis=final_dict)
 
-    return recommendation_str, final_reasoning
+    return recommendation_str, final_reasoning, total_token_count
 
 
 if __name__ == "__main__":

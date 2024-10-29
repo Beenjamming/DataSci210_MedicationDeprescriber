@@ -338,7 +338,7 @@ class llmAgent:
         )
 
         chain = prompt | self.llm
-        response = chain.invoke(
+        chain_result = chain.invoke(
             {
                 "text": f"""Based on the following json files, please provide a single explanation of the reasoning given by the 'Reasoning' key. Summarize given equal 
                 weight to each. Do not add any additional information, only summarize what is given.
@@ -347,4 +347,4 @@ class llmAgent:
                 {notes_dict}"""
             }
         )
-        return response.content
+        return chain_result.content, chain_result.response_metadata["token_usage"]["total_tokens"]

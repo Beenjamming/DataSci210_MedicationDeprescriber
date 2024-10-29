@@ -47,7 +47,17 @@ def main(
     final_dict = merge_results(results_dict=results_dict)
 
     # feed the three reasonings to LLM to get a single summary
-    final_reasoning = llm_agent.summarize_reasonings(results_dict=results_dict)
+    final_reasoning, reasoning_summary_token_count = llm_agent.summarize_reasonings(
+        results_dict=results_dict
+    )
+
+    # count tokens used by LLM queries
+    total_token_count = (
+        diagnosis_token_count
+        + encounter_token_count
+        + notes_token_count
+        + reasoning_summary_token_count
+    )
 
     # # #   get recommendation from PPI algorithm   # # #
     recommendation_str = ppi_deprescribe(patient_diagnosis=final_dict)
@@ -56,6 +66,8 @@ def main(
     print(recommendation_str)
     print("\nReasoning: ")
     print(final_reasoning)
+    print("\nTotal Token Count: ")
+    print(total_token_count)
 
     # # #   Metrics   # # #
     # get a single row DataFrame of the key, explanation and recommendation
