@@ -160,7 +160,7 @@ class llmAgent:
         from typing import List
         from langchain.output_parsers import PydanticOutputParser
         from langchain_core.prompts import PromptTemplate
-        from langchain_core.pydantic_v1 import BaseModel, Field, validator
+        from pydantic import BaseModel, Field
         from langchain_core.output_parsers import StrOutputParser
         from langchain_core.runnables import RunnablePassthrough
         
@@ -178,11 +178,11 @@ class llmAgent:
             Reasoning: str = Field(description="Explain the reasoning for your answer")
 
          # You can add custom validation logic easily with Pydantic.
-        @validator("setup")
-        def question_ends_with_question_mark(cls, field):
-            if field[-1] != "?":
+        @classmethod
+        def validate_question(cls, value: str) -> str:
+            if not value.endswith("?"):
                 raise ValueError("Badly formed question!")
-            return field
+            return value
         #parser = PydanticOutputParser(pydantic_object=NoteResponse)
 
         system = "You are a knowledgeable medical provider who specializes in medication management. Given a list of diagnosis and some snippets from patients notes {context}, answer if the patient notes contain any of the diagnosis."
