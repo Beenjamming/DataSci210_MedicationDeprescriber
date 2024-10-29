@@ -5,22 +5,40 @@ from ppi_deprescribe import merge_results, ppi_deprescribe
 
 
 def main(
-    groq_key="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",
-    data_path=Path(
-        "/Users/yarg/Library/CloudStorage/OneDrive-Personal/Documents/GitHub/DataSci210_MedicationDeprescriber/Data"
-    ),key = ''
+    groq_key="",
+    data_path=Path(""),
+    encounter_key="",
 ):
-    encounter_key = key
+    """Main method
+
+    Parameters
+    ----------
+    groq_key : str, optional
+        groq api key, by default ""
+    data_path : _type_, optional
+        path object to data folder, by default Path( "" )
+    encounter_key : str, optional
+        the encounter key for the patient data, by default ""
+    """
 
     # extract information
     llm_agent = llmAgent(groq_key=groq_key, data_path=data_path)
 
+    diagnosis_json, diagnosis_token_count = llm_agent.extract_diagnosis(
+        encounter_key=encounter_key
+    )
+    encounter_json, encounter_token_count = llm_agent.extract_encounter_info(
+        encounter_key=encounter_key
+    )
+    # NOTE notes_context is a list of Document objects for RAGAs metrics
+    notes_json, notes_token_count, notes_context = llm_agent.extract_notes(
+        encounter_key=encounter_key
+    )
+
     results_dict = {
-        "diagnosis_dict": llm_agent.extract_diagnosis(encounter_key=encounter_key),
-        "encounter_dict": llm_agent.extract_encounter_info(encounter_key=encounter_key),
-        # Is the reasoning in the json or sepearte?
-        # Should the reasoning be included in any of them or just the diangosis with the reasoning seperate?
-        "notes_dict": llm_agent.extract_notes(encounter_key=encounter_key),
+        "diagnosis_dict": diagnosis_json,
+        "encounter_dict": encounter_json,
+        "notes_dict": notes_json,
     }
 
     # # #   master formatter step   # # #
