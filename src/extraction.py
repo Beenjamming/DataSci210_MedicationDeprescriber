@@ -95,7 +95,7 @@ class llmAgent:
                     """
             }
         )
-        return llmAgent.extract_json_from_content(response.content) #, response.response_metadata['token_usage']['total_tokens']
+        return llmAgent.extract_json_from_content(response.content), response.response_metadata['token_usage']['total_tokens']
 
     def extract_encounter_info(self, encounter_key: str):
         """
@@ -132,7 +132,7 @@ class llmAgent:
                     """
             }
         )
-        return llmAgent.extract_json_from_content(response.content) #, response.response_metadata['token_usage']['total_tokens']
+        return llmAgent.extract_json_from_content(response.content), response.response_metadata['token_usage']['total_tokens']
 
     def extract_notes(self, encounter_key: str):
         """
@@ -204,7 +204,7 @@ class llmAgent:
             )
             | prompt
             | self.llm
-            | StrOutputParser()
+            #| StrOutputParser()
         )
 
         #retrieve_docs = {
@@ -238,7 +238,8 @@ class llmAgent:
 
         # resulting json output
         #try:
-        temp_json = llmAgent.extract_json_from_content(result["answer"])
+        temp_json = llmAgent.extract_json_from_content(result['answer'].content)        
+        #temp_json = llmAgent.extract_json_from_content(StrOutputParser(result))
         #except:
         #    rag_chain = (
         #    RunnablePassthrough.assign(
@@ -267,11 +268,11 @@ class llmAgent:
         #           """
         #        }
         #        ) 
-        #    temp_json = llmAgent.extract_json_from_content(result["answer"])
+            #temp_json = llmAgent.extract_json_from_content(result["answer"])
         result_json = llmAgent.replace_underscores_in_keys(temp_json)
-    
+        
 
-        return result_json #, result.response_metadata['token_usage']['total_tokens']
+        return result_json, result['answer'].response_metadata['token_usage']['total_tokens'] #result['answer'], result.response_metadata['token_usage']['total_tokens']
     
     def summarize_reasonings(self, results_dict):
         """Summarize the reasonings from the three sources."""
