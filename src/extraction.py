@@ -31,31 +31,19 @@ class llmAgent:
         self.data_path = data_path
         self.data_loader = DataLoader(data_path=data_path)
 
-        model = "llama-3.1-70b-versatile"
+        #model = "llama-3.1-70b-versatile"
         model = 'llama3-groq-70b-8192-tool-use-preview'
-        model = 'mistral.mixtral-8x7b-instruct-v0:1'
-        #model = 'anthropic.claude-instant-v1'
-        #model = 'mistral.mistral-7b-instruct-v0:2'
-        #model = 'meta.llama3-70b-instruct-v1:0'
+        #br_model = 'mistral.mixtral-8x7b-instruct-v0:1'
+        #br_model = 'anthropic.claude-instant-v1'
+        #br_model = 'mistral.mistral-7b-instruct-v0:2'
+        br_model = 'meta.llama3-70b-instruct-v1:0'
         #model = "llama-3.1-8b-instant"
-        self.llm = ChatBedrock(
-            model_id=model,
-            model_kwargs=dict(temperature=0),
-            # other params...
-        )
-        #self.llm = ChatGroq(temperature=0, model=model, api_key=groq_key)
-
-    def str_to_dict(string):
-        # remove the curly braces from the string
-        string = string.strip('{}')
-
-        # split the string into key-value pairs
-        pairs = string.split(', ')
-
-        # use a dictionary comprehension to create
-        # the dictionary, converting the values to
-        # integers and removing the quotes from the keys
-        return {key[1:-2]: int(value) for key, value in (pair.split(': ') for pair in pairs)}
+        # self.llm = ChatBedrock(
+        #     model_id=br_model,
+        #     model_kwargs=dict(temperature=0),
+        #     # other params...
+        # )
+        self.llm = ChatGroq(temperature=0, model=model, api_key=groq_key)
     
     @staticmethod
     def format_docs(docs):
