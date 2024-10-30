@@ -8,8 +8,19 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 from query import DataLoader
 
+from langchain_aws import ChatBedrock
+
+import ast
+
 embeddings = HuggingFaceEmbeddings(model_name="NeuML/pubmedbert-base-embeddings")
 text_splitter = RecursiveCharacterTextSplitter()
+
+example_json = """ {
+    "Condition 1": True,
+    "Condition 2": False,
+    "Condition 3": True,
+    "Reasoning": "This is just a reasoning example"
+} """
 
 
 class llmAgent:
@@ -20,11 +31,32 @@ class llmAgent:
         self.data_path = data_path
         self.data_loader = DataLoader(data_path=data_path)
 
-        llama_31 = "llama-3.1-70b-versatile"
-        llama_tool_70 = 'llama3-groq-70b-8192-tool-use-preview'
-        self.llm = ChatGroq(temperature=0, model=llama_31, api_key=groq_key)
-        self.llm2 = ChatGroq(temperature=0, model=llama_tool_70, api_key=groq_key)
+        model = "llama-3.1-70b-versatile"
+        model = 'llama3-groq-70b-8192-tool-use-preview'
+        model = 'mistral.mixtral-8x7b-instruct-v0:1'
+        #model = 'anthropic.claude-instant-v1'
+        #model = 'mistral.mistral-7b-instruct-v0:2'
+        #model = 'meta.llama3-70b-instruct-v1:0'
+        #model = "llama-3.1-8b-instant"
+        self.llm = ChatBedrock(
+            model_id=model,
+            model_kwargs=dict(temperature=0),
+            # other params...
+        )
+        #self.llm = ChatGroq(temperature=0, model=model, api_key=groq_key)
 
+    def str_to_dict(string):
+        # remove the curly braces from the string
+        string = string.strip('{}')
+
+        # split the string into key-value pairs
+        pairs = string.split(', ')
+
+        # use a dictionary comprehension to create
+        # the dictionary, converting the values to
+        # integers and removing the quotes from the keys
+        return {key[1:-2]: int(value) for key, value in (pair.split(': ') for pair in pairs)}
+    
     @staticmethod
     def format_docs(docs):
         return "\n\n".join(doc.page_content for doc in docs)
@@ -32,13 +64,30 @@ class llmAgent:
     @staticmethod
     def extract_json_from_content(content):
         """ """
+        if isinstance(content, list):
+            print("listfound:",content)
+            if len(content) == 1:
+                content = content[0]
+            else:
+                print(content)
+                raise ValueError("Expected a single JSON object, but got multiple.")
         # Find the JSON part within the content
         start_index = content.find("{")
         end_index = content.rfind("}") + 1
         json_str = content[start_index:end_index]
+        # Sanitize the JSON string to remove special characters
+        #sanitized_json_str = ''.join(c for c in json_str if c.isprintable() and c not in ['\n', '\t', '\r'])
+
 
         # Parse the JSON string
-        parsed_json = json.loads(json_str)
+        try:
+            parsed_json = json.loads(json_str)
+        except:
+            print('json fail')
+            print(content)
+            print('json_str')
+            print(json_str)
+            raise ValueError("Failed to parse JSON string.")
 
         return parsed_json
     
@@ -90,7 +139,8 @@ class llmAgent:
                     9. Documented history of bleeding GI ulcer
                     10. H pylori infection
                     11. Explain the reasoning for your answer with the key being 'Reasoning'
-                    Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 10.  For the final question, return a string with the reasoning for your answer.
+                    Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 10.  
+                    For the final question, return a string with the reasoning for your answer. Here is an example of the correct format: {example_json}
 
                     """
             }
@@ -128,7 +178,9 @@ class llmAgent:
                     9. Documented history of bleeding GI ulcer
                     10. H pylori infection
                     11. Explain the reasoning for your answer with the key being 'Reasoning'
-                    Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 10.  For the final question, return a string with the reasoning for your answer.
+                    Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 10.  
+                    For the final question, return a string with the reasoning for your answer. Here is an example of the correct format: {example_json}
+
                     """
             }
         )
@@ -160,7 +212,7 @@ class llmAgent:
         from typing import List
         from langchain.output_parsers import PydanticOutputParser
         from langchain_core.prompts import PromptTemplate
-        from langchain_core.pydantic_v1 import BaseModel, Field, validator
+        from pydantic import BaseModel, Field
         from langchain_core.output_parsers import StrOutputParser
         from langchain_core.runnables import RunnablePassthrough
         
@@ -178,11 +230,11 @@ class llmAgent:
             Reasoning: str = Field(description="Explain the reasoning for your answer")
 
          # You can add custom validation logic easily with Pydantic.
-        @validator("setup")
-        def question_ends_with_question_mark(cls, field):
-            if field[-1] != "?":
+        @classmethod
+        def validate_question(cls, value: str) -> str:
+            if not value.endswith("?"):
                 raise ValueError("Badly formed question!")
-            return field
+            return value
         #parser = PydanticOutputParser(pydantic_object=NoteResponse)
 
         system = "You are a knowledgeable medical provider who specializes in medication management. Given a list of diagnosis and some snippets from patients notes {context}, answer if the patient notes contain any of the diagnosis."
@@ -237,37 +289,28 @@ class llmAgent:
         )
 
         # resulting json output
-        #try:
-        temp_json = llmAgent.extract_json_from_content(result["answer"])
-        #except:
-        #    rag_chain = (
-        #    RunnablePassthrough.assign(
-        #        context=(lambda x: llmAgent.format_docs(x["context"]))
-        #    )
-        #    | prompt
-        #    | self.llm2
-        #    | StrOutputParser()
-        #    )
-        #    result = chain.invoke(
-        #        {
-        #            "input": """Based on the information from the note context, does the patient have any of the following:
-        #        1. Mild to moderate esophagitis
-        #        2. GERD 
-        #        3. Peptic Ulcer Disease
-        #        4. Upper GI symptoms
-        #        5. ICU Stress Ulcer Prophylaxis
-        #        6. Barretts Esophagus
-        #        7. Chronic NSAID use with bleeding risk
-        #        8. Severe esophagitis
-        #        9. Documented history of bleeding GI ulcer
-        #        10. H pylori infection
-        #        11. Explain the reasoning for your answer with the key being 'Reasoning'
-        #        Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 10.  For the final question, return a string with the reasoning for your answer.
-        #            
-        #           """
-        #        }
-        #        ) 
-        #    temp_json = llmAgent.extract_json_from_content(result["answer"])
+        try:
+            temp_json = llmAgent.extract_json_from_content(result["answer"])
+        except:
+            print('json try #2')
+            result = chain.invoke(
+                {
+                    "input": """Based on the information from the note {context}, does the patient have any of the following:
+                1. Mild to moderate esophagitis
+                2. GERD 
+                3. Peptic Ulcer Disease
+                4. Upper GI symptoms
+                5. ICU Stress Ulcer Prophylaxis
+                6. Barretts Esophagus
+                7. Chronic NSAID use with bleeding risk
+                8. Severe esophagitis
+                9. Documented history of bleeding GI ulcer
+                10. H pylori infection
+                11. Explain the reasoning for your answer
+                It is very important that you return the answer in JSON format. Each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 10.  For the final question, return a string with the reasoning for your answer."""
+                }
+            )
+            temp_json = llmAgent.extract_json_from_content(result["answer"])
         result_json = llmAgent.replace_underscores_in_keys(temp_json)
     
 

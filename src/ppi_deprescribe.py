@@ -1,3 +1,46 @@
+# Define the possible keys
+
+from fuzzywuzzy import process
+
+
+ppi_keys = [
+    "Barretts Esophagus",
+    "Chronic NSAID use with bleeding risk",
+    "Severe esophagitis",
+    "Documented history of bleeding GI ulcer",
+    "Mild to moderate esophagitis",
+    "GERD",
+    "Peptic Ulcer Disease",
+    "ICU Stress Ulcer Prophylaxis",
+    "H pylori infection",
+    "Reasoning"
+]
+
+
+def update_keys_with_fuzzy_matching(input_dict: dict, threshold: int = 80) -> dict:
+    """
+    Update the keys of the input dictionary using fuzzy matching against a list of possible keys.
+
+    Args:
+        input_dict (dict): The dictionary with keys to be updated.
+        possible_keys (list): A list of possible correct keys.
+        threshold (int): The similarity score threshold for matching.
+
+    Returns:
+        dict: A new dictionary with updated keys.
+    """
+    updated_dict = {}
+    for key, value in input_dict.items():
+        match, score = process.extractOne(key, ppi_keys)
+        if score >= threshold:
+            updated_dict[match] = value
+        else:
+            print('this key not in fuzzy:',key)
+            updated_dict[key] = value  # Keep the original key if no good match is found
+    return updated_dict
+
+
+
 def ppi_deprescribe(patient_diagnosis: dict):
     """Given a patient diagnosis dictionary, recommend that the PPI be continued, decreased at a lower dose, or stopped.
 
@@ -14,33 +57,33 @@ def ppi_deprescribe(patient_diagnosis: dict):
     recommendation = -1
 
     # check for continue PPI criteria
-    if patient_diagnosis["Barretts Esophagus"]:
+    if patient_diagnosis["Barretts Esophagus"] == 1:
         recommendation = 0
-    if patient_diagnosis["Chronic NSAID use with bleeding risk"]:
+    if patient_diagnosis["Chronic NSAID use with bleeding risk"] == 1:
         recommendation = 0
-    if patient_diagnosis["Severe esophagitis"]:
+    if patient_diagnosis["Severe esophagitis"] == 1:
         recommendation = 0
-    if patient_diagnosis["Documented history of bleeding GI ulcer"]:
+    if patient_diagnosis["Documented history of bleeding GI ulcer"] == 1:
         recommendation = 0
     if recommendation == 0:
         return recommendation_dict[recommendation]
 
     # Check for decrease but continue PPI criteria
-    if patient_diagnosis["Mild to moderate esophagitis"]:
+    if patient_diagnosis["Mild to moderate esophagitis"] == 1:
         recommendation = 1
-    if patient_diagnosis["GERD"]:
+    if patient_diagnosis["GERD"] == 1:
         recommendation = 1
     if recommendation == 1:
         return recommendation_dict[recommendation]
 
     # check for stop PPI criteria
-    if patient_diagnosis["Peptic Ulcer Disease"]:
+    if patient_diagnosis["Peptic Ulcer Disease"] == 1:
         recommendation = 2
-    if patient_diagnosis["Chronic NSAID use with bleeding risk"]:
+    if patient_diagnosis["Chronic NSAID use with bleeding risk"] == 1:
         recommendation = 2
-    if patient_diagnosis["ICU Stress Ulcer Prophylaxis"]:
+    if patient_diagnosis["ICU Stress Ulcer Prophylaxis"] == 1:
         recommendation = 2
-    if patient_diagnosis["H pylori infection"]:
+    if patient_diagnosis["H pylori infection"] == 1:
         recommendation = 2    
     if recommendation == 2:
         return recommendation_dict[recommendation]
@@ -54,16 +97,23 @@ def ppi_deprescribe(patient_diagnosis: dict):
 
 def merge_results(results_dict: dict):
     """ """
-    diagnosis_dict = results_dict["diagnosis_dict"]
-    encounter_dict = results_dict["encounter_dict"]
-    notes_dict = results_dict["notes_dict"]
+    diagnosis_dict = update_keys_with_fuzzy_matching(results_dict["diagnosis_dict"])
+    encounter_dict = update_keys_with_fuzzy_matching(results_dict["encounter_dict"])
+    notes_dict = update_keys_with_fuzzy_matching(results_dict["notes_dict"])
     final_dict = {}
-    for key in diagnosis_dict.keys():
-        if not key == "Reasoning":
-            diagnosis_bool = diagnosis_dict[key]
-            encounter_bool = encounter_dict[key]
-            notes_bool = notes_dict[key]
+        # Collect all unique keys from the three dictionaries
+    all_keys = set(diagnosis_dict.keys()).union(encounter_dict.keys(), notes_dict.keys())
 
+    for key in all_keys:
+        if key != "Reasoning":
+            # Use the get method to handle missing keys, defaulting to False
+            diagnosis_bool = diagnosis_dict.get(key, False)
+            encounter_bool = encounter_dict.get(key, False)
+            notes_bool = notes_dict.get(key, False)
+
+            # Set the final value to True if any of the values are True
             final_dict[key] = diagnosis_bool or encounter_bool or notes_bool
 
     return final_dict
+
+
