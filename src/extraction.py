@@ -50,8 +50,9 @@ class llmAgent:
         self.data_loader = DataLoader(data_path=data_path)
 
         # cascade of LLMs
-        llama_31 = "llama-3.1-70b-versatile"
-        self.llm = ChatGroq(temperature=0, model=llama_31, api_key=groq_key)
+        llama_31_70b = "llama-3.1-70b-versatile"
+        llama_32_90b = "llama-3.2-90b-vision-preview"
+        self.llm = ChatGroq(temperature=0, model=llama_31_70b, api_key=groq_key)
 
         # llama_tool_70 = "llama3-groq-70b-8192-tool-use-preview"
         # self.llm2 = ChatGroq(temperature=0, model=llama_tool_70, api_key=groq_key)
@@ -347,4 +348,6 @@ class llmAgent:
                 {notes_dict}"""
             }
         )
-        return chain_result.content, chain_result.response_metadata["token_usage"]["total_tokens"]
+        return chain_result.content, chain_result.response_metadata["token_usage"][
+            "total_tokens"
+        ]

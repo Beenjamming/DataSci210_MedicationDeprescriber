@@ -62,21 +62,23 @@ def main(
     # # #   get recommendation from PPI algorithm   # # #
     recommendation_str = ppi_deprescribe(patient_diagnosis=final_dict)
 
-    print("Recommendation: ")
-    print(recommendation_str)
-    print("\nReasoning: ")
-    print(final_reasoning)
-    print("\nTotal Token Count: ")
-    print(total_token_count)
+    # print("Recommendation: ")
+    # print(recommendation_str)
+    # print("\nReasoning: ")
+    # print(final_reasoning)
+    # print("\nTotal Token Count: ")
+    # print(total_token_count)
 
     # # #   Metrics   # # #
     # get a single row DataFrame of the key, explanation and recommendation
     # consider:
     #   the final recommendation_str (eval as a 3 class classification)
     #   the final reasoning (evaluate how reasonable the reasoning is)
-    label_df = llm_agent.data_loader.get_label_df(encounter_key=encounter_key)
-    print("\nLabel df: ")
-    print(label_df)
+    # label_df = llm_agent.data_loader.get_label_df(encounter_key=encounter_key)
+    # print("\nLabel df: ")
+    # print(label_df)
+
+    return recommendation_str, final_reasoning, total_token_count
 
 
 if __name__ == "__main__":
