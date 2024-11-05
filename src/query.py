@@ -121,6 +121,13 @@ class DataLoader:
             le_df[["key", "PtDischargeDate"]], left_on="EncounterKey", right_on="key"
         )
 
+           # Convert dates to datetime
+        notes["PtDischargeDate"] = pd.to_datetime(notes["PtDischargeDate"], errors="coerce")
+        notes["NoteDate"] = pd.to_datetime(notes["NoteDate"], errors="coerce")
+        
+        # Filter out notes that are after discharge date
+        notes = notes[notes["NoteDate"] <= notes["PtDischargeDate"]]
+
         selected_providers = [
             "Resident",
             "Physician",
