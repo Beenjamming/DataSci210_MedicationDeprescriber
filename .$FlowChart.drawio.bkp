@@ -1,9 +1,12 @@
-<mxfile host="Electron" modified="2024-10-27T00:21:17.354Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.2.8 Chrome/112.0.5615.165 Electron/24.2.0 Safari/537.36" etag="iwvjggPt6t9Z2umkHIf3" version="21.2.8" type="device">
+<mxfile host="Electron" modified="2024-09-29T18:00:25.021Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.2.8 Chrome/112.0.5615.165 Electron/24.2.0 Safari/537.36" etag="8EqV6pP5zU4cjXyqo0ml" version="21.2.8" type="device">
   <diagram name="Page-1" id="o1pNyUMXt51Jy2hAcI2T">
     <mxGraphModel dx="1372" dy="884" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="none" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="twgTgRhiu74E4TB79WNH-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="twgTgRhiu74E4TB79WNH-2" target="twgTgRhiu74E4TB79WNH-10" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="twgTgRhiu74E4TB79WNH-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.626;entryY=-0.033;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="twgTgRhiu74E4TB79WNH-2" target="twgTgRhiu74E4TB79WNH-3" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
@@ -55,13 +58,6 @@
         <mxCell id="twgTgRhiu74E4TB79WNH-15" value="" style="shape=mxgraph.signs.healthcare.out_patient;html=1;pointerEvents=1;fillColor=#000000;strokeColor=none;verticalLabelPosition=bottom;verticalAlign=top;align=center;sketch=0;" parent="1" vertex="1">
           <mxGeometry x="20" y="310.5" width="56" height="99" as="geometry" />
         </mxCell>
-        <mxCell id="Be5N21dMto-33u37-07n-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.4;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="twgTgRhiu74E4TB79WNH-21" target="twgTgRhiu74E4TB79WNH-2">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="433" y="54" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
         <mxCell id="twgTgRhiu74E4TB79WNH-21" value="Proton Pump Inhibitor" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=card;whiteSpace=wrap;size=20;arcSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
           <mxGeometry x="395" y="280.5" width="60" height="30" as="geometry" />
         </mxCell>
@@ -77,48 +73,80 @@
         <mxCell id="twgTgRhiu74E4TB79WNH-25" value="NA" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.terminator;whiteSpace=wrap;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
           <mxGeometry x="395" y="414" width="70" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="Be5N21dMto-33u37-07n-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="twgTgRhiu74E4TB79WNH-35" target="twgTgRhiu74E4TB79WNH-49">
+        <mxCell id="twgTgRhiu74E4TB79WNH-47" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="twgTgRhiu74E4TB79WNH-29" target="twgTgRhiu74E4TB79WNH-46" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="488" y="241" />
-              <mxPoint x="488" y="364" />
+              <mxPoint x="630" y="440" />
+              <mxPoint x="585" y="440" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="twgTgRhiu74E4TB79WNH-35" value="Pt Info JSON" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=hexagon;perimeter=hexagonPerimeter2;arcSize=6;size=0.27;rounded=0;" parent="1" vertex="1">
+        <mxCell id="twgTgRhiu74E4TB79WNH-29" value="Master Agent" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=process;whiteSpace=wrap;rounded=1;size=0.14;arcSize=6;" parent="1" vertex="1">
+          <mxGeometry x="620" y="320" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="twgTgRhiu74E4TB79WNH-43" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="twgTgRhiu74E4TB79WNH-35" target="twgTgRhiu74E4TB79WNH-29" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="600" y="240" />
+              <mxPoint x="600" y="350" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="twgTgRhiu74E4TB79WNH-35" value="Pt Info RAG" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=hexagon;perimeter=hexagonPerimeter2;arcSize=6;size=0.27;" parent="1" vertex="1">
           <mxGeometry x="522.5" y="221" width="70" height="39" as="geometry" />
         </mxCell>
-        <mxCell id="Be5N21dMto-33u37-07n-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="twgTgRhiu74E4TB79WNH-38" target="twgTgRhiu74E4TB79WNH-49">
+        <mxCell id="twgTgRhiu74E4TB79WNH-45" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="twgTgRhiu74E4TB79WNH-38" target="twgTgRhiu74E4TB79WNH-29" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="840" y="241" />
-              <mxPoint x="840" y="364" />
+              <mxPoint x="740" y="240" />
+              <mxPoint x="740" y="350" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="twgTgRhiu74E4TB79WNH-38" value="Notes RAG" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=hexagon;perimeter=hexagonPerimeter2;arcSize=6;size=0.27;" parent="1" vertex="1">
+        <mxCell id="twgTgRhiu74E4TB79WNH-38" value="Pt Info RAG" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=hexagon;perimeter=hexagonPerimeter2;arcSize=6;size=0.27;" parent="1" vertex="1">
           <mxGeometry x="750" y="221" width="70" height="39" as="geometry" />
         </mxCell>
-        <mxCell id="Be5N21dMto-33u37-07n-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="twgTgRhiu74E4TB79WNH-39" target="twgTgRhiu74E4TB79WNH-49">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="twgTgRhiu74E4TB79WNH-44" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="twgTgRhiu74E4TB79WNH-39" target="twgTgRhiu74E4TB79WNH-29" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="670" y="300" />
+              <mxPoint x="670" y="300" />
+            </Array>
+          </mxGeometry>
         </mxCell>
-        <mxCell id="twgTgRhiu74E4TB79WNH-39" value="Dx JSON" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=hexagon;perimeter=hexagonPerimeter2;arcSize=6;size=0.27;" parent="1" vertex="1">
+        <mxCell id="twgTgRhiu74E4TB79WNH-39" value="Pt Info RAG" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=hexagon;perimeter=hexagonPerimeter2;arcSize=6;size=0.27;" parent="1" vertex="1">
           <mxGeometry x="635" y="221" width="70" height="39" as="geometry" />
         </mxCell>
-        <mxCell id="Be5N21dMto-33u37-07n-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="twgTgRhiu74E4TB79WNH-49" target="twgTgRhiu74E4TB79WNH-55">
+        <mxCell id="twgTgRhiu74E4TB79WNH-50" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="twgTgRhiu74E4TB79WNH-46" target="twgTgRhiu74E4TB79WNH-49" edge="1">
           <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="twgTgRhiu74E4TB79WNH-46" value="Deprescribing Agents" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="535" y="500" width="100" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="twgTgRhiu74E4TB79WNH-54" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="twgTgRhiu74E4TB79WNH-49" target="twgTgRhiu74E4TB79WNH-29" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="850" y="440" />
+              <mxPoint x="710" y="440" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="twgTgRhiu74E4TB79WNH-49" value="Hard Coded Deprescribing Algorithim" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" parent="1" vertex="1">
-          <mxGeometry x="620" y="314" width="100" height="100" as="geometry" />
+          <mxGeometry x="800" y="500" width="100" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="Be5N21dMto-33u37-07n-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="twgTgRhiu74E4TB79WNH-55" target="twgTgRhiu74E4TB79WNH-56">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="twgTgRhiu74E4TB79WNH-52" value="" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;strokeWidth=2;shape=mxgraph.arrows2.arrow;dy=0.6;dx=40;notch=0;" parent="1" vertex="1">
+          <mxGeometry x="760" y="315" width="100" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="twgTgRhiu74E4TB79WNH-57" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="twgTgRhiu74E4TB79WNH-55" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1050" y="345" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="twgTgRhiu74E4TB79WNH-55" value="Recommendation Agent" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=process;whiteSpace=wrap;rounded=1;size=0.14;arcSize=6;" parent="1" vertex="1">
-          <mxGeometry x="620" y="458" width="100" height="60" as="geometry" />
+          <mxGeometry x="900" y="315" width="100" height="60" as="geometry" />
         </mxCell>
         <mxCell id="twgTgRhiu74E4TB79WNH-56" value="Final Rec" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.multi-document;whiteSpace=wrap;" parent="1" vertex="1">
-          <mxGeometry x="829" y="458" width="88" height="60" as="geometry" />
+          <mxGeometry x="1060" y="310.5" width="88" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
