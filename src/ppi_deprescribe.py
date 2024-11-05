@@ -56,34 +56,35 @@ def ppi_deprescribe(patient_diagnosis: dict):
     recommendation_dict = ["continue", "deprescribe", "stop"]
     recommendation = -1
 
+
     # check for continue PPI criteria
-    if patient_diagnosis["Barretts Esophagus"] == 1:
+    if patient_diagnosis["Barretts Esophagus"]:
         recommendation = 0
-    if patient_diagnosis["Chronic NSAID use with bleeding risk"] == 1:
+    if patient_diagnosis["Chronic NSAID use with bleeding risk"]:
         recommendation = 0
-    if patient_diagnosis["Severe esophagitis"] == 1:
+    if patient_diagnosis["Severe esophagitis"]:
         recommendation = 0
-    if patient_diagnosis["Documented history of bleeding GI ulcer"] == 1:
+    if patient_diagnosis["Documented history of bleeding GI ulcer"]:
         recommendation = 0
     if recommendation == 0:
         return recommendation_dict[recommendation]
 
     # Check for decrease but continue PPI criteria
-    if patient_diagnosis["Mild to moderate esophagitis"] == 1:
+    if patient_diagnosis["Mild to moderate esophagitis"]:
         recommendation = 1
-    if patient_diagnosis["GERD"] == 1:
+    if patient_diagnosis["GERD"]:
         recommendation = 1
     if recommendation == 1:
         return recommendation_dict[recommendation]
 
     # check for stop PPI criteria
-    if patient_diagnosis["Peptic Ulcer Disease"] == 1:
+    if patient_diagnosis["Peptic Ulcer Disease"]:
         recommendation = 2
-    if patient_diagnosis["Chronic NSAID use with bleeding risk"] == 1:
+    if patient_diagnosis["Chronic NSAID use with bleeding risk"]:
         recommendation = 2
-    if patient_diagnosis["ICU Stress Ulcer Prophylaxis"] == 1:
+    if patient_diagnosis["ICU Stress Ulcer Prophylaxis"]:
         recommendation = 2
-    if patient_diagnosis["H pylori infection"] == 1:
+    if patient_diagnosis["H pylori infection"]:
         recommendation = 2    
     if recommendation == 2:
         return recommendation_dict[recommendation]

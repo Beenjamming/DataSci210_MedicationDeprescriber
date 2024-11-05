@@ -1,26 +1,44 @@
 import json
 from pathlib import Path
 
+from langchain.output_parsers import PydanticOutputParser
+from langchain_community.document_loaders import DataFrameLoader
 from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain_core.prompts import ChatPromptTemplate
+from langchain_community.vectorstores import FAISS
+from langchain_core.prompts import ChatPromptTemplate, PromptTemplate
+from langchain_core.runnables import RunnablePassthrough
 from langchain_groq import ChatGroq
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from pydantic import BaseModel, Field
 
 from query import DataLoader
-
-from langchain_aws import ChatBedrock
-
-import ast
 
 embeddings = HuggingFaceEmbeddings(model_name="NeuML/pubmedbert-base-embeddings")
 text_splitter = RecursiveCharacterTextSplitter()
 
-example_json = """ {
-    "Condition 1": True,
-    "Condition 2": False,
-    "Condition 3": True,
-    "Reasoning": "This is just a reasoning example"
-} """
+
+class NoteResponse(BaseModel):
+    """Pydantic class for the diagnosis jsons."""
+
+    Mild_to_moderate_esophagitis: bool = Field(
+        description="Mild to moderate esophagitis"
+    )
+    GERD: bool = Field(description="GERD")
+    Peptic_Ulcer_Disease: bool = Field(description="Peptic Ulcer Disease")
+    Upper_GI_symptoms: bool = Field(description="Upper GI symptoms")
+    ICU_Stress_Ulcer_Prophylaxis: bool = Field(
+        description="ICU Stress Ulcer Prophylaxis"
+    )
+    Barretts_Esophagus: bool = Field(description="Barrett's Esophagus")
+    Chronic_NSAID_use_with_bleeding_risk: bool = Field(
+        description="Chronic NSAID use with bleeding risk"
+    )
+    Severe_esophagitis: bool = Field(description="Severe esophagitis")
+    Documented_history_of_bleeding_GI_ulcer: bool = Field(
+        description="Documented history of bleeding GI ulcer"
+    )
+    H_pylori_infection: bool = Field(description="H pylori infection")
+    Reasoning: str = Field(description="Explain the reasoning for your answer")
 
 
 class llmAgent:
@@ -31,20 +49,13 @@ class llmAgent:
         self.data_path = data_path
         self.data_loader = DataLoader(data_path=data_path)
 
-        #model = "llama-3.1-70b-versatile"
-        model = 'llama3-groq-70b-8192-tool-use-preview'
-        #br_model = 'mistral.mixtral-8x7b-instruct-v0:1'
-        #br_model = 'anthropic.claude-instant-v1'
-        #br_model = 'mistral.mistral-7b-instruct-v0:2'
-        br_model = 'meta.llama3-70b-instruct-v1:0'
-        #model = "llama-3.1-8b-instant"
-        # self.llm = ChatBedrock(
-        #     model_id=br_model,
-        #     model_kwargs=dict(temperature=0),
-        #     # other params...
-        # )
-        self.llm = ChatGroq(temperature=0, model=model, api_key=groq_key)
-    
+        # cascade of LLMs
+        llama_31 = "llama-3.1-70b-versatile"
+        self.llm = ChatGroq(temperature=0, model=llama_31, api_key=groq_key)
+
+        # llama_tool_70 = "llama3-groq-70b-8192-tool-use-preview"
+        # self.llm2 = ChatGroq(temperature=0, model=llama_tool_70, api_key=groq_key)
+
     @staticmethod
     def format_docs(docs):
         return "\n\n".join(doc.page_content for doc in docs)
@@ -52,39 +63,22 @@ class llmAgent:
     @staticmethod
     def extract_json_from_content(content):
         """ """
-        if isinstance(content, list):
-            print("listfound:",content)
-            if len(content) == 1:
-                content = content[0]
-            else:
-                print(content)
-                raise ValueError("Expected a single JSON object, but got multiple.")
         # Find the JSON part within the content
         start_index = content.find("{")
         end_index = content.rfind("}") + 1
         json_str = content[start_index:end_index]
-        # Sanitize the JSON string to remove special characters
-        #sanitized_json_str = ''.join(c for c in json_str if c.isprintable() and c not in ['\n', '\t', '\r'])
-
 
         # Parse the JSON string
-        try:
-            parsed_json = json.loads(json_str)
-        except:
-            print('json fail')
-            print(content)
-            print('json_str')
-            print(json_str)
-            raise ValueError("Failed to parse JSON string.")
+        parsed_json = json.loads(json_str)
 
         return parsed_json
-    
+
     @staticmethod
     def replace_underscores_in_keys(json_obj):
         if isinstance(json_obj, dict):
             new_obj = {}
             for key, value in json_obj.items():
-                new_key = key.replace('_', ' ')
+                new_key = key.replace("_", " ")
                 new_obj[new_key] = llmAgent.replace_underscores_in_keys(value)
             return new_obj
         elif isinstance(json_obj, list):
@@ -106,34 +100,62 @@ class llmAgent:
         hospitalAcquiredDx_json = diagnosis_data_dict["hospitalAcquiredDx"]
         presentOnAdmitDx_json = diagnosis_data_dict["presentOnAdmitDx"]
 
+        # pydantic parser
+        # parser = PydanticOutputParser(pydantic_object=NoteResponse)
+
         system = "You are a knowledgeable medical provider who specializes in medication management."
-        human = "{text}"
+        human = "{input}"
         prompt = ChatPromptTemplate.from_messages(
             [("system", system), ("human", human)]
         )
+        # prompt = PromptTemplate(
+        #     template="Answer the user query.\n{format_instructions}\nFormat your response as a json as directed.",
+        #     input_variables=[("system", system), ("human", human)],
+        #     partial_variables={"format_instructions": parser.get_format_instructions()},
+        # )
 
         chain = prompt | self.llm
-        response = chain.invoke(
-            {
-                "text": f"""Based on the information from this JSON information: {hospitalAcquiredDx_json}, {presentOnAdmitDx_json}, does the patient have any of the following:
-                    1. Mild to moderate esophagitis
-                    2. GERD 
-                    3. Peptic Ulcer Disease
-                    4. Upper GI symptoms
-                    5. ICU Stress Ulcer Prophylaxis
-                    6. Barretts Esophagus
-                    7. Chronic NSAID use with bleeding risk
-                    8. Severe esophagitis
-                    9. Documented history of bleeding GI ulcer
-                    10. H pylori infection
-                    11. Explain the reasoning for your answer with the key being 'Reasoning'
-                    Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 10.  
-                    For the final question, return a string with the reasoning for your answer. Here is an example of the correct format: {example_json}
 
+        # chain_result = chain.invoke(
+        #     {
+        #         "input": f"""Based on the information from this JSON information: {hospitalAcquiredDx_json}, {presentOnAdmitDx_json}, does the patient have any of the following:
+        #             1. Mild to moderate esophagitis
+        #             2. GERD
+        #             3. Peptic Ulcer Disease
+        #             4. Upper GI symptoms
+        #             5. ICU Stress Ulcer Prophylaxis
+        #             6. Barretts Esophagus
+        #             7. Chronic NSAID use with bleeding risk
+        #             8. Severe esophagitis
+        #             9. Documented history of bleeding GI ulcer
+        #             10. H pylori infection
+        #             11. Explain the reasoning for your answer with the key being 'Reasoning'
+        #             Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 10.  For the final question, return a string with the reasoning for your answer.
+        #             """
+        #     }
+        # )
+        chain_result = chain.invoke(
+            {
+                "input": f"""Based on the information from this JSON information: {hospitalAcquiredDx_json}, {presentOnAdmitDx_json}, does the patient have any of the following:
+                    Mild to moderate esophagitis
+                    GERD 
+                    Peptic Ulcer Disease
+                    Upper GI symptoms
+                    ICU Stress Ulcer Prophylaxis
+                    Barretts Esophagus
+                    Chronic NSAID use with bleeding risk
+                    Severe esophagitis
+                    Documented history of bleeding GI ulcer
+                    H pylori infection
+                    Explain the reasoning for your answer with the key being 'Reasoning'
+                    Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 10.  For the final question, return a string with the reasoning for your answer.
                     """
             }
         )
-        return llmAgent.extract_json_from_content(response.content) #, response.response_metadata['token_usage']['total_tokens']
+        return (
+            llmAgent.extract_json_from_content(chain_result.content),
+            chain_result.response_metadata["token_usage"]["total_tokens"],
+        )
 
     def extract_encounter_info(self, encounter_key: str):
         """
@@ -152,27 +174,46 @@ class llmAgent:
         )
 
         chain = prompt | self.llm
-        response = chain.invoke(
+        # chain_result = chain.invoke(
+        #     {
+        #         "text": f"""Based on the information from this JSON information: {encounters_json}, does the patient have any of the following:
+        #             1. Mild to moderate esophagitis
+        #             2. GERD
+        #             3. Peptic Ulcer Disease
+        #             4. Upper GI symptoms
+        #             5. ICU Stress Ulcer Prophylaxis
+        #             6. Barretts Esophagus
+        #             7. Chronic NSAID use with bleeding risk
+        #             8. Severe esophagitis
+        #             9. Documented history of bleeding GI ulcer
+        #             10. H pylori infection
+        #             11. Explain the reasoning for your answer with the key being 'Reasoning'
+        #             Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 10.  For the final question, return a string with the reasoning for your answer.
+        #             """
+        #     }
+        # )
+        chain_result = chain.invoke(
             {
                 "text": f"""Based on the information from this JSON information: {encounters_json}, does the patient have any of the following:
-                    1. Mild to moderate esophagitis
-                    2. GERD 
-                    3. Peptic Ulcer Disease
-                    4. Upper GI symptoms
-                    5. ICU Stress Ulcer Prophylaxis
-                    6. Barretts Esophagus
-                    7. Chronic NSAID use with bleeding risk
-                    8. Severe esophagitis
-                    9. Documented history of bleeding GI ulcer
-                    10. H pylori infection
-                    11. Explain the reasoning for your answer with the key being 'Reasoning'
-                    Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 10.  
-                    For the final question, return a string with the reasoning for your answer. Here is an example of the correct format: {example_json}
-
+                    Mild to moderate esophagitis
+                    GERD 
+                    Peptic Ulcer Disease
+                    Upper GI symptoms
+                    ICU Stress Ulcer Prophylaxis
+                    Barretts Esophagus
+                    Chronic NSAID use with bleeding risk
+                    Severe esophagitis
+                    Documented history of bleeding GI ulcer
+                    H pylori infection
+                    Explain the reasoning for your answer with the key being 'Reasoning'
+                    Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 10.  For the final question, return a string with the reasoning for your answer.
                     """
             }
         )
-        return llmAgent.extract_json_from_content(response.content) #, response.response_metadata['token_usage']['total_tokens']
+        return (
+            llmAgent.extract_json_from_content(chain_result.content),
+            chain_result.response_metadata["token_usage"]["total_tokens"],
+        )
 
     def extract_notes(self, encounter_key: str):
         """
@@ -180,8 +221,6 @@ class llmAgent:
 
         """
         noteText = self.data_loader.get_notes_data(encounter_key=encounter_key)
-
-        from langchain_community.document_loaders import DataFrameLoader
 
         loader = DataFrameLoader(
             data_frame=noteText,
@@ -191,74 +230,42 @@ class llmAgent:
 
         documents = loader.load_and_split()
 
-        from langchain_community.vectorstores import FAISS
-
         vector_store = FAISS.from_documents(documents, embeddings)
 
         retriever = vector_store.as_retriever(search_type="similarity", k=5)
 
-        from typing import List
-        from langchain.output_parsers import PydanticOutputParser
-        from langchain_core.prompts import PromptTemplate
-        from pydantic import BaseModel, Field
-        from langchain_core.output_parsers import StrOutputParser
-        from langchain_core.runnables import RunnablePassthrough
-        
-        class NoteResponse(BaseModel):
-            Mild_to_moderate_esophagitis: bool = Field(description="Mild to moderate esophagitis")
-            GERD: bool = Field(description="GERD")
-            Peptic_Ulcer_Disease: bool = Field(description="Peptic Ulcer Disease")
-            Upper_GI_symptoms: bool = Field(description="Upper GI symptoms")
-            ICU_Stress_Ulcer_Prophylaxis: bool = Field(description="ICU Stress Ulcer Prophylaxis")
-            Barretts_Esophagus: bool = Field(description="Barrett's Esophagus")
-            Chronic_NSAID_use_with_bleeding_risk: bool = Field(description="Chronic NSAID use with bleeding risk")
-            Severe_esophagitis: bool = Field(description="Severe esophagitis")
-            Documented_history_of_bleeding_GI_ulcer: bool = Field(description="Documented history of bleeding GI ulcer")
-            H_pylori_infection: bool = Field(description="H pylori infection")
-            Reasoning: str = Field(description="Explain the reasoning for your answer")
+        # Pydantic example
+        # You can add custom validation logic easily with Pydantic.
+        # @classmethod
+        # def validate_question(cls, value: str) -> str:
+        #     if not value.endswith("?"):
+        #         raise ValueError("Badly formed question!")
+        #     return value
 
-         # You can add custom validation logic easily with Pydantic.
-        @classmethod
-        def validate_question(cls, value: str) -> str:
-            if not value.endswith("?"):
-                raise ValueError("Badly formed question!")
-            return value
-        #parser = PydanticOutputParser(pydantic_object=NoteResponse)
+        # parser = PydanticOutputParser(pydantic_object=NoteResponse)
 
         system = "You are a knowledgeable medical provider who specializes in medication management. Given a list of diagnosis and some snippets from patients notes {context}, answer if the patient notes contain any of the diagnosis."
         parser = PydanticOutputParser(pydantic_object=NoteResponse)
         prompt = PromptTemplate(
-                template="Answer the user query.\n{format_instructions}\n{context}\n",
-                input_variables=[("system", system), ("human", "{input}")],
-                partial_variables={"format_instructions": parser.get_format_instructions()},
-            )
-        #prompt = ChatPromptTemplate.from_messages(
-        #    [("system", system), ("human", "{input}")]
-        #)
+            template="Answer the user query.\n{format_instructions}\n{context}\n",
+            input_variables=[("system", system), ("human", "{input}")],
+            partial_variables={"format_instructions": parser.get_format_instructions()},
+        )
 
-        # # #   Approach 2   # # #
-        
         rag_chain = (
             RunnablePassthrough.assign(
                 context=(lambda x: llmAgent.format_docs(x["context"]))
             )
             | prompt
             | self.llm
-            | StrOutputParser()
         )
 
-        #retrieve_docs = {
-        #    "context": retriever | (lambda x: llmAgent.format_docs(x)),
-        #    "input": RunnablePassthrough(),
-        #}
-        
         retrieve_docs = (lambda x: x["input"]) | retriever
         chain = RunnablePassthrough.assign(context=retrieve_docs).assign(
             answer=rag_chain
-        ) 
+        )
 
-
-        result = chain.invoke(
+        chain_result = chain.invoke(
             {
                 "input": """Based on the information from the note {context}, does the patient have any of the following:
               1. Mild to moderate esophagitis
@@ -277,39 +284,53 @@ class llmAgent:
         )
 
         # resulting json output
-        try:
-            temp_json = llmAgent.extract_json_from_content(result["answer"])
-        except:
-            print('json try #2')
-            result = chain.invoke(
-                {
-                    "input": """Based on the information from the note {context}, does the patient have any of the following:
-                1. Mild to moderate esophagitis
-                2. GERD 
-                3. Peptic Ulcer Disease
-                4. Upper GI symptoms
-                5. ICU Stress Ulcer Prophylaxis
-                6. Barretts Esophagus
-                7. Chronic NSAID use with bleeding risk
-                8. Severe esophagitis
-                9. Documented history of bleeding GI ulcer
-                10. H pylori infection
-                11. Explain the reasoning for your answer
-                It is very important that you return the answer in JSON format. Each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 10.  For the final question, return a string with the reasoning for your answer."""
-                }
-            )
-            temp_json = llmAgent.extract_json_from_content(result["answer"])
+        # try:
+        temp_json = llmAgent.extract_json_from_content(chain_result["answer"].content)
+        # temp_json = llmAgent.extract_json_from_content(StrOutputParser(result))
+        # except:
+        #    rag_chain = (
+        #    RunnablePassthrough.assign(
+        #        context=(lambda x: llmAgent.format_docs(x["context"]))
+        #    )
+        #    | prompt
+        #    | self.llm2
+        #    | StrOutputParser()
+        #    )
+        #    result = chain.invoke(
+        #        {
+        #            "input": """Based on the information from the note context, does the patient have any of the following:
+        #        1. Mild to moderate esophagitis
+        #        2. GERD
+        #        3. Peptic Ulcer Disease
+        #        4. Upper GI symptoms
+        #        5. ICU Stress Ulcer Prophylaxis
+        #        6. Barretts Esophagus
+        #        7. Chronic NSAID use with bleeding risk
+        #        8. Severe esophagitis
+        #        9. Documented history of bleeding GI ulcer
+        #        10. H pylori infection
+        #        11. Explain the reasoning for your answer with the key being 'Reasoning'
+        #        Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 10.  For the final question, return a string with the reasoning for your answer.
+        #
+        #           """
+        #        }
+        #        )
+        # temp_json = llmAgent.extract_json_from_content(result["answer"])
         result_json = llmAgent.replace_underscores_in_keys(temp_json)
-    
 
-        return result_json #, result.response_metadata['token_usage']['total_tokens']
-    
+        # returning the pydantic json and token count (int)
+        return (
+            result_json,
+            chain_result["answer"].response_metadata["token_usage"]["total_tokens"],
+            chain_result["context"],
+        )
+
     def summarize_reasonings(self, results_dict):
         """Summarize the reasonings from the three sources."""
         diagnosis_dict = results_dict["diagnosis_dict"]
         encounter_dict = results_dict["encounter_dict"]
         notes_dict = results_dict["notes_dict"]
-        
+
         system = "You are a knowledgeable medical provider who specializes in medication management."
         human = "{text}"
         prompt = ChatPromptTemplate.from_messages(
@@ -317,7 +338,7 @@ class llmAgent:
         )
 
         chain = prompt | self.llm
-        response = chain.invoke(
+        chain_result = chain.invoke(
             {
                 "text": f"""Based on the following json files, please provide a single explanation of the reasoning given by the 'Reasoning' key. Summarize given equal 
                 weight to each. Do not add any additional information, only summarize what is given.
@@ -326,4 +347,92 @@ class llmAgent:
                 {notes_dict}"""
             }
         )
-        return response.content
+        return chain_result.content, chain_result.response_metadata["token_usage"]["total_tokens"]
+    
+    
+    def extract_notes_individual(self, encounter_key: str):
+        """
+        Extraction Agent/Step 3 - Individual Processing
+        Processes each diagnosis separately through the RAG chain for more focused analysis
+        """
+        noteText = self.data_loader.get_notes_data(encounter_key=encounter_key)
+        
+        loader = DataFrameLoader(
+            data_frame=noteText,
+            page_content_column="NoteText",
+            engine="pandas",
+        )
+        
+        documents = loader.load_and_split()
+        vector_store = FAISS.from_documents(documents, embeddings)
+        retriever = vector_store.as_retriever(search_type="similarity", k=5)
+        
+        # Define the diagnoses to check
+        diagnoses = {
+            # "Mild_to_moderate_esophagitis": "Mild to moderate esophagitis",
+            # "GERD": "GERD",
+            # "Peptic_Ulcer_Disease": "Peptic Ulcer Disease",
+            # "Upper_GI_symptoms": "Upper GI symptoms",
+            "ICU_Stress_Ulcer_Prophylaxis": "ICU Stress Ulcer Prophylaxis",
+            # "Barretts_Esophagus": "Barrett's Esophagus",
+            # "Chronic_NSAID_use_with_bleeding_risk": "Chronic NSAID use with bleeding risk",
+            # "Severe_esophagitis": "Severe esophagitis",
+            # "Documented_history_of_bleeding_GI_ulcer": "Documented history of bleeding GI ulcer",
+            # "H_pylori_infection": "H pylori infection"
+        }
+        
+        system = """You are a knowledgeable medical provider who specializes in medication management. 
+        Given the patient notes {context}, determine if there is evidence of the specific condition."""
+        
+        prompt = ChatPromptTemplate.from_messages([
+            ("system", system),
+            ("human", "Based on the provided notes, is there evidence of {condition}? Respond with a simple 'yes' or 'no', followed by a brief explanation.")
+        ])
+        
+        rag_chain = (
+            RunnablePassthrough.assign(
+                context=(lambda x: llmAgent.format_docs(x["context"]))
+            )
+            | prompt
+            | self.llm
+        )
+        
+        retrieve_docs = (lambda x: x["input"]) | retriever
+        chain = RunnablePassthrough.assign(context=retrieve_docs).assign(
+            answer=rag_chain
+        )
+        
+        results = {}
+        relevant_contexts = {}  # Store contexts only for positive findings
+        
+        # Process each diagnosis individually
+        for key, condition in diagnoses.items():
+            print(condition)
+            chain_result = chain.invoke({
+                "input": condition,
+                "condition": condition
+            })
+            
+                    # Parse response to boolean by checking if "yes" appears in the response
+            response = chain_result["answer"].content.strip().lower()
+            print(response)
+            results[key] = "yes" in response
+            
+            is_positive = "yes" in response
+            results[key] = is_positive
+            
+            # If condition is found, store the supporting contexts
+            if is_positive:
+                relevant_contexts[key] = chain_result["context"]
+
+                    # Print the formatted prompt
+            formatted_prompt = prompt.format(
+                context=llmAgent.format_docs(chain_result["context"]),
+                condition=condition
+            )
+            print("\nComplete Prompt:")
+            print(formatted_prompt)
+
+        return results, relevant_contexts
+        
+       
