@@ -369,16 +369,16 @@ class llmAgent:
         
         # Define the diagnoses to check
         diagnoses = {
-            # "Mild_to_moderate_esophagitis": "Mild to moderate esophagitis",
-            # "GERD": "GERD",
-            # "Peptic_Ulcer_Disease": "Peptic Ulcer Disease",
-            # "Upper_GI_symptoms": "Upper GI symptoms",
+            "Mild_to_moderate_esophagitis": "Mild to moderate esophagitis",
+            "GERD": "GERD",
+            "Peptic_Ulcer_Disease": "Peptic Ulcer Disease",
+            "Upper_GI_symptoms": "Upper GI symptoms",
             "ICU_Stress_Ulcer_Prophylaxis": "ICU Stress Ulcer Prophylaxis",
-            # "Barretts_Esophagus": "Barrett's Esophagus",
-            # "Chronic_NSAID_use_with_bleeding_risk": "Chronic NSAID use with bleeding risk",
-            # "Severe_esophagitis": "Severe esophagitis",
-            # "Documented_history_of_bleeding_GI_ulcer": "Documented history of bleeding GI ulcer",
-            # "H_pylori_infection": "H pylori infection"
+            "Barretts_Esophagus": "Barrett's Esophagus",
+            "Chronic_NSAID_use_with_bleeding_risk": "Chronic NSAID use with bleeding risk",
+            "Severe_esophagitis": "Severe esophagitis",
+            "Documented_history_of_bleeding_GI_ulcer": "Documented history of bleeding GI ulcer",
+            "H_pylori_infection": "H pylori infection"
         }
         
         system = """You are a knowledgeable medical provider who specializes in medication management. 
