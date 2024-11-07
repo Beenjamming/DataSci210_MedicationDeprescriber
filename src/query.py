@@ -10,6 +10,13 @@ class DataLoader:
     def __init__(self, data_path: Path) -> None:
         self.data_path = data_path
 
+    death_encs = ['D671A9D60DED51', 'D1A8A0B77B70E0', 'DC3EF907D114BE', 'DCC9687AF26987', 'D1FE26FC370FFC', 'D009F2D78A0374', 'D6B0465FB6D347', 
+                  'D9BC589B1471E4', 'DE95D7D457CFE2', 'D45728A2EFD315', 'DE9B248630A783', 'D888D223470633', 'DD52E983718FAC', 'D74984AD1716DE', 
+                  'D3B195924276E0', 'D7499004435440', 'D4327278A34F23', 'D5A4459EC3D5A3', 'D5207C914A3189', 'D03F292AFD16BA', 'DC5430B22637DD', 
+                  'DE53DA13107A5B', 'D304C167A23716', 'D92F213A1469C9', 'D41B6D4C4712DE', 'DB3584A13B7E03', 'DA1B298F51163A', 'DC319B5B67AC57', 
+                  'DFC887F7797FED', 'DDC353DAD2BD34', 'D3E47A655F3331', 'D1AD6B5B14FB21', 'D5A348477BA458', 'DC2966E64CC1D6', 'D8017C77BA15FA', 
+                  'D22E2C0CC95593', 'D2F2263CF3CB22']
+
     def get_data(self, encounter_key: str) -> dict:
         """Load and return all data."""
         noteConcepts = pd.read_csv(self.data_path / "noteConcepts.txt", sep="|")
@@ -32,6 +39,10 @@ class DataLoader:
         presentOnAdmitDx = presentOnAdmitDx[
             presentOnAdmitDx["EncounterKey"] == encounter_key
         ]
+
+        #filter all the death encounters out of the data
+        if encounter_key in DataLoader.death_encs:
+            return None
 
         data_dict = {
             "noteConcepts": noteConcepts,
@@ -69,6 +80,9 @@ class DataLoader:
             "hospitalAcquiredDx": hospitalAcquiredDx_json,
             "presentOnAdmitDx": presentOnAdmitDx_json,
         }
+        #exclude all death encounters
+        if encounter_key in DataLoader.death_encs:
+            return None
 
         return data_dict
 
@@ -80,6 +94,10 @@ class DataLoader:
         encounters = encounters[encounters["EncounterKey"] == encounter_key]
 
         encounters_json = encounters.to_json(orient="records")
+
+        #exclude all death encounters
+        if encounter_key in DataLoader.death_encs:
+            return None
 
         return encounters_json
 
@@ -168,6 +186,9 @@ class DataLoader:
             rm_notes.to_csv(
                 self.data_path / "removed_discharged_notes.csv", index=False
             )
+        #exclude all death encounters
+        if encounter_key in DataLoader.death_encs:
+            return None
 
         notes = notes[notes["EncounterKey"] == encounter_key]
 
