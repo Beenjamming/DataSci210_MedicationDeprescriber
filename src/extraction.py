@@ -381,12 +381,12 @@ class llmAgent:
             "H_pylori_infection": "H pylori infection"
         }
         
-        system = """You are a knowledgeable medical provider who specializes in medication management. 
-        Given the patient notes {context}, determine if there is evidence of the specific condition."""
+        system = """You are a knowledgeable medical provider who specializes in medication management. In the following case, your patient is prescribed a PPI (proton pump inhibitor) and need to make a decisions to continue, reduce, or stop the PPI.
+        Given the patient notes <notes> {context} </notes>, determine if there is evidence of the specific condition which will help determine whether to continue, reduce, or stop the medication on discharge. """
         
         prompt = ChatPromptTemplate.from_messages([
             ("system", system),
-            ("human", "Based on the provided notes, is there evidence of {condition}? Respond with a simple 'yes' or 'no', followed by a brief explanation.")
+            ("human", "Based on the provided notes, is there evidence of {condition}? Do NOT assume a condition based on prescribed medication. We know all of these patients are prescribed a ppi, but we need to know why. Be very sure of a diagnosis. Respond with a simple 'yes' or 'no', followed by a brief explanation.")
         ])
         
         rag_chain = (
@@ -430,8 +430,8 @@ class llmAgent:
                 context=llmAgent.format_docs(chain_result["context"]),
                 condition=condition
             )
-            print("\nComplete Prompt:")
-            print(formatted_prompt)
+            #print("\nComplete Prompt:")
+            #print(formatted_prompt)
 
         return results, relevant_contexts
         
