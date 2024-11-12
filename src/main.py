@@ -1,7 +1,6 @@
 from pathlib import Path
 
 from extraction import llmAgent
-from ppi_deprescribe import merge_results, ppi_deprescribe
 
 """
 Iterate through diagnosis individually, break up the ppi deprescribing algorithm to handle
@@ -71,31 +70,41 @@ def main(
     # track the number of tokens used
     token_usage = 0
     final_bool = False
-    diagnosis_dict_list = []
+    diagnosis_dict_dict = {}
     # Loop over recommendations in their order
     # if none exits recommend "deprescribe"
-    for recomendation_str, diagnosis_list in recommendation_dict.items():
+    for recommendation_str, diagnosis_list in recommendation_dict.items():
         # iterate through diagnosis
         for diagnosis_str in diagnosis_list:
-            
             diagnosis_dict = llm_agent.search(
                 encounter_key=encounter_key, diagnosis=diagnosis_str
             )
-            diagnosis_dict_list.append(diagnosis_dict)
+            diagnosis_dict_dict[diagnosis_str] = diagnosis_dict
             # track token usage
             # TODO? track each search individually
             # token_usage += token_count
-            
+
             # # #   master formatter step   # # #
             # merge the diagnosis booleans (just use OR logic for now)
-            # make a final "reasoning" behind the recommendation
-            # final_dict = merge_results(results_dict=results_dict)
-            # # logic to reconcile if the diagnosis was found or not
-            final_bool = (
-                diagnosis_dict["diagnosis"]["diagnosis_boolean"]
-                or diagnosis_dict["encounters"]["diagnosis_boolean"]
-                or diagnosis_dict["notes"]["diagnosis_boolean"]
-            )
+            diagnosis_bool_str = diagnosis_dict["diagnosis"]["diagnosis_boolean"]
+            if diagnosis_bool_str in ["True", "true"]:
+                diagnosis_bool = True
+            elif diagnosis_bool_str in ["False", "false"]:
+                diagnosis_bool = False
+
+            encounters_bool_str = diagnosis_dict["encounters"]["diagnosis_boolean"]
+            if encounters_bool_str in ["True", "true"]:
+                encounters_bool = True
+            elif encounters_bool_str in ["False", "false"]:
+                encounters_bool = False
+
+            notes_bool_str = diagnosis_dict["notes"]["diagnosis_boolean"]
+            if notes_bool_str in ["True", "true"]:
+                notes_bool = True
+            elif notes_bool_str in ["False", "false"]:
+                notes_bool = False
+
+            final_bool = diagnosis_bool or encounters_bool or notes_bool
 
             # break out of the loop over the diagnosis list
             if final_bool:
@@ -104,13 +113,12 @@ def main(
         if final_bool:
             break
 
-    # if it never exits early then recommendation_str should still be "deprescribe"
-    
-    # TODO we need to provide a summary of the explanations in diagnosis_dict_list
-    # feed the three reasonings to LLM to get a single summary
-    # final_reasoning, reasoning_summary_token_count = llm_agent.summarize_reasonings(
-    #     results_dict=results_dict
-    # )
+    # NOTE: if it never exits early then recommendation_str should still be "deprescribe"
+
+    # summary of explanation
+    final_reasoning, token_count = llm_agent.summarize_reasonings(
+        recommendation_str=recommendation_str, diagnosis_dict_dict=diagnosis_dict_dict
+    )
 
     # TODO figure out how to get the token counts easily
     # count tokens used by LLM queries
@@ -121,9 +129,6 @@ def main(
     #     + reasoning_summary_token_count
     # )
 
-    # # #   get recommendation from PPI algorithm   # # #
-    recommendation_str = ppi_deprescribe(patient_diagnosis=final_dict)
-
     # print("Recommendation: ")
     # print(recommendation_str)
     # print("\nReasoning: ")
@@ -131,16 +136,7 @@ def main(
     # print("\nTotal Token Count: ")
     # print(total_token_count)
 
-    # # #   Metrics   # # #
-    # get a single row DataFrame of the key, explanation and recommendation
-    # consider:
-    #   the final recommendation_str (eval as a 3 class classification)
-    #   the final reasoning (evaluate how reasonable the reasoning is)
-    # label_df = llm_agent.data_loader.get_label_df(encounter_key=encounter_key)
-    # print("\nLabel df: ")
-    # print(label_df)
-
-    return recommendation_str, final_reasoning, total_token_count
+    return recommendation_str, final_reasoning  # , total_token_count
 
 
 if __name__ == "__main__":
