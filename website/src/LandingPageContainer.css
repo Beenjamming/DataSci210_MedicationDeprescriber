@@ -1,0 +1,10 @@
+.custom-type-animation-cursor::after {
+    content: "|";
+    animation: cursor-blink 1s infinite step-start;
+  }
+
+  @keyframes cursor-blink {
+    50% {
+      opacity: 0;
+    }
+  }

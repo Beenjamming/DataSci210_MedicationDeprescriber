@@ -1,7 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { patientData, PatientName } from "./patientData";
 import { Grid2 as Grid } from "@mui/material";
-import Card from "@mui/material/Card";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import InfoIcon from "@mui/icons-material/Info";
@@ -17,30 +16,76 @@ interface PatientSummaryProps {
 export default function PatientSummary(props: PatientSummaryProps) {
   const { summary_visit, current_diagnoses, past_diagnoses, medications } =
     patientData[props.patient];
+
   return (
-    <Grid container spacing={1}>
+    <Grid container spacing={2}>
       <Grid size={12}>
-        <Box>
-          <Card variant="outlined" sx={{ p: 2 }}>
-            <Typography variant="h5" textAlign="center">
+        <Box
+          sx={{
+            borderRadius: "16px",
+            borderLeft: "6px solid #b6e0ff",
+            bgcolor: "#f9f9f9",
+            mb: 1,
+            boxShadow: 3,
+          }}
+        >
+          <Box
+            sx={{
+              display: "inline-block",
+              px: 1,
+              py: 0.5,
+              borderRadius: "16px 0px 16px 0",
+              bgcolor: "#b6e0ff",
+              color: "#007bff",
+              mb: 1,
+              position: "relative",
+              left: "-6px",
+              top: 0,
+            }}
+          >
+            <Typography variant="h5" textAlign="left" color="#0055b0">
               <b>Visit Summary</b>
             </Typography>
-            <Typography color="black">
+          </Box>
+          <Box sx={{ p: 1, mt: 0 }}>
+            <Typography color="black" sx={{ mt: 1 }}>
               <b>Admission Date:</b> {summary_visit["AdmissionDate"]}
-              <br></br>
+              <br />
               <b>Visit Reason:</b> {summary_visit["visit_reason"]}
-              <br></br>
-              <b>Summary: </b>
-              {summary_visit["AdmissionSummary"]}
+              <br />
+              <b>Summary:</b> {summary_visit["AdmissionSummary"]}
             </Typography>
-          </Card>
+          </Box>
         </Box>
       </Grid>
+
       <Grid size={6}>
-        <Box sx={{ p: 2, bgcolor: "white" }}>
-          <Typography variant="h6" textAlign="center" color="black">
-            <b>Current Diagnoses</b>
-          </Typography>
+        <Box
+          sx={{
+            p: 2,
+            borderRadius: "16px",
+            border: "2px solid #e0f7fa",
+            bgcolor: "#ffffff",
+          }}
+        >
+          <Box
+            sx={{
+              display: "inline-block",
+              px: 2,
+              py: 0.5,
+              borderRadius: "50px",
+              bgcolor: "#e0f7fa",
+              color: "#006064",
+              mb: 1,
+              position: "relative",
+              left: 0,
+              top: 0,
+            }}
+          >
+            <Typography variant="h6" textAlign="left">
+              Current Diagnoses
+            </Typography>
+          </Box>
           <List>
             {current_diagnoses.map((diagnosis, index) => (
               <div key={index}>
@@ -48,7 +93,7 @@ export default function PatientSummary(props: PatientSummaryProps) {
                   <ListItemText
                     primary={diagnosis.condition}
                     secondary={`Diagnosed On: ${diagnosis.diagnosed_on}`}
-                    sx={{ color: "Black" }}
+                    sx={{ color: "black" }}
                   />
                   <Tooltip title={diagnosis.treatment} placement="top">
                     <IconButton>
@@ -62,11 +107,34 @@ export default function PatientSummary(props: PatientSummaryProps) {
           </List>
         </Box>
       </Grid>
+
       <Grid size={6}>
-        <Box sx={{ p: 2, bgcolor: "white" }}>
-          <Typography variant="h6" textAlign="center" color="black">
-            <b>Past Diagnoses</b>
-          </Typography>
+        <Box
+          sx={{
+            p: 2,
+            borderRadius: "16px",
+            border: "2px solid #ffecb3",
+            bgcolor: "#ffffff",
+          }}
+        >
+          <Box
+            sx={{
+              display: "inline-block",
+              px: 2,
+              py: 0.5,
+              borderRadius: "50px",
+              bgcolor: "#ffecb3",
+              color: "#ff8f00",
+              mb: 1,
+              position: "relative",
+              left: 0,
+              top: 0,
+            }}
+          >
+            <Typography variant="h6" textAlign="left">
+              Past Diagnoses
+            </Typography>
+          </Box>
           <List>
             {past_diagnoses.map((diagnosis, index) => (
               <div key={index}>
@@ -74,7 +142,7 @@ export default function PatientSummary(props: PatientSummaryProps) {
                   <ListItemText
                     primary={diagnosis.condition}
                     secondary={`Diagnosed On: ${diagnosis.diagnosed_on}`}
-                    sx={{ color: "Black" }}
+                    sx={{ color: "black" }}
                   />
                   <Tooltip title={diagnosis.treatment} placement="top">
                     <IconButton>
@@ -88,11 +156,35 @@ export default function PatientSummary(props: PatientSummaryProps) {
           </List>
         </Box>
       </Grid>
+
       <Grid size={12}>
-        <Box sx={{ p: 2, bgcolor: "white" }}>
-          <Typography variant="h6" textAlign="center" color="black">
-            <b>Current Medication</b>
-          </Typography>
+        <Box
+          sx={{
+            p: 2,
+            borderRadius: "16px",
+            border: "2px solid #c8e6c9",
+            bgcolor: "#ffffff",
+            mt: 1,
+          }}
+        >
+          <Box
+            sx={{
+              display: "inline-block",
+              px: 2,
+              py: 0.5,
+              borderRadius: "50px",
+              bgcolor: "#c8e6c9",
+              color: "#388e3c",
+              mb: 1,
+              position: "relative",
+              left: 0,
+              top: 0,
+            }}
+          >
+            <Typography variant="h6" textAlign="left">
+              Current Medication
+            </Typography>
+          </Box>
           <List sx={{ maxHeight: 300, overflow: "auto", bgcolor: "white" }}>
             {medications.map((medication, index) => (
               <div key={index}>
@@ -100,7 +192,7 @@ export default function PatientSummary(props: PatientSummaryProps) {
                   <ListItemText
                     primary={medication.name}
                     secondary={`Dosage: ${medication.dosage}`}
-                    sx={{ color: "Black" }}
+                    sx={{ color: "black" }}
                   />
                   <Tooltip title={medication.reason} placement="top">
                     <IconButton>
@@ -108,7 +200,7 @@ export default function PatientSummary(props: PatientSummaryProps) {
                     </IconButton>
                   </Tooltip>
                 </ListItem>
-                {index < past_diagnoses.length - 1 && <Divider />}
+                {index < medications.length - 1 && <Divider />}
               </div>
             ))}
           </List>

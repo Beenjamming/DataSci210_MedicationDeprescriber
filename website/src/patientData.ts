@@ -1,4 +1,4 @@
-import donald from "./assets/donald_duck.json";
+import donny from "./assets/patient_json/donny_dunlap.json";
 
 interface Diagnosis {
   condition: string;
@@ -48,6 +48,7 @@ interface Patient {
   name: string;
   age: number;
   gender: string;
+  race: string;
   summary_visit: SummaryVisit;
   current_diagnoses: Diagnosis[];
   past_diagnoses: Diagnosis[];
@@ -56,8 +57,16 @@ interface Patient {
   medication_orders: Orders[];
 }
 
-export type PatientName = "Donald" | "Mickey";
+export type PatientName =
+  | "Donny Dunlap"
+  | "Drew Buck"
+  | "Melinda Scott"
+  | "Shelton Park"
+  | "Sydney Byrd";
 export const patientData: Record<PatientName, Patient> = {
-  Mickey: donald,
-  Donald: donald,
+  "Donny Dunlap": donny,
+  "Drew Buck": donny,
+  "Melinda Scott": donny,
+  "Shelton Park": donny,
+  "Sydney Byrd": donny,
 };

@@ -15,10 +15,17 @@ import LandingPageContainer from "./LandingPageContainer.tsx";
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#1f7a8c",
+      main: "#12737D", // Teal Blue
     },
     secondary: {
-      main: "#8c1f7a",
+      main: "#29C3CC", // Bright Aqua
+    },
+    background: {
+      default: "#D6F0E0", // Light Seafoam for background
+      paper: "#6F8F79", // Muted Forest Green for boxes
+    },
+    text: {
+      primary: "#2E3D46", // Deep Blue Gray for text
     },
   },
   typography: {
@@ -30,7 +37,8 @@ const BASE_PATH = "/DataSci210_MedicationDeprescriber/";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path={BASE_PATH} element={<App />}>
-      <Route path={BASE_PATH} element={<LandingPageContainer />} />
+      <Route index element={<LandingPageContainer />} />
+      {/* <Route path={BASE_PATH} element={<LandingPageContainer />} /> */}
       <Route path={`${BASE_PATH}Demo`} element={<Demo />} />
     </Route>,
   ),
