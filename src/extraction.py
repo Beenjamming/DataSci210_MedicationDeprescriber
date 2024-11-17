@@ -10,6 +10,10 @@ from langchain_core.runnables import RunnablePassthrough
 from langchain_groq import ChatGroq
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from pydantic import BaseModel, Field
+import time
+from botocore.exceptions import ClientError
+
+from langchain_aws import ChatBedrock
 
 from query import DataLoader
 
@@ -51,10 +55,32 @@ class llmAgent:
 
         # cascade of LLMs
         llama_31 = "llama-3.1-70b-versatile"
-        self.llm = ChatGroq(temperature=0, model=llama_31, api_key=groq_key)
+        #model = "llama-3.1-70b-versatile"
+        model = 'meta.llama3-70b-instruct-v1:0'
+        #self.llm = ChatGroq(temperature=0, model=llama_31, api_key=groq_key)
+
+        self.llm = ChatBedrock(
+            model_id=model,
+            model_kwargs=dict(temperature=0),
+            # other params...
+        )
 
         # llama_tool_70 = "llama3-groq-70b-8192-tool-use-preview"
         # self.llm2 = ChatGroq(temperature=0, model=llama_tool_70, api_key=groq_key)
+    def set_encounter_key(self, encounter_key: str):
+        self.encounter_key=encounter_key
+    
+    def set_retriever(self):
+        noteText = self.data_loader.get_notes_data(encounter_key=self.encounter_key)
+        
+        loader = DataFrameLoader(
+            data_frame=noteText,
+            page_content_column="NoteText",
+            engine="pandas",
+        )
+        documents = loader.load_and_split()
+        vector_store = FAISS.from_documents(documents, embeddings)
+        self.retriever = vector_store.as_retriever(search_type="similarity", k=5)
 
     @staticmethod
     def format_docs(docs):
@@ -348,6 +374,20 @@ class llmAgent:
             }
         )
         return chain_result.content, chain_result.response_metadata["token_usage"]["total_tokens"]
+
+    def invoke_with_retry(self, chain, input_data, max_retries=5):
+        """Invoke the chain with a retry mechanism for throttling errors."""
+        for attempt in range(max_retries):
+            try:
+                return chain.invoke(input_data)
+            except ClientError as e:
+                if e.response['Error']['Code'] == 'ThrottlingException':
+                    wait_time = 2 ** attempt  # Exponential backoff
+                    print(f"ThrottlingException encountered. Waiting for {wait_time} seconds before retrying...")
+                    time.sleep(wait_time)
+                else:
+                    raise  # Re-raise if it's not a throttling error
+        raise Exception("Max retries exceeded for invoking the model.")
     
     
     def extract_notes_individual(self, encounter_key: str):
@@ -355,30 +395,25 @@ class llmAgent:
         Extraction Agent/Step 3 - Individual Processing
         Processes each diagnosis separately through the RAG chain for more focused analysis
         """
-        noteText = self.data_loader.get_notes_data(encounter_key=encounter_key)
+
         
-        loader = DataFrameLoader(
-            data_frame=noteText,
-            page_content_column="NoteText",
-            engine="pandas",
-        )
-        
-        documents = loader.load_and_split()
-        vector_store = FAISS.from_documents(documents, embeddings)
-        retriever = vector_store.as_retriever(search_type="similarity", k=5)
+
         
         # Define the diagnoses to check
         diagnoses = {
-            "Mild_to_moderate_esophagitis": "Mild to moderate esophagitis",
-            "GERD": "GERD",
-            "Peptic_Ulcer_Disease": "Peptic Ulcer Disease",
-            "Upper_GI_symptoms": "Upper GI symptoms",
-            "ICU_Stress_Ulcer_Prophylaxis": "ICU Stress Ulcer Prophylaxis",
-            "Barretts_Esophagus": "Barrett's Esophagus",
-            "Chronic_NSAID_use_with_bleeding_risk": "Chronic NSAID use with bleeding risk",
-            "Severe_esophagitis": "Severe esophagitis",
-            "Documented_history_of_bleeding_GI_ulcer": "Documented history of bleeding GI ulcer",
-            "H_pylori_infection": "H pylori infection"
+            # "Mild_to_moderate_esophagitis": "Mild to moderate esophagitis",
+            # "GERD": "GERD",
+            "continue": {"Barretts_Esophagus": "Barrett's Esophagus",
+                "Chronic_NSAID_use_with_bleeding_risk": "Chronic NSAID use with bleeding risk",
+                "Severe_esophagitis": "Severe esophagitis",
+                "Documented_history_of_bleeding_GI_ulcer": "Documented history of bleeding GI ulcer"
+                },
+            "stop": {
+                "Peptic_Ulcer_Disease": "Peptic Ulcer Disease",
+                "Upper_GI_symptoms": "Upper GI symptoms",
+                "ICU_Stress_Ulcer_Prophylaxis": "ICU Stress Ulcer Prophylaxis",
+                "H_pylori_infection": "H pylori infection"
+                }
         }
         
         system = """You are a knowledgeable medical provider who specializes in medication management. In the following case, your patient is prescribed a PPI (proton pump inhibitor) and need to make a decisions to continue, reduce, or stop the PPI.
@@ -397,42 +432,51 @@ class llmAgent:
             | self.llm
         )
         
-        retrieve_docs = (lambda x: x["input"]) | retriever
+        retrieve_docs = (lambda x: x["input"]) | self.retriever
         chain = RunnablePassthrough.assign(context=retrieve_docs).assign(
             answer=rag_chain
         )
         
         results = {}
-        relevant_contexts = {}  # Store contexts only for positive findings
-        
-        # Process each diagnosis individually
-        for key, condition in diagnoses.items():
-            print(condition)
-            chain_result = chain.invoke({
-                "input": condition,
-                "condition": condition
-            })
-            
-                    # Parse response to boolean by checking if "yes" appears in the response
-            response = chain_result["answer"].content.strip().lower()
-            print(response)
-            results[key] = "yes" in response
-            
-            is_positive = "yes" in response
-            results[key] = is_positive
-            
-            # If condition is found, store the supporting contexts
-            if is_positive:
-                relevant_contexts[key] = chain_result["context"]
+        relevant_contexts = {}
+        should_break = False  # Add flag variable
+        recommendation = 'deprescribe'
+        diag = ''
 
-                    # Print the formatted prompt
-            formatted_prompt = prompt.format(
-                context=llmAgent.format_docs(chain_result["context"]),
-                condition=condition
-            )
-            #print("\nComplete Prompt:")
-            #print(formatted_prompt)
+        for recc_type, conditions in diagnoses.items():
+            if should_break:  # Check flag at start of outer loop
+                break
+                
+            for key, condition in conditions.items():
+                print(condition)
+                chain_result = self.invoke_with_retry(chain,{
+                    "input": condition,
+                    "condition": condition
+                })
+                
+                response = chain_result["answer"].content.strip().lower()
+                print(response)
+                #print(response)
+                is_positive = "yes" in response[:5]
+                results[key] = is_positive
+                
+                if is_positive:
+                    relevant_contexts[key] = chain_result["context"]
+                    recommendation = recc_type
+                    diag = condition
+                    should_break = True  # Set flag when condition met
+                    print(f"{self.encounter_key}:rec:{recommendation},{response}")
+                    break  # Break inner loop
+                
 
-        return results, relevant_contexts
+                        # Print the formatted prompt
+                formatted_prompt = prompt.format(
+                    context=llmAgent.format_docs(chain_result["context"]),
+                    condition=condition
+                )
+                #print("\nComplete Prompt:")
+                #print(formatted_prompt)
+
+        return recommendation, response, results, diag, relevant_contexts
         
        
