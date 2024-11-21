@@ -14,11 +14,15 @@ interface PatientSummaryProps {
 }
 
 export default function PatientSummary(props: PatientSummaryProps) {
-  const { summary_visit, current_diagnoses, past_diagnoses, medications } =
-    patientData[props.patient];
+  const {
+    summary_visit,
+    admission_diagnoses,
+    acquired_diagnoses,
+    medications,
+  } = patientData[props.patient];
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={1}>
       <Grid size={12}>
         <Box
           sx={{
@@ -47,7 +51,7 @@ export default function PatientSummary(props: PatientSummaryProps) {
               <b>Visit Summary</b>
             </Typography>
           </Box>
-          <Box sx={{ p: 1, mt: 0 }}>
+          <Box sx={{ p: 1, mt: -2.5 }}>
             <Typography color="black" sx={{ mt: 1 }}>
               <b>Admission Date:</b> {summary_visit["AdmissionDate"]}
               <br />
@@ -62,46 +66,47 @@ export default function PatientSummary(props: PatientSummaryProps) {
       <Grid size={6}>
         <Box
           sx={{
-            p: 2,
             borderRadius: "16px",
-            border: "2px solid #e0f7fa",
+            borderLeft: "6px solid #ffecb3",
             bgcolor: "#ffffff",
+            mb: 1,
+            boxShadow: 3,
+            height: "300px", // Set a fixed height to match Acquired Diagnoses
+            overflowY: "auto", // Enable scrolling if content overflows
           }}
         >
           <Box
             sx={{
               display: "inline-block",
-              px: 2,
+              px: 1,
               py: 0.5,
-              borderRadius: "50px",
-              bgcolor: "#e0f7fa",
-              color: "#006064",
+              borderRadius: "16px 0px 16px 0",
+              bgcolor: "#ffecb3",
+              color: "#ff8f00",
               mb: 1,
               position: "relative",
-              left: 0,
+              left: "-6px",
               top: 0,
             }}
           >
             <Typography variant="h6" textAlign="left">
-              Current Diagnoses
+              Admission Diagnoses
             </Typography>
           </Box>
           <List>
-            {current_diagnoses.map((diagnosis, index) => (
+            {admission_diagnoses.map((diagnosis, index) => (
               <div key={index}>
                 <ListItem>
                   <ListItemText
-                    primary={diagnosis.condition}
-                    secondary={`Diagnosed On: ${diagnosis.diagnosed_on}`}
+                    primary={
+                      diagnosis.condition === "Unspecified"
+                        ? "None"
+                        : diagnosis.condition
+                    }
                     sx={{ color: "black" }}
                   />
-                  <Tooltip title={diagnosis.treatment} placement="top">
-                    <IconButton>
-                      <InfoIcon />
-                    </IconButton>
-                  </Tooltip>
                 </ListItem>
-                {index < current_diagnoses.length - 1 && <Divider />}
+                {index < admission_diagnoses.length - 1 && <Divider />}
               </div>
             ))}
           </List>
@@ -111,58 +116,59 @@ export default function PatientSummary(props: PatientSummaryProps) {
       <Grid size={6}>
         <Box
           sx={{
-            p: 2,
             borderRadius: "16px",
-            border: "2px solid #ffecb3",
+            borderLeft: "6px solid #9dc4c9",
             bgcolor: "#ffffff",
+            mb: 1,
+            boxShadow: 3,
+            height: "300px", // Set a fixed height
+            overflowY: "auto", // Enable scrolling if content overflows
           }}
         >
           <Box
             sx={{
               display: "inline-block",
-              px: 2,
+              px: 1,
               py: 0.5,
-              borderRadius: "50px",
-              bgcolor: "#ffecb3",
-              color: "#ff8f00",
+              borderRadius: "16px 0px 16px 0",
+              bgcolor: "#9dc4c9",
+              color: "#006064",
               mb: 1,
               position: "relative",
-              left: 0,
+              left: "-6px",
               top: 0,
             }}
           >
             <Typography variant="h6" textAlign="left">
-              Past Diagnoses
+              Acquired Diagnoses
             </Typography>
           </Box>
           <List>
-            {past_diagnoses.map((diagnosis, index) => (
+            {acquired_diagnoses.map((diagnosis, index) => (
               <div key={index}>
                 <ListItem>
                   <ListItemText
-                    primary={diagnosis.condition}
-                    secondary={`Diagnosed On: ${diagnosis.diagnosed_on}`}
+                    primary={
+                      diagnosis.condition === "Unspecified"
+                        ? "None"
+                        : diagnosis.condition
+                    }
                     sx={{ color: "black" }}
                   />
-                  <Tooltip title={diagnosis.treatment} placement="top">
-                    <IconButton>
-                      <InfoIcon />
-                    </IconButton>
-                  </Tooltip>
                 </ListItem>
-                {index < past_diagnoses.length - 1 && <Divider />}
+                {index < acquired_diagnoses.length - 1 && <Divider />}
               </div>
             ))}
           </List>
         </Box>
       </Grid>
 
+      {/* Current Medications */}
       <Grid size={12}>
         <Box
           sx={{
-            p: 2,
             borderRadius: "16px",
-            border: "2px solid #c8e6c9",
+            borderLeft: "6px solid #c8e6c9",
             bgcolor: "#ffffff",
             mt: 1,
           }}
@@ -170,14 +176,13 @@ export default function PatientSummary(props: PatientSummaryProps) {
           <Box
             sx={{
               display: "inline-block",
-              px: 2,
+              px: 1,
               py: 0.5,
-              borderRadius: "50px",
+              borderRadius: "16px 0px 16px 0",
               bgcolor: "#c8e6c9",
               color: "#388e3c",
-              mb: 1,
               position: "relative",
-              left: 0,
+              left: "-6px",
               top: 0,
             }}
           >

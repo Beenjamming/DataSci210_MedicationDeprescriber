@@ -1,11 +1,11 @@
 import donny from "./assets/patient_json/donny_dunlap.json";
+import drew from "./assets/patient_json/drew_buck.json";
+import melinda from "./assets/patient_json/melinda_scott.json";
+import shelton from "./assets/patient_json/shelton_park.json";
+import sydney from "./assets/patient_json/sydney_byrd.json";
 
 interface Diagnosis {
   condition: string;
-  diagnosed_on: string;
-  severity?: string;
-  treatment: string;
-  resolved?: boolean;
 }
 
 interface SummaryVisit {
@@ -28,7 +28,7 @@ interface Notes {
 }
 
 interface Orders {
-  medication_name: string;
+  name: string;
   category: string;
   dose: string;
   route: string;
@@ -37,10 +37,15 @@ interface Orders {
   status: string;
   date_ordered: string;
   date_start: string;
-  date_end: string;
-  is_ongoing_for_discharge: boolean;
+  date_end: string | null;
+  ongoing_at_discharge: boolean;
   recommendation?: string;
   recommendation_notes?: string[];
+}
+
+interface Provider {
+  name: string;
+  provider_specialty: string;
 }
 
 interface Patient {
@@ -49,9 +54,13 @@ interface Patient {
   age: number;
   gender: string;
   race: string;
+  DOB: string;
+  precautions: string;
+  provider: Provider;
+  allergies: string;
   summary_visit: SummaryVisit;
-  current_diagnoses: Diagnosis[];
-  past_diagnoses: Diagnosis[];
+  admission_diagnoses: Diagnosis[];
+  acquired_diagnoses: Diagnosis[];
   medications: Medication[];
   notes: Notes[];
   medication_orders: Orders[];
@@ -65,8 +74,8 @@ export type PatientName =
   | "Sydney Byrd";
 export const patientData: Record<PatientName, Patient> = {
   "Donny Dunlap": donny,
-  "Drew Buck": donny,
-  "Melinda Scott": donny,
-  "Shelton Park": donny,
-  "Sydney Byrd": donny,
+  "Drew Buck": drew,
+  "Melinda Scott": melinda,
+  "Shelton Park": shelton,
+  "Sydney Byrd": sydney,
 };

@@ -11,6 +11,7 @@ import "./LandingPageContainer.css";
 import About_Us from "./About_Us.tsx";
 import ImpactCard from "./Impact.tsx";
 import MethodologyTabs from "./Methodology.tsx";
+import ProblemStatement from "./ProblemStatement.tsx";
 
 const CURSOR_CLASS_NAME = "custom-type-animation-cursor";
 
@@ -60,9 +61,16 @@ export default function LandingPageContainer() {
           to="/DataSci210_MedicationDeprescriber/Demo"
           variant="contained"
           color="primary"
+          sx={{
+            padding: "4px 16px", // Larger padding for a bigger button
+            fontSize: "1.3rem", // Larger font size for text
+            borderRadius: "8px", // Adjust border radius for a rounded look
+            minWidth: "150px", // Ensure a minimum width
+          }}
         >
           Live Demo
         </Button>
+
         <Box
           mt={4}
           width="80%"
@@ -75,6 +83,16 @@ export default function LandingPageContainer() {
             Your browser does not support the video tag.
           </video>
         </Box>
+      </Box>
+      <Box
+        id="problem-statement"
+        sx={{
+          backgroundColor: "#6F8F79",
+          textAlign: "center",
+          color: "#003249",
+        }}
+      >
+        <ProblemStatement />
       </Box>
       <Box
         id="our-mission"
@@ -117,6 +135,7 @@ export default function LandingPageContainer() {
       </Box>
 
       <Box
+        id="impact"
         sx={{
           backgroundColor: "#1c1f33",
           color: "#ffffff",
@@ -124,27 +143,33 @@ export default function LandingPageContainer() {
           textAlign: "center",
         }}
       >
-        <Typography variant="h3" gutterBottom>
-          Our Impact
+        <Typography variant="h3" gutterBottom sx={{ fontWeight: "bold" }}>
+          Our Solution's Impact
         </Typography>
         <Grid container justifyContent="center" spacing={3}>
           <ImpactCard
             title="Simplify Medication Regimens"
             icon={<MedicationIcon sx={{ fontSize: 50 }} />}
-            blurb="Enhance patient outcomes by simplifying medication routines."
-            details="Our tool helps identify and discontinue unnecessary medications at discharge, aimed to decrease polypharmacy."
+            blurb="Enhance patient outcomes by simplifying medication routines at discharge."
+            details="Our tool identifies and recommends discontinuation of unnecessary medications at discharge, 
+            helping to reduce polypharmacy. Leveraging patient data, we pinpoint key symptoms and conditions to feed into
+            evidence-based deprescribing algorithms, enabling precise recommendations for medication 
+            discontinuation at the time of discharge."
           />
           <ImpactCard
             title="Increase Discharge Efficiency"
             icon={<SpeedIcon sx={{ fontSize: 50 }} />}
-            blurb="Streamline discharge for providers, saving valuable time."
-            details="Our tool helps providers identify key notes that assists them during discharge to identify unncessary medications and evidence-based notes that support the recommendation."
+            blurb="Streamline medication at discharge for providers, saving valuable time."
+            details="Our tool assists providers by highlighting key notes and patient information,
+            making it easy to reference essential patient details alongside our recommendations. 
+            This approach supports providers in making informed decisions about 
+            medication management at discharge, ensuring unnecessary medications are identified and discontinued."
           />
           <ImpactCard
             title="Reduce Healthcare Costs"
             icon={<SavingsIcon sx={{ fontSize: 50 }} />}
             blurb="Lower healthcare costs with optimized medication use."
-            details="Deprescribing unnecessary medications reduces medication costs for patients and the healthcare system as a whole."
+            details="Eliminating unnecessary medications through deprescribing helps lower costs for both patients and the broader healthcare system."
           />
         </Grid>
       </Box>
@@ -157,17 +182,15 @@ export default function LandingPageContainer() {
         alignItems="center"
         sx={{
           bgcolor: "#e0e4e4",
-          py: 3,
         }}
       >
-        {/* Methodology Title */}
-        <Typography
+        {/* <Typography
           variant="h3"
           align="center"
           sx={{ mb: 2, fontWeight: "bold", color: "#1c1f33" }}
         >
           Methodology
-        </Typography>
+        </Typography> */}
 
         {/* Tabs for Methodology */}
         <MethodologyTabs />

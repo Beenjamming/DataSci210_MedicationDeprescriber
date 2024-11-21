@@ -1,0 +1,138 @@
+{
+    "patient_id": "538544",
+    "name": "Sydney Byrd",
+    "age": 55,
+    "gender": "Female",
+    "race": "unknown",
+    "DOB": "9/15/1968",
+    "precautions": "None",
+    "provider": {"name": "Michael Palmolivi",
+  "provider_specialty":"Gastroenterology"},
+    "allergies": "None",
+"summary_visit": {
+    "AdmissionDate": "09-15-2024",
+    "visit_reason": "Acute abdominal pain due to constipation",
+    "AdmissionSummary": "A 55-year-old female with a history of GERD was admitted on 09/15/2024 for acute abdominal pain due to constipation. She presented with a 2-day history of diffuse abdominal pain primarily located in the epigastric region, described as dull and cramping. Symptoms were associated with decreased appetite, nausea, and difficulty passing stool. On admission, her vitals showed a temperature of 98.6°F, heart rate of 85 bpm, respiratory rate of 18 bpm, blood pressure of 120/80 mmHg, and oxygen saturation of 98% on room air. Physical examination revealed a soft but slightly tender abdomen in the epigastric region, with hypoactive bowel sounds. Labs, including CBC, CMP, and lipase, were within normal limits. The patient was diagnosed with acute abdominal pain likely secondary to constipation. Management included admission for observation, initiation of a bowel regimen (docusate sodium and polyethylene glycol), discontinuation of ibuprofen, and encouragement of increased fluid intake and a fiber-rich diet. Over the hospitalization course, her symptoms improved significantly, with decreased abdominal pain and normalization of bowel movements. By 09/17/2024, she was clinically stable, with no abdominal pain or tenderness, and was discharged home with instructions to continue the fiber-rich diet, increase fluid intake, and avoid NSAIDs."
+},
+    "admission_diagnoses": [
+      {
+        "condition": "GERD"
+      },
+      {
+        "condition": "Hypertension"
+      }
+    ],
+    "acquired_diagnoses": [
+      {
+        "condition": "Unspecified"
+      }
+    ],
+    "medications": [
+    {
+        "name": "Esomeprazole",
+        "dosage": "40 mg daily",
+        "reason": "Management of GERD"
+    },
+    {
+        "name": "Docusate Sodium",
+        "dosage": "As prescribed",
+        "reason": "Stool softener for constipation"
+    },
+    {
+        "name": "Polyethylene Glycol",
+        "dosage": "As prescribed",
+        "reason": "Laxative for constipation"
+    }
+],
+    "notes": [
+    {
+        "provider_name": "Michael Palmolivi, MD",
+        "provider_specialty": "Gastroenterology",
+        "note_type": "Admission Note",
+        "note_date": "2024-09-15",
+        "note_content": "<p><strong>Date:</strong> 09/15/2024</p><p><strong>Author:</strong> Michael Palmolivi, MD</p><p><strong>Subjective:</strong></p><ul><li><strong>CC:</strong> Abdominal pain</li><li><strong>HPI:</strong> Patient presents with a 2-day history of diffuse abdominal pain, primarily located in the epigastric region. Pain is described as dull and cramping, associated with decreased appetite, nausea, and difficulty passing stool. PMH includes GERD. NKDA.</li></ul><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> T 98.6°F, HR 85 bpm, RR 18, BP 120/80 mmHg, O2 Sat 98% on RA</li><li><u>Physical Exam:</u> General: Appears comfortable. Abdomen: Soft, slightly tender to palpation in the epigastric region, bowel sounds hypoactive.</li><li><u>Labs:</u> CBC: WNL, CMP: WNL, Lipase: WNL</li></ul><p><strong>Assessment:</strong></p><ul><li>Acute abdominal pain, likely due to constipation</li></ul><p><strong>Plan:</strong></p><ul><li>Admit to the hospital for observation and bowel regimen</li><li>Stool softener (e.g., docusate sodium)</li><li>Laxative (e.g., polyethylene glycol)</li><li>Encourage increased fluid intake and fiber-rich diet</li><li>Discontinue ibuprofen</li></ul>"
+    },
+    {
+        "provider_name": "Michael Palmolivi, MD",
+        "provider_specialty": "Gastroenterology",
+        "note_type": "Progress Note",
+        "note_date": "2024-09-16",
+        "note_content": "<p><strong>Date:</strong> 09/16/2024</p><p><strong>Author:</strong> Michael Palmolivi, MD</p><p><strong>Subjective:</strong> Patient reports decreased abdominal pain and improved bowel movements.</p><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> T 98.6°F, HR 80 bpm, RR 18, BP 120/80 mmHg, O2 Sat 98% on RA</li><li><u>Physical Exam:</u> Abdomen: Softer, less tender, bowel sounds hypoactive but present.</li></ul><p><strong>Assessment:</strong></p><ul><li>Improving constipation</li></ul><p><strong>Plan:</strong></p><ul><li>Continue bowel regimen</li><li>Encourage increased fluid intake and fiber-rich diet</li></ul>"
+    },
+    {
+        "provider_name": "Michael Palmolivi, MD",
+        "provider_specialty": "Gastroenterology",
+        "note_type": "Progress Note",
+        "note_date": "2024-09-16",
+        "note_content": "<p><strong>Date:</strong> 09/16/2024</p><p><strong>Author:</strong> Michael Palmolivi, MD</p><p><strong>Subjective:</strong> Patient reports no abdominal pain and normal bowel movements.</p><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> T 98.6°F, HR 80 bpm, RR 18, BP 120/80 mmHg, O2 Sat 98% on RA</li><li><u>Physical Exam:</u> Abdomen: Soft, non-tender, bowel sounds normoactive.</li></ul><p><strong>Assessment:</strong></p><ul><li>Resolved constipation</li></ul><p><strong>Plan:</strong></p><ul><li>Discharge home</li><li>Continue fiber-rich diet and increased fluid intake</li><li>Avoid NSAIDs</li><li>Follow-up with primary care physician</li></ul>"
+    },
+    {
+        "provider_name": "Michael Palmolivi, MD",
+        "provider_specialty": "Gastroenterology",
+        "note_type": "Discharge Note",
+        "note_date": "2024-09-17",
+        "note_content": "<p><strong>Date:</strong> 09/17/2024</p><p><strong>Author:</strong> Michael Palmolivi, MD</p><p><strong>Subjective:</strong> Summary of Hospital Course: Patient presented with acute abdominal pain due to constipation. Treated with bowel regimen and supportive care. Patient has clinically improved.</p><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> T 98.6°F, HR 80 bpm, RR 18, BP 120/80 mmHg, O2 Sat 98% on RA</li><li><u>Physical Exam:</u> Abdomen: Soft, non-tender, bowel sounds normoactive.</li></ul><p><strong>Assessment:</strong></p><ul><li>Resolved constipation</li></ul><p><strong>Plan:</strong></p><ul><li>Discharge home</li><li>Continue fiber-rich diet and increased fluid intake</li><li>Avoid NSAIDs</li><li>Follow-up with primary care physician</li></ul>"
+    }
+],
+    "medication_orders": [
+    {
+        "name": "Esomeprazole",
+        "category": "Proton Pump Inhibitor",
+        "dose": "40 mg",
+        "route": "Oral",
+        "frequency": "Daily",
+        "indication": "Management of GERD",
+        "status": "Ongoing",
+        "date_ordered": "2024-09-15",
+        "date_start": "2024-09-15",
+        "date_end": null,
+        "ongoing_at_discharge": true,
+        "recommendation": "Deprescribe",
+      "recommendation_notes": [
+      "Patient showing decreased symptoms of GERD.",
+      "No significant acid reflux observed over the last 3 months.",
+      "Alternative non-pharmacological treatments available."]
+    },
+    {
+        "name": "Ibuprofen",
+        "category": "NSAID",
+        "dose": "800 mg",
+        "route": "Oral",
+        "frequency": "Twice daily",
+        "indication": "Pain management",
+        "status": "Discontinued",
+        "date_ordered": "2024-09-15",
+        "date_start": "2024-09-15",
+        "date_end": "2024-09-15",
+        "ongoing_at_discharge": false
+    },
+    {
+        "name": "Docusate Sodium",
+        "category": "Stool Softener",
+        "dose": "As prescribed",
+        "route": "Oral",
+        "frequency": "Daily",
+        "indication": "Bowel regimen for constipation",
+        "status": "Ongoing",
+        "date_ordered": "2024-09-15",
+        "date_start": "2024-09-15",
+        "date_end": null,
+        "ongoing_at_discharge": true
+    },
+    {
+        "name": "Polyethylene Glycol",
+        "category": "Laxative",
+        "dose": "As prescribed",
+        "route": "Oral",
+        "frequency": "Daily",
+        "indication": "Bowel regimen for constipation",
+        "status": "Ongoing",
+        "date_ordered": "2024-09-15",
+        "date_start": "2024-09-15",
+        "date_end": null,
+        "ongoing_at_discharge": true
+    }
+]
+  }
+
+  

@@ -1,0 +1,193 @@
+{
+    "patient_id": "047484",
+    "name": "Drew Buck",
+    "age": 67,
+    "gender": "Male",
+    "race": "unknown",
+    "DOB": "9/15/1956",
+    "precautions": "Fall Risk",
+    "provider": {"name": "Sarah Lee",
+  "provider_specialty":"Pulmonary Medicine"},
+    "allergies": "Latex",
+    "summary_visit": {
+      "AdmissionDate": "09-15-2024",
+      "visit_reason": "COPD exacerbation",
+      "AdmissionSummary": "A 67-year-old male with a history of COPD was admitted on 09/15/2024 for a COPD exacerbation following a 3-day history of worsening shortness of breath, productive cough, and increased sputum production. He also has a history of GERD managed with pantoprazole. On admission, he was tachypneic, using accessory muscles for respiration, with bilateral rales and decreased breath sounds at lung bases. Initial management included supplemental oxygen therapy, bronchodilator therapy with nebulized albuterol and ipratropium, corticosteroid therapy, and continuation of pantoprazole. Diagnostics included a chest X-ray and blood gas analysis. Pulmonary medicine consultation was obtained. Over subsequent days, the patient showed significant improvement in respiratory symptoms and oxygenation. By 09/18/2024, his symptoms had resolved, and he was transitioned to outpatient management."
+    },
+    "admission_diagnoses": [
+      {
+        "condition": "Chronic Obstructive Pulmonary Disease"
+      },
+      {
+        "condition": "Hypertension"
+      },
+      {
+        "condition": "Hyperlipidemia"
+      },
+      {
+        "condition": "Gastroesophageal Reflux Disease"
+      }
+    ],
+    "acquired_diagnoses": [
+      {
+        "condition": "Pressure Ulcer"
+      }
+    ],
+    "medications": [
+        {
+        "name": "Albuterol inhaler",
+        "dosage": "PRN",
+        "reason": "COPD management (bronchodilator therapy)"
+        },
+        {
+        "name": "Ipratropium inhaler",
+        "dosage": "Daily",
+        "reason": "COPD management (bronchodilator therapy)"
+        },
+        {
+        "name": "Flovent inhaler (fluticasone)",
+        "dosage": "BID",
+        "reason": "COPD management (inhaled corticosteroid)"
+        },
+        {
+        "name": "Pantoprazole",
+        "dosage": "40 mg PO daily",
+        "reason": "GERD"
+        },
+        {
+        "name": "Prednisone",
+        "dosage": "As prescribed",
+        "reason": "Short-term therapy during COPD exacerbation"
+        },
+        {
+        "name": "Acetaminophen",
+        "dosage": "650 mg PO BID PRN",
+        "reason": "Pain relief, recommended to replace frequent ibuprofen use"
+        }
+    ],      
+    "notes": [
+    {
+      "provider_name": "Emily Chen, MD",
+      "provider_specialty": "Pulmonary Medicine",
+      "note_type": "Admission Note",
+      "note_date": "2024-09-15",
+      "note_content": "<p><strong>Date:</strong> 09/15/2024</p><p><strong>Author:</strong> Emily Chen, MD</p><p><strong>Subjective:</strong></p><ul><li><strong>CC:</strong> Shortness of breath, cough, and increased sputum production.</li><li><strong>HPI:</strong> A 67-year-old male with a history of COPD presents to the emergency department with a 3-day history of worsening shortness of breath, productive cough, and increased sputum production. He reports increased dyspnea on exertion and orthopnea. He also reports a history of GERD and takes pantoprazole 40 mg daily.</li></ul><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> T 98.6°F, HR 100 bpm, RR 24, BP 130/80 mmHg, O2 Sat 88% on RA</li><li><u>Physical Exam:</u><ul><li><u>General:</u> Appears ill, tachypneic, and using accessory muscles of respiration.</li><li><u>Cardiovascular:</u> Tachycardic, regular rhythm.</li><li><u>Respiratory:</u> Rales bilaterally, decreased breath sounds at lung bases.</li><li><u>Abdomen:</u> Soft, non-tender.</li><li><u>Extremities:</u> No edema.</li></ul></li><li><u>Medication Reconciliation:</u> Ibuprofen 400 mg TID PRN pain, albuterol inhaler PRN, ipratropium inhaler daily, pantoprazole 40 mg daily, flovent inhaler BID</li></ul><p><strong>Assessment:</strong></p><ul><li>COPD exacerbation</li><li>GERD</li></ul><p><strong>Plan:</strong></p><ul><li>Admit to the medical floor</li><li>Supplemental oxygen therapy</li><li>Bronchodilator therapy (albuterol and ipratropium nebulizers)</li><li>Corticosteroid therapy (prednisone)</li><li>Pantoprazole 40 mg daily PO</li><li>Chest X-ray</li><li>Blood gas analysis</li><li>Consult pulmonary medicine</li></ul>"
+      },
+    {
+      "provider_name": "Michael Davis, MD",
+      "provider_specialty": "Pulmonary Medicine",
+      "note_type": "Progress Note",
+      "note_date": "2024-09-16",
+      "note_content": "<p><strong>Date:</strong> 09/16/2024</p><p><strong>Author:</strong> Michael Davis, MD</p><p><strong>Subjective:</strong> Patient reports improvement in shortness of breath and cough. Denies chest pain or fevers.</p><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> T 98.6°F, HR 90 bpm, RR 20, BP 120/80 mmHg, O2 Sat 92% on 2 L NC</li><li><u>Physical Exam:</u><ul><li><u>General:</u> Improved respiratory effort.</li><li><u>Cardiovascular:</u> Regular rhythm, no murmurs.</li><li><u>Respiratory:</u> Rhonchi persisting in bilateral lung bases.</li><li><u>Abdomen:</u> Soft, non-tender.</li><li><u>Extremities:</u> No edema.</li></ul></li></ul><p><strong>Assessment:</strong> Improving COPD exacerbation</p><p><strong>Plan:</strong></p><ul><li>Continue current medical management</li><li>Consider adding antibiotics if evidence of infection</li><li>Pulmonary rehabilitation consult</li></ul>"
+    },
+    {
+      "provider_name": "Emily Chen, MD",
+      "provider_specialty": "Pulmonary Medicine",
+      "note_type": "Progress Note",
+      "note_date": "2024-09-17",
+      "note_content": "<p><strong>Date:</strong> 09/17/2024</p><p><strong>Author:</strong> Emily Chen, MD</p><p><strong>Subjective:</strong> Patient reports continued improvement in symptoms. Denies chest pain, fever, or worsening shortness of breath.</p><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> T 98.6°F, HR 85 bpm, RR 18, BP 125/80 mmHg, O2 Sat 94% on RA</li><li><u>Physical Exam:</u><ul><li><u>General:</u> Appears comfortable.</li><li><u>Cardiovascular:</u> Regular rhythm, no murmurs.</li><li><u>Respiratory:</u> Decreased rhonchi bilaterally.</li><li><u>Abdomen:</u> Soft, non-tender.</li><li><u>Extremities:</u> No edema.</li></ul></li></ul><p><strong>Assessment:</strong> Significant improvement in COPD exacerbation</p><p><strong>Plan:</strong></p><ul><li>Continue current medical management</li><li>Discuss discharge planning with patient</li></ul>"
+    },
+    {
+        "provider_name": "Sarah Lee, MD",
+        "provider_specialty": "Pulmonary Medicine",
+        "note_type": "Progress Note",
+        "note_date": "2024-09-18",
+        "note_content": "<p><strong>Date:</strong> 09/18/2024</p><p><strong>Author:</strong> Sarah Lee, MD</p><p><strong>Subjective:</strong> Patient reports feeling much better. Minimal cough and shortness of breath.</p><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> T 98.6°F, HR 80 bpm, RR 16, BP 120/80 mmHg, O2 Sat 96% on RA</li><li><u>Physical Exam:</u><ul><li><u>General:</u> Appears well.</li><li><u>Cardiovascular:</u> Regular rhythm, no murmurs.</li><li><u>Respiratory:</u> Clear lung fields.</li><li><u>Abdomen:</u> Soft, non-tender.</li><li><u>Extremities:</u> No edema.</li></ul></li></ul><p><strong>Assessment:</strong> Resolved COPD exacerbation</p><p><strong>Plan:</strong></p><ul><li>Discuss discharge planning with patient</li><li>Counsel patient on the risks of long-term ibuprofen use and recommend switching to acetaminophen for pain relief</li><li>Instruct patient to limit ibuprofen use to occasional use and to consult with their primary care physician before starting any new medications</li></ul>"
+      },
+      {
+        "provider_name": "Sarah Lee, MD",
+        "provider_specialty": "Pulmonary Medicine",
+        "note_type": "Discharge Summary",
+        "note_date": "2024-09-20",
+        "note_content": "<p><strong>Date:</strong> 09/20/2024</p><p><strong>Author:</strong> Sarah Lee, MD</p><p><strong>Subjective:</strong> Patient reports feeling well. No shortness of breath, cough, or chest pain.</p><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> T 98.6°F, HR 80 bpm, RR 16, BP 120/80 mmHg, O2 Sat 98% on RA</li><li><u>Physical Exam:</u> Unremarkable physical exam</li></ul><p><strong>Assessment:</strong> Resolved COPD exacerbation</p><p><strong>Plan:</strong></p><ul><li>Discharge home with outpatient follow-up with primary care physician and pulmonary specialist</li><li>Continue home medications as prescribed</li><li>Encourage smoking cessation and pulmonary rehabilitation</li></ul>"
+      }
+  ],
+    "medication_orders": [
+    {
+      "name": "Albuterol Inhaler",
+      "category": "Bronchodilator",
+      "dose": "As needed",
+      "route": "Inhalation",
+      "frequency": "PRN",
+      "indication": "COPD exacerbation",
+      "status": "Ongoing",
+      "date_ordered": "2024-09-15",
+      "date_start": "2024-09-15",
+      "date_end": null,
+      "ongoing_at_discharge": true
+    },
+    {
+      "name": "Ipratropium Inhaler",
+      "category": "Bronchodilator",
+      "dose": "As prescribed",
+      "route": "Inhalation",
+      "frequency": "Daily",
+      "indication": "COPD management",
+      "status": "Ongoing",
+      "date_ordered": "2024-09-15",
+      "date_start": "2024-09-15",
+      "date_end": null,
+      "ongoing_at_discharge": true
+    },
+    {
+      "name": "Fluticasone (Flovent) Inhaler",
+      "category": "Inhaled Corticosteroid",
+      "dose": "As prescribed",
+      "route": "Inhalation",
+      "frequency": "BID",
+      "indication": "COPD management",
+      "status": "Ongoing",
+      "date_ordered": "2024-09-15",
+      "date_start": "2024-09-15",
+      "date_end": null,
+      "ongoing_at_discharge": true
+    },
+    {
+      "name": "Pantoprazole",
+      "category": "Proton Pump Inhibitor",
+      "dose": "40 mg",
+      "route": "Oral",
+      "frequency": "Daily",
+      "indication": "GERD",
+      "status": "Ongoing",
+      "date_ordered": "2024-09-15",
+      "date_start": "2024-09-15",
+      "date_end": null,
+      "ongoing_at_discharge": true,
+      "recommendation": "Deprescribe",
+      "recommendation_notes": [
+      "Patient showing decreased symptoms of GERD.",
+      "No significant acid reflux observed over the last 3 months.",
+      "Alternative non-pharmacological treatments available."
+    ]
+    },
+    {
+      "name": "Prednisone",
+      "category": "Corticosteroid",
+      "dose": "As prescribed",
+      "route": "Oral",
+      "frequency": "Daily",
+      "indication": "Acute COPD exacerbation",
+      "status": "Short-term",
+      "date_ordered": "2024-09-15",
+      "date_start": "2024-09-15",
+      "date_end": "2024-09-20",
+      "ongoing_at_discharge": false
+    },
+    {
+      "name": "Acetaminophen",
+      "category": "Analgesic",
+      "dose": "650 mg",
+      "route": "Oral",
+      "frequency": "BID PRN",
+      "indication": "Pain relief",
+      "status": "Ongoing",
+      "date_ordered": "2024-09-18",
+      "date_start": "2024-09-18",
+      "date_end": null,
+      "ongoing_at_discharge": true
+    }
+]
+  }
+
+  

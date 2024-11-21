@@ -1,4 +1,4 @@
-import React, { useState, ReactNode } from "react";
+import { useState, ReactNode } from "react";
 import { Card, CardContent, Typography, Box } from "@mui/material";
 import "./Impact.css";
 
@@ -53,7 +53,7 @@ export default function ImpactCard({
 
         {/* Back Side */}
         <CardContent className="flip-card-back">
-          <Typography variant="body2">{details}</Typography>
+          <Typography variant="body1">{details}</Typography>
         </CardContent>
       </Box>
     </Card>

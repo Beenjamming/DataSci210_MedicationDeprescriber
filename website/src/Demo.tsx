@@ -3,8 +3,6 @@ import Box from "@mui/material/Box";
 import { Grid2 as Grid } from "@mui/material";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import { styled } from "@mui/material/styles";
@@ -29,9 +27,9 @@ function CustomTabPanel(props: TabPanelProps) {
       hidden={value !== index}
       {...other}
       style={{
-        height: "calc(100vh - 48px)",
+        height: "calc(88vh - 48px)",
         overflowY: "auto",
-        backgroundColor: value === index ? "#9ad1d4" : "inherit", // Highlight color for selected
+        backgroundColor: value === index ? "#e3f2fd" : "inherit", // Very light blue for active panel
       }}
     >
       {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
@@ -46,25 +44,8 @@ export default function Demo() {
     | "Melinda Scott"
     | "Shelton Park"
     | "Sydney Byrd";
-  // for selected patient
+
   const [patientName, setPatientName] = useState<PatientName>("Donny Dunlap");
-
-  // for menu
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleMenuItemClick = (name: PatientName) => {
-    setPatientName(name);
-    handleClose();
-  };
 
   // for tabs
   const [value, setValue] = useState(0);
@@ -73,18 +54,31 @@ export default function Demo() {
     setValue(newValue);
   };
 
+  const handlePatientChange = (name: PatientName) => {
+    setPatientName(name);
+  };
+
   // for tabs styling
   const StyledTab = styled(Tab)(({ theme }) => ({
     fontWeight: theme.typography.fontWeightBold,
     border: "1px solid", // Add a border around the tab
-    borderColor: "#007a73", // Slightly darker than background
+    borderColor: "#004c8c", // Dark blue border
     borderBottom: "none", // Remove the underline
-    borderRadius: "4px 4px 0 0", // Round the top corners for a tab-like appearance
-    backgroundColor: "#e0f7fa", // Light background color
+    backgroundColor: "#bbdefb", // Light blue background for unselected tabs
+    position: "relative", // Required for pseudo-element positioning
     "&.Mui-selected": {
-      color: theme.palette.primary.main,
-      backgroundColor: "#9ad1d4", // Slightly darker color for selected tab
-      borderColor: "#007a73", // Keep the outline consistent on selection
+      color: "#ffffff", // White text for the selected tab
+      backgroundColor: "#1976d2", // Primary blue for the selected tab
+      borderColor: "#004c8c", // Keep the border consistent
+      "&::before": {
+        content: '""', // Add a pseudo-element
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        height: "4px", // Thickness of the underline
+        backgroundColor: "#004c8c", // Dark blue underline
+      },
     },
   }));
 
@@ -93,61 +87,36 @@ export default function Demo() {
       <Grid size={12}>
         <Box
           height="5vh"
-          alignItems="center"
           display="flex"
-          sx={{ bgcolor: "#598392" }}
+          alignItems="center"
+          justifyContent="space-around"
+          sx={{ bgcolor: "#e3f2fd" }}
         >
-          <div>
+          {(
+            [
+              "Donny Dunlap",
+              "Drew Buck",
+              "Melinda Scott",
+              "Shelton Park",
+              "Sydney Byrd",
+            ] as PatientName[]
+          ).map((name) => (
             <Button
-              id="demo-positioned-button"
-              aria-controls={open ? "demo-positioned-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
-              onClick={handleClick}
+              key={name}
+              onClick={() => handlePatientChange(name)}
               sx={{
-                bgcolor: "#598392", // Primary color for the button
-                color: "white", // Text color for contrast
-                fontWeight: "bold", // Increase font weight for visibility
-                padding: "8px 16px", // Add padding for a larger button
+                bgcolor: patientName === name ? "#B8DABF" : "#e3f2fd", // Slightly darker for selected
+                color: "black", // Set text color to black
+                fontWeight: "bold",
                 "&:hover": {
-                  bgcolor: "#004d40", // Darker shade on hover
+                  bgcolor: "#B8DABF", // Darker green for hover
+                  color: "black", // Ensure text remains black on hover
                 },
               }}
             >
-              Patient List
+              {name}
             </Button>
-            <Menu
-              id="demo-positioned-menu"
-              aria-labelledby="demo-positioned-button"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-            >
-              <MenuItem onClick={() => handleMenuItemClick("Donny Dunlap")}>
-                Donny Dunlap
-              </MenuItem>
-              <MenuItem onClick={() => handleMenuItemClick("Drew Buck")}>
-                Drew Buck
-              </MenuItem>
-              <MenuItem onClick={() => handleMenuItemClick("Melinda Scott")}>
-                Melinda Scott
-              </MenuItem>
-              <MenuItem onClick={() => handleMenuItemClick("Shelton Park")}>
-                Shelton Park
-              </MenuItem>
-              <MenuItem onClick={() => handleMenuItemClick("Sydney Byrd")}>
-                Sydney Byrd
-              </MenuItem>
-            </Menu>
-          </div>
+          ))}
         </Box>
       </Grid>
       <Grid size={2}>
@@ -159,9 +128,22 @@ export default function Demo() {
           flexDirection="column"
           height="100vh"
           width="100%"
-          sx={{ bgcolor: "#9ad1d4" }}
+          sx={{ bgcolor: "#f3fffe" }}
         >
-          <Tabs value={value} onChange={handleChange} variant="fullWidth">
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            variant="fullWidth"
+            TabIndicatorProps={{
+              style: {
+                display: "none", // Hides the default underline indicator
+              },
+            }}
+            sx={{
+              bgColor: "#e3f2fd", // Very light blue background
+              borderBottom: "1px solid #004c8c", // Dark blue border below tabs
+            }}
+          >
             <StyledTab label="Summary" />
             <StyledTab label="Notes" />
             <StyledTab label="Orders" />

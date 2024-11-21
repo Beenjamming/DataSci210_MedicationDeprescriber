@@ -1,0 +1,131 @@
+{
+    "patient_id": "900475",
+    "name": "Shelton Park",
+    "age": 45,
+    "gender": "Male",
+    "race": "unknown",
+    "DOB": "9/11/1978",
+    "precautions": "None",
+    "provider": {"name": "Bianca Gzario",
+  "provider_specialty":"Infectious Disease"},
+    "allergies": "None",
+    "summary_visit": {
+    "AdmissionDate": "09-11-2024",
+    "visit_reason": "Right knee cellulitis and septic arthritis",
+    "AdmissionSummary": "A 45-year-old male with a history of mild esophagitis was admitted on 09/11/2024 for acute right knee cellulitis and septic arthritis. He presented with a 3-day history of increasing pain, swelling, and redness in the right knee. On admission, his vitals showed a temperature of 101.2°F, heart rate of 95 bpm, respiratory rate of 18 bpm, blood pressure of 120/80 mmHg, and oxygen saturation of 98% on room air. Physical exam revealed a red, swollen, warm, and tender right knee with a fluctuant area. Labs showed elevated WBC (15,000/µL), CRP (120 mg/L), and ESR (50 mm/hr). Imaging of the knee suggested a soft tissue infection. The patient was diagnosed with cellulitis and likely septic arthritis secondary to MRSA. Initial management included admission to the hospital, initiation of vancomycin IV, wound care, pain management, and consultation with infectious disease specialists. Cultures confirmed MRSA as the causative organism. Over the course of hospitalization, the patient showed significant clinical improvement with decreasing erythema, swelling, and tenderness. By 09/14/2024, he was clinically stable with minimal residual symptoms."
+},
+    "admission_diagnoses": [
+      {
+        "condition": "Type 2 Diabetes Mellitus"
+      },
+      {
+        "condition": "Hypertension"
+      },
+      {
+        "condition": "Hyperlipidemia"
+      },
+      {
+        "condition": "Obesity"
+      }
+    ],
+    "acquired_diagnoses": [
+      {
+        "condition": "Unspecified"
+      }
+    ],
+    "medications": [
+    {
+        "name": "Vancomycin",
+        "dosage": "IV, as prescribed",
+        "reason": "Treatment of MRSA-related right knee cellulitis and septic arthritis"
+    },
+    {
+        "name": "Esomeprazole",
+        "dosage": "40 mg daily",
+        "reason": "Management of mild esophagitis"
+    },
+    {
+        "name": "Trimethoprim-Sulfamethoxazole",
+        "dosage": "As prescribed, oral",
+        "reason": "Post-discharge treatment for MRSA-related cellulitis and septic arthritis"
+    }
+],
+    "notes": [
+    {
+        "provider_name": "Bianca Gzario, MD",
+        "provider_specialty": "Infectious Disease",
+        "note_type": "Admission Note",
+        "note_date": "2024-09-11",
+        "note_content": "<p><strong>Date:</strong> 09/11/2024</p><p><strong>Author:</strong> Bianca Gzario, MD</p><p><strong>Subjective:</strong></p><ul><li><strong>CC:</strong> Right knee pain, swelling, redness</li><li><strong>HPI:</strong> Patient presents with a 3-day history of increasing pain, swelling, and redness in the right knee. PMH includes mild esophagitis. NKDA.</li></ul><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> T 101.2°F, HR 95 bpm, RR 18, BP 120/80 mmHg, O2 Sat 98% on RA</li><li><u>Physical Exam:</u> General: Appears ill. Musculoskeletal: Right knee is red, swollen, warm, and tender to palpation. Fluctuant area noted.</li><li><u>Labs:</u> WBC 15,000/µL, CRP 120 mg/L, ESR 50 mm/hr</li><li><u>Imaging:</u> Knee X-ray: Suggestive of soft tissue infection</li></ul><p><strong>Assessment:</strong></p><ul><li>Acute right knee cellulitis and possible septic arthritis secondary to MRSA infection</li></ul><p><strong>Plan:</strong></p><ul><li>Admit to the hospital for IV antibiotics</li><li>Obtain blood and wound cultures</li><li>Consult Infectious Disease</li><li>Initiate vancomycin IV</li><li>Pain management</li><li>Wound care</li></ul>"
+    },
+    {
+        "provider_name": "Bianca Gzario, MD",
+        "provider_specialty": "Infectious Disease",
+        "note_type": "Progress Note",
+        "note_date": "2024-09-12",
+        "note_content": "<p><strong>Date:</strong> 09/12/2024</p><p><strong>Author:</strong> Bianca Gzario, MD</p><p><strong>Subjective:</strong> Patient reports persistent knee pain and decreased appetite.</p><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> T 100.5°F, HR 90 bpm, RR 18, BP 120/80 mmHg, O2 Sat 98% on RA</li><li><u>Physical Exam:</u> Right knee: Less erythema, decreased swelling, still tender.</li><li><u>Labs:</u> WBC 12,000/µL, CRP 100 mg/L, ESR 40 mm/hr</li><li><u>Wound Culture:</u> MRSA identified</li></ul><p><strong>Assessment:</strong></p><ul><li>Improving right knee cellulitis, likely septic arthritis</li><li>Mild esophagitis</li></ul><p><strong>Plan:</strong></p><ul><li>Continue vancomycin IV</li><li>Pain management</li><li>Wound care</li><li>Continue esomeprazole 40 mg daily PO</li></ul>"
+    },
+    {
+        "provider_name": "Bianca Gzario, MD",
+        "provider_specialty": "Infectious Disease",
+        "note_type": "Progress Note",
+        "note_date": "2024-09-13",
+        "note_content": "<p><strong>Date:</strong> 09/13/2024</p><p><strong>Author:</strong> Bianca Gzario, MD</p><p><strong>Subjective:</strong> Patient reports decreased knee pain and improved appetite.</p><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> T 98.6°F, HR 85 bpm, RR 18, BP 120/80 mmHg, O2 Sat 98% on RA</li><li><u>Physical Exam:</u> Right knee: Minimal erythema, decreased swelling, tenderness improving.</li><li><u>Labs:</u> WBC 10,000/µL, CRP 80 mg/L, ESR 30 mm/hr</li></ul><p><strong>Assessment:</strong></p><ul><li>Improving right knee cellulitis and septic arthritis</li></ul><p><strong>Plan:</strong></p><ul><li>Continue vancomycin IV</li><li>Pain management</li><li>Wound care</li><li>Continue esomeprazole 40 mg daily PO</li><li>Discuss potential transition to oral antibiotics</li></ul>"
+    },
+    {
+        "provider_name": "Bianca Gzario, MD",
+        "provider_specialty": "Infectious Disease",
+        "note_type": "Discharge Note",
+        "note_date": "2024-09-14",
+        "note_content": "<p><strong>Date:</strong> 09/14/2024</p><p><strong>Author:</strong> Bianca Gzario, MD</p><p><strong>Subjective:</strong> Summary of Hospital Course: Patient was admitted with acute right knee cellulitis and septic arthritis due to MRSA. Treated with IV vancomycin and clinically improved.</p><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> T 98.6°F, HR 80 bpm, RR 18, BP 120/80 mmHg, O2 Sat 98% on RA</li><li><u>Physical Exam:</u> Right knee: Minimal residual erythema, mild swelling, minimal tenderness.</li><li><u>Labs:</u> WBC 8,000/µL, CRP 50 mg/L, ESR 20 mm/hr</li></ul><p><strong>Assessment:</strong></p><ul><li>Improved right knee cellulitis and septic arthritis</li></ul><p><strong>Plan:</strong></p><ul><li>Discharge home on oral antibiotics (e.g., trimethoprim-sulfamethoxazole)</li><li>Follow-up with orthopedic surgeon and primary care physician</li><li>Continue esomeprazole 40 mg daily PO</li><li>Provide wound care instructions</li><li>Pain management as needed</li></ul>"
+    }
+],
+    "medication_orders": [
+    {
+        "name": "Vancomycin",
+        "category": "Antibiotic",
+        "dose": "As prescribed",
+        "route": "Intravenous",
+        "frequency": "Every 12 hours",
+        "indication": "MRSA-related right knee cellulitis and septic arthritis",
+        "status": "Ongoing",
+        "date_ordered": "2024-09-11",
+        "date_start": "2024-09-11",
+        "date_end": null,
+        "ongoing_at_discharge": false
+    },
+    {
+        "name": "Esomeprazole",
+        "category": "Proton Pump Inhibitor",
+        "dose": "40 mg",
+        "route": "Oral",
+        "frequency": "Daily",
+        "indication": "Management of mild esophagitis",
+        "status": "Ongoing",
+        "date_ordered": "2024-09-11",
+        "date_start": "2024-09-11",
+        "date_end": null,
+        "ongoing_at_discharge": true,
+        "recommendation": "Deprescribe",
+      "recommendation_notes": [
+      "Patient showing decreased symptoms of GERD.",
+      "No significant acid reflux observed over the last 3 months.",
+      "Alternative non-pharmacological treatments available."]
+    },
+    {
+        "name": "Trimethoprim-Sulfamethoxazole",
+        "category": "Antibiotic",
+        "dose": "As prescribed",
+        "route": "Oral",
+        "frequency": "Every 12 hours",
+        "indication": "Post-discharge treatment for MRSA-related cellulitis and septic arthritis",
+        "status": "Planned",
+        "date_ordered": "2024-09-14",
+        "date_start": "2024-09-14",
+        "date_end": null,
+        "ongoing_at_discharge": true
+    }
+]
+  }
+
+  

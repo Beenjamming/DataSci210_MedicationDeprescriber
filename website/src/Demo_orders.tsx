@@ -18,7 +18,7 @@ import {
 import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
 
 interface Orders {
-  medication_name: string;
+  name: string;
   category: string;
   dose: string;
   route: string;
@@ -44,7 +44,7 @@ export default function Orders(props: PatientOrdersProps) {
 
   // Define columns for DataGrid
   const columns: GridColDef[] = [
-    { field: "medication_name", headerName: "Medication Name", flex: 1 },
+    { field: "name", headerName: "Medication Name", flex: 1 },
     { field: "status", headerName: "Status", flex: 1 },
     { field: "date_ordered", headerName: "Date Ordered", flex: 1 },
     { field: "date_start", headerName: "Date Start", flex: 1 },
@@ -69,14 +69,14 @@ export default function Orders(props: PatientOrdersProps) {
       </Typography>
 
       {/* DataGrid for displaying orders */}
-      <Box sx={{ height: 500, width: "100%" }}>
+      <Box sx={{ height: 600, width: "100%" }}>
         <DataGrid
           rows={medication_orders}
           columns={columns}
           pageSizeOptions={[5, 10]}
           onRowClick={handleRowClick}
           disableRowSelectionOnClick
-          getRowId={(row) => row.medication_name}
+          getRowId={(row) => row.name}
           sx={{
             backgroundColor: "rgba(255, 255, 255, 0.5)",
             "& .MuiDataGrid-cell": {
@@ -96,18 +96,18 @@ export default function Orders(props: PatientOrdersProps) {
       </Box>
 
       <Dialog open={open} onClose={handleCloseDialog} fullWidth maxWidth="sm">
-        <DialogTitle>
-          {selectedOrder?.medication_name} ({selectedOrder?.dose})
+        <DialogTitle color="white" sx={{ fontWeight: "bold" }}>
+          {selectedOrder?.name} ({selectedOrder?.dose})
         </DialogTitle>
         <DialogContent>
-          <TableContainer component={Paper}>
+          <TableContainer component={Paper} sx={{ backgroundColor: "white" }}>
             <Table>
               <TableBody>
                 <TableRow>
                   <TableCell>
                     <b>Medication Name:</b>
                   </TableCell>
-                  <TableCell>{selectedOrder?.medication_name}</TableCell>
+                  <TableCell>{selectedOrder?.name}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>

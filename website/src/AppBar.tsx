@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Link as RouterLink } from "react-router-dom";
-import Logo from "./assets/logo.svg";
+import Logo from "./assets/logo.png";
 
 export default function ButtonAppBar() {
   return (
@@ -52,7 +52,21 @@ export default function ButtonAppBar() {
                   color: "#C6E2F0",
                 },
               }}
-              href="#our-mission"
+              href="/DataSci210_MedicationDeprescriber/#problem-statement"
+            >
+              <Typography>Problem</Typography>
+            </Button>
+            <Button
+              sx={{
+                color: "inherit",
+                "&:hover": {
+                  color: "#C6E2F0",
+                },
+                "&:active": {
+                  color: "#C6E2F0",
+                },
+              }}
+              href="/DataSci210_MedicationDeprescriber/#our-mission"
             >
               <Typography>Our Mission</Typography>
             </Button>
@@ -66,7 +80,7 @@ export default function ButtonAppBar() {
                   color: "#C6E2F0",
                 },
               }}
-              href="#impact"
+              href="/DataSci210_MedicationDeprescriber/#impact"
             >
               <Typography>Impact</Typography>
             </Button>
@@ -95,7 +109,7 @@ export default function ButtonAppBar() {
                   color: "#C6E2F0",
                 },
               }}
-              href="#methodology"
+              href="/DataSci210_MedicationDeprescriber/#methodology"
             >
               <Typography>Methodology</Typography>
             </Button>
@@ -109,7 +123,7 @@ export default function ButtonAppBar() {
                   color: "#C6E2F0",
                 },
               }}
-              href="#our-team"
+              href="/DataSci210_MedicationDeprescriber/#our-team"
             >
               <Typography>Our Team</Typography>
             </Button>

@@ -1,172 +1,194 @@
 {
-    "patient_id": "12345",
+    "patient_id": "361412",
     "name": "Donny Dunlap",
-    "age": 51,
+    "age": 35,
     "gender": "Male",
     "race": "unknown",
+    "DOB": "9/7/1988",
+    "precautions": "None",
+    "provider": {"name": "Victoria Reynalds",
+  "provider_specialty":"Endocrinology"},
+    "allergies": "None",
     "summary_visit": {
-      "AdmissionDate": "2024-10-18",
-      "visit_reason": "Evaluation for liver transplant",
-      "AdmissionSummary": "Patient is a 51-year-old male with a history of liver cirrhosis secondary to chronic Hepatitis C infection. He is experiencing worsening ascites and hepatic encephalopathy, requiring urgent evaluation for a liver transplant."
+      "AdmissionDate": "09-07-2024",
+      "visit_reason": "Diabetic Ketoacidosis",
+      "AdmissionSummary": "A 35-year-old male with a history of type 1 diabetes mellitus was admitted on 09/07/2024 with diabetic ketoacidosis (DKA) following a 3-day history of worsening abdominal pain, vomiting, altered mental status, and poor insulin adherence due to illness. On admission, he was tachycardic, dehydrated, and lethargic, with laboratory findings confirming severe hyperglycemia, ketonuria, and metabolic acidosis. Initial management included aggressive IV fluid resuscitation, insulin drip initiation, electrolyte correction, and continuous monitoring. Endocrinology and gastroenterology consultations were obtained to address his DKA and ongoing H. pylori treatment."
     },
-    "current_diagnoses": [
+    "admission_diagnoses": [
       {
-        "condition": "Liver Cirrhosis",
-        "cause": "Chronic Hepatitis C",
-        "diagnosed_on": "2020-05-10",
-        "severity": "Severe",
-        "treatment": "Currently on diuretics, beta blockers, and lactulose. MELD score: 24."
+        "condition": "Type 1 Diabetes Mellitus"
       },
       {
-        "condition": "Hepatic Encephalopathy",
-        "diagnosed_on": "2023-04-22",
-        "severity": "Moderate",
-        "treatment": "Lactulose and rifaximin. Cognitive function is progressively worsening."
+        "condition": "H. Pylori Infection"
       },
       {
-        "condition": "Ascites",
-        "diagnosed_on": "2023-11-15",
-        "severity": "Severe",
-        "treatment": "Paracentesis required every two weeks. On diuretics."
+        "condition": "Chronic Migraines"
       }
     ],
-    "past_diagnoses": [
+    "acquired_diagnoses": [
       {
-        "condition": "Hepatitis C",
-        "diagnosed_on": "2015-07-30",
-        "resolved": true,
-        "treatment": "Successfully treated with direct-acting antivirals in 2019."
-      },
-      {
-        "condition": "Hypertension",
-        "diagnosed_on": "2010-09-18",
-        "resolved": false,
-        "treatment": "Managed with beta blockers. Under control."
-      },
-      {
-        "condition": "Type 2 Diabetes",
-        "diagnosed_on": "2018-06-25",
-        "resolved": false,
-        "treatment": "Metformin 500 mg, insulin as needed."
+        "condition": "Unspecified"
       }
     ],
     "medications": [
-    {
-      "name": "Lactulose",
-      "dosage": "30 mL twice daily",
-      "reason": "To reduce ammonia levels and prevent hepatic encephalopathy."
-    },
-    {
-      "name": "Rifaximin",
-      "dosage": "550 mg twice daily",
-      "reason": "To prevent hepatic encephalopathy by reducing gut bacteria."
-    },
-    {
-      "name": "Propranolol",
-      "dosage": "20 mg twice daily",
-      "reason": "To manage portal hypertension and prevent variceal bleeding."
-    },
-    {
-      "name": "Pantoprazole",
-      "dosage": "40 mg once daily",
-      "reason": "Proton pump inhibitor for gastroesophageal reflux disease (GERD) and to prevent stress ulcers."
-    },
-    {
-      "name": "Furosemide",
-      "dosage": "40 mg once daily",
-      "reason": "Diuretic to manage fluid retention associated with liver disease."
-    },
-    {
-      "name": "Spironolactone",
-      "dosage": "100 mg once daily",
-      "reason": "Diuretic to manage ascites and prevent fluid accumulation."
-    }
+      {
+        "name": "Insulin Lispro",
+        "dosage": "IV drip at 6 units/hour",
+        "reason": "Glycemic control in diabetic ketoacidosis (DKA)"
+      },
+      {
+        "name": "Normal Saline",
+        "dosage": "1,000 mL bolus followed by 60 mL/hour infusion",
+        "reason": "Fluid resuscitation for dehydration"
+      },
+      {
+        "name": "Potassium Chloride",
+        "dosage": "20 mEq/L IV supplement",
+        "reason": "Correction of hypokalemia"
+      },
+      {
+        "name": "Insulin Glargine",
+        "dosage": "15 units SC nightly",
+        "reason": "Long-acting glycemic control"
+      },
+      {
+        "name": "Omeprazole",
+        "dosage": "40 mg PO twice daily",
+        "reason": "Part of H. pylori treatment"
+      },
+      {
+        "name": "Clarithromycin",
+        "dosage": "500 mg PO twice daily",
+        "reason": "Part of H. pylori treatment"
+      },
+      {
+        "name": "Amoxicillin",
+        "dosage": "500 mg PO twice daily",
+        "reason": "Part of H. pylori treatment"
+      },
+      {
+        "name": "Multivitamins",
+        "dosage": "Daily oral supplementation",
+        "reason": "General nutritional support"
+      }
   ],
     "notes": [
-      {
-        "provider_name": "Dr. Mickey Mouse",
-        "provider_specialty": "Hepatology",
-        "note_type": "History & Physical",
-        "note_date": "2024-10-10",
-        "note_content": "Patient is a 55-year-old male with a history of liver cirrhosis secondary to alcohol use disorder, presenting for evaluation for liver transplant. Physical exam reveals mild ascites and jaundice. Lab results show elevated liver enzymes. Patient is being worked up for liver transplant eligibility."
+    {
+      "provider_name": "Andrew Smith, MD",
+      "provider_specialty": "Emergency Medicine",
+      "note_type": "Admission Note",
+      "note_date": "2024-09-07",
+      "note_content": "<p><strong>Date:</strong> 09/07/2024&nbsp;</p><p><strong>Author:</strong> Andrew Smith, MD</p><p><strong>Subjective:&nbsp;</strong></p><ul><li><strong>CC:</strong> Altered mental status, abdominal pain, vomiting, and shortness of breath.&nbsp;</li><li><strong>HPI:&nbsp;</strong>A 35-year-old male with a known history of type 1 diabetes mellitus presents to the emergency department with a 3-day history of worsening abdominal pain, vomiting, and altered mental status. He reports poor oral intake and decreased insulin dosing due to illness.&nbsp;</li></ul><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> <strong>T:&nbsp;</strong>101.2 F, <strong>HR:</strong> 120 bpm, <strong>RR</strong> 24, <strong>BP</strong> 100/60 mmHg, <strong>O2</strong> Sat 92% on RA, 70kg&nbsp;</li><li><u>Physical Exam:</u> &nbsp;<ul><li><u>General:</u> Appears ill, lethargic, and dehydrated.&nbsp;</li><li><u>Cardiovascular:</u> Tachycardic, regular rhythm.&nbsp;</li><li><u>Respiratory:</u> Tachypneic, clear lung fields.&nbsp;</li><li><u>Abdomen:</u> Tender to palpation, hypoactive bowel sounds.&nbsp;</li><li><u>Neurological:</u> Somnolent, sluggish pupillary response.&nbsp;</li></ul></li><li><u>Labs:</u> &nbsp;<ul><li><u>CBC:</u> <strong>WBC</strong> 15,000/&micro;L, <strong>Hgb</strong> 12 g/dL, <strong>Hct&nbsp;</strong>36% o</li><li><u>BMP:</u> <strong>Na</strong> 132 mEq/L, <strong>K</strong> 3.5 mEq/L, <strong>Cl</strong> 102 mEq/L, <strong>CO2</strong> 15 mmol/L, <strong>BUN</strong> 20 mg/dL, <strong>Cr</strong> 1.0 mg/dL, <strong>Glucose</strong> 450 mg/dL&nbsp;</li><li><u>ABG</u><u>:</u> <strong>pH</strong> 7.25, <strong>PaCO2</strong> 30 mmHg, <strong>PaO2</strong> 90 mmHg, <strong>HCO3</strong> 12 mmol/L&nbsp;</li><li><u>Urinalysis:</u> <strong>Ketones</strong> ++, <strong>glucose</strong> +++</li></ul></li><li><u>Imaging:</u><ul><li><u>Chest X-ray:</u> Clear lungs&nbsp;</li></ul></li></ul><p><strong>Assessment:</strong>&nbsp;</p><ul><li>Diabetic ketoacidosis (DKA)</li><li>Dehydration</li><li>Acute gastroenteritis</li><li>H Pylori infection (treatment day 10)&nbsp;</li></ul><p><strong>Plan:</strong></p><ul><li>Admit to the medical ICU&nbsp;</li><li>Aggressive fluid resuscitation with normal saline&nbsp;</li><li>Insulin drip initiation&nbsp;</li><li>Electrolyte replacement&nbsp;</li><li>Continuous cardiac monitoring&nbsp;</li><li>Consult endocrinology &nbsp;</li></ul>"
+      },
+    {
+      "provider_name": "Whitney Trelelis, PharmD",
+      "provider_specialty": "Pharmacy",
+      "note_type": "Medication Reconciliation",
+      "note_date": "2024-09-07",
+      "note_content": "<p><strong>Date:</strong> 09/07/2024&nbsp;</p><p><strong>Pharmacist:</strong> Whitney Trelelis, PharmD</p><p><strong>Patient Name:</strong> Donny Dunlap&nbsp;</p><p><strong>Medical Record Number:</strong> 361412</p><p><strong>Home Medications:</strong></p><ul><li>Insulin: lispro 15u per carbohydrate exchange 40:1 correction ratio, glargine 15 units daily at bedtime - Continued as per endocrinology consult</li><li>H. pylori Treatment: &nbsp;<ul><li>Omeprazole: 40mg twice daily - Day 10 of 14-day course&nbsp;</li><li>Clarithromycin: 500mg twice daily - Day 10 of 14-day course&nbsp;</li><li>Amoxicillin: 500mg twice daily - Day 10 of 14-day course&nbsp;</li></ul></li></ul><p>Hospital Medications:</p><ul><li>Insulin: 6u/h - IV insulin drip&nbsp;</li><li>Normal Saline: 60mL/h - IV fluid&nbsp;</li><li>Potassium Chloride: 20mEq/L- IV supplement&nbsp;</li></ul><p>Recommendations:&nbsp;</p><ul><li>Continue home medications as prescribed upon discharge.&nbsp;</li><li>Schedule a follow-up H. pylori test in 4 weeks.&nbsp;</li><li>Monitor blood glucose levels closely and adjust insulin dosing as needed.&nbsp;</li><li>Advise patient to contact their primary care physician or endocrinologist for any concerns or questions. &nbsp;</li></ul><p><br></p>"      
+    },
+    {
+      "provider_name": "Sarah Burlington, MD",
+      "provider_specialty": "Endocrinology",
+      "note_type": "Progress Note",
+      "note_date": "2024-09-08",
+      "note_content": "<p><strong>Date:</strong> 09/08/2024</p><p><strong>Author:</strong> Sarah Burlington, MD</p><p><strong>Subjective:</strong></p><ul><li>Patient remains lethargic but is arousable to voice.</li><li>Reports persistent nausea and abdominal pain.</li></ul><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> T 99.8&deg;F, HR 100 bpm, RR 20, BP 110/70 mmHg, O2 Sat 95% on RA</li><li><u>Physical Exam:</u><ul><li><u>General:</u> Less lethargic, improved skin turgor.</li><li><u>Cardiovascular:</u> Tachycardic, regular rhythm.</li><li><u>Respiratory:</u> Tachypneic, clear lung fields.</li><li><u>Abdomen:</u> Soft, tenderness improving.</li><li><u>Neurological:</u> Arousable, oriented to person, place, and time.</li></ul></li><li><u>Labs:</u><ul><li><u>BMP:</u> Na 135 mEq/L, K 4.0 mEq/L, Cl 105 mEq/L, CO2 20 mmol/L, BUN 18 mg/dL, Cr 1.1 mg/dL, Glucose 150 mg/dL</li><li><u>ABG:</u> pH 7.35, PaCO2 35 mmHg, PaO2 92 mmHg, HCO3 20 mmol/L</li></ul></li></ul><p><strong>Assessment:</strong></p><ul><li>Improving DKA</li><li>Mild dehydration</li></ul><p><strong>Plan:</strong></p><ul><li>Continue insulin drip and electrolyte replacement</li><li>Advance diet as tolerated</li><li>Monitor for hypoglycemia</li></ul>"
+      },
+    {
+      "provider_name": "Victoria Reynalds, MD",
+      "provider_specialty": "Endocrinology",
+      "note_type": "Progress Note",
+      "note_date": "2024-09-09",
+      "note_content": "<p><strong>Date:</strong> 09/09/2024</p><p><strong>Author:</strong> Victoria Reynalds, MD</p><p><strong>Subjective:</strong></p><ul><li>Patient reports feeling less nauseous and abdominal pain has improved.</li></ul><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> T 98.6&deg;F, HR 90 bpm, RR 18, BP 115/75 mmHg, O2 Sat 96% on RA</li><li><u>Physical Exam:</u><ul><li><u>General:</u> Improved mental status, alert and oriented.</li><li><u>Cardiovascular:</u> Regular rhythm, no murmurs.</li><li><u>Respiratory:</u> Clear lung fields.</li><li><u>Abdomen:</u> Soft, mild tenderness.</li><li><u>Neurological:</u> Normal neurological exam.</li></ul></li><li><u>Labs:</u><ul><li><u>BMP:</u> Na 136 mEq/L, K 4.2 mEq/L, Cl 104 mEq/L, CO2 22 mmol/L, BUN 16 mg/dL, Cr 1.0 mg/dL, Glucose 120 mg/dL</li><li><u>ABG:</u> pH 7.40, PaCO2 40 mmHg, PaO2 95 mmHg, HCO3 24 mmol/L</li></ul></li></ul><p><strong>Assessment:</strong></p><ul><li>Significant improvement in DKA</li><li>Resolving gastroenteritis</li></ul><p><strong>Plan:</strong></p><ul><li>Continue insulin drip and taper as needed</li><li>Advance diet as tolerated</li><li>Consult gastroenterology for H. pylori treatment</li></ul>"
+      },
+    {
+      "provider_name": "Victoria Reynalds, MD",
+      "provider_specialty": "Endocrinology",
+      "note_type": "Progress Note",
+      "note_date": "2024-09-11",
+        "note_content": "<p><strong>Date:</strong> 09/11/2024</p><p><strong>Author:</strong> Victoria Reynalds, MD</p><p><strong>Subjective:</strong></p><ul><li>Patient reports feeling much better. No nausea or vomiting.</li><li>Abdominal pain has resolved.</li></ul><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> T 98.2&deg;F, HR 85 bpm, RR 16, BP 120/80 mmHg, O2 Sat 98% on RA</li><li><u>Physical Exam:</u><ul><li><u>General:</u> Appears well, alert, and oriented.</li><li><u>Cardiovascular:</u> Regular rhythm, no murmurs.</li><li><u>Respiratory:</u> Clear lung fields.</li><li><u>Abdomen:</u> Soft, non-tender.</li><li><u>Neurological:</u> Normal neurological exam.</li></ul></li><li><u>Labs:</u><ul><li><u>BMP:</u> Normal electrolytes</li><li><u>HgbA1c:</u> 8.5%</li></ul></li></ul><p><strong>Assessment:</strong></p><ul><li>Resolved DKA</li><li>Improved glycemic control</li><li>Discontinued H. pylori treatment</li></ul><p><strong>Plan:</strong></p><ul><li>Discontinue insulin drip and transition to subcutaneous insulin</li><li>Continue H. pylori treatment</li><li>Advance diet as tolerated</li><li>Plan for discharge</li></ul>"
+      },
+    {
+      "provider_name": "Victoria Reynalds, MD",
+      "provider_specialty": "Endocrinology",
+      "note_type": "Progress Note",
+      "note_date": "2024-09-12",
+      "note_content": "<p><strong>Date:</strong> 09/12/2024</p><p><strong>Author:</strong> Victoria Reynalds, MD</p><p><strong>Subjective:</strong></p><ul><li>Patient reports feeling well. Tolerating diet well.</li></ul><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> Stable vital signs</li><li><u>Physical Exam:</u> Unremarkable physical exam</li><li><u>Labs:</u><ul><li><u>BMP:</u> Normal electrolytes</li><li><u>HgbA1c:</u> Stable</li></ul></li></ul><p><strong>Assessment:</strong></p><ul><li>Stable clinical condition</li><li>Tolerating oral intake</li></ul><p><strong>Plan:</strong></p><ul><li>Continue current medical management</li><li>Anticipate discharge in the next 24-48 hours</li></ul>"
       },
       {
-        "provider_name": "Nurse Goofy",
-        "provider_specialty": "Nursing",
-        "note_type": "Progress Note",
-        "note_date": "2024-10-12",
-        "note_content": "Patient appears stable, but reports mild discomfort in the abdomen. Vital signs are within normal limits, with the exception of slightly elevated blood pressure (142/90). Patient is tolerating clear liquids well. Monitoring for any signs of worsening ascites or encephalopathy."
-      },
-      {
-        "provider_name": "Dr. Minnie Mouse",
-        "provider_specialty": "Pharmacy",
-        "note_type": "Medication Reconciliation",
-        "note_date": "2024-10-11",
-        "note_content": "Reviewed current medications. Patient is on lactulose 30 mL BID for hepatic encephalopathy, spironolactone 100 mg daily for ascites, and omeprazole 20 mg daily for GERD. Plan to start tacrolimus post-transplant and discontinue spironolactone at that time."
-      },
-      {
-        "provider_name": "Daisy Duck, RD",
-        "provider_specialty": "Dietician",
-        "note_type": "Nutrition Note",
-        "note_date": "2024-10-12",
-        "note_content": "Patient is on a low-sodium diet due to cirrhosis. Appetite is adequate, and patient reports no difficulty swallowing or digesting current diet. Will continue to monitor nutritional intake and recommend protein supplementation if albumin remains low."
-      },
-      {
-        "provider_name": "Dr. Pete",
-        "provider_specialty": "Gastroenterology",
-        "note_type": "Procedure Note",
-        "note_date": "2024-10-13",
-        "note_content": "Performed a paracentesis due to increased abdominal distension and discomfort. Approximately 2 liters of ascitic fluid was removed. Fluid sent to lab for analysis. Patient tolerated the procedure well and will be monitored for signs of infection or hypotension."
-      },
-      {
-        "provider_name": "Dr. Bubbles the Elephant",
-        "provider_specialty": "Surgery",
-        "note_type": "Pre-Operative Note",
-        "note_date": "2024-10-14",
-        "note_content": "Patient is scheduled for a liver transplant. Pre-operative assessment shows stable vitals, no active infections, and normal kidney function. Blood products and medications have been ordered for the procedure. Discussed risks and benefits of surgery with the patient and family. Patient consents to the procedure."
-      },
-      {
-        "provider_name": "Nurse Toodles",
-        "provider_specialty": "Nursing",
-        "note_type": "Post-Op Progress Note",
-        "note_date": "2024-10-15",
-        "note_content": "Patient is post-op day 1 from liver transplant. Incision site clean and dry with no signs of infection. Pain is well-controlled with IV morphine. Patient has been started on clear fluids and is ambulating with assistance. Will continue to monitor vital signs and urine output."
-      },
-      {
-        "provider_name": "Dr. Chip",
-        "provider_specialty": "Infectious Disease",
-        "note_type": "Consult Note",
-        "note_date": "2024-10-15",
-        "note_content": "Consulted for post-transplant infection risk management. Patient is at high risk for bacterial and fungal infections due to immunosuppression. Initiating prophylactic antibiotics and antifungal medication. Will monitor for any signs of infection, including fever, cough, or abnormal lab values."
-      },
-      {
-        "provider_name": "Pharmacist Dale",
-        "provider_specialty": "Pharmacy",
-        "note_type": "Progress Note",
-        "note_date": "2024-10-16",
-        "note_content": "Post-liver transplant medication regimen reviewed. Tacrolimus started at 2 mg BID for immunosuppression. Continue lactulose for encephalopathy, and added pantoprazole for stress ulcer prophylaxis. Will monitor drug levels and adjust doses as necessary."
-      },
-      {
-        "provider_name": "Dietician Mrs. Claus",
-        "provider_specialty": "Dietician",
-        "note_type": "Nutrition Progress Note",
-        "note_date": "2024-10-16",
-        "note_content": "Post-transplant nutrition assessment. Patient tolerating solid food well. Continuing low-sodium, high-protein diet to promote healing and avoid fluid retention. Will recheck albumin levels tomorrow and provide supplementation if needed."
-      }
-    ],
+        "provider_name": "Andrew Smith, MD",
+        "provider_specialty": "Endocrinology",
+        "note_type": "Discharge Summary",
+        "note_date": "2024-09-13",
+        "note_content": "<p><strong>Date:</strong> 09/13/2024</p><p><strong>Author:</strong> Andrew Smith, MD</p><p><strong>Subjective:</strong></p><ul><li>Patient reports feeling well. Tolerating diet well.</li></ul><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> Stable vital signs</li><li><u>Physical Exam:</u> Unremarkable physical exam</li><li><u>Labs:</u><ul><li><u>BMP:</u> Normal electrolytes</li><li><u>HgbA1c:</u> Stable</li></ul></li></ul><p><strong>Assessment:</strong></p><ul><li>Stable clinical condition</li><li>Tolerating oral intake</li><li>Completed H. pylori treatment</li></ul><p><strong>Plan:</strong></p><ul><li>Discharge patient home on outpatient follow-up with endocrinology and primary care</li><li>Continue insulin therapy and diabetes education</li><li>Follow-up H. pylori test in 4 weeks</li></ul>"
+        }
+        
+  ],
     "medication_orders": [
     {
-      "medication_name": "Omeprazole",
-      "category": "Proton Pump Inhibitor (PPI)",
+      "name": "Insulin Lispro",
+      "category": "Antidiabetic",
+      "dose": "6 units/hour",
+      "route": "IV",
+      "frequency": "Continuous",
+      "indication": "Diabetic ketoacidosis (DKA)",
+      "status": "Ongoing",
+      "date_ordered": "2024-09-07",
+      "date_start": "2024-09-07",
+      "date_end": "2024-09-09",
+      "ongoing_at_discharge": false
+    },
+    {
+      "name": "Normal Saline",
+      "category": "Fluids",
+      "dose": "60 mL/hour",
+      "route": "IV",
+      "frequency": "Continuous",
+      "indication": "Dehydration",
+      "status": "Ongoing",
+      "date_ordered": "2024-09-07",
+      "date_start": "2024-09-07",
+      "date_end": "2024-09-09",
+      "ongoing_at_discharge": false
+    },
+    {
+      "name": "Potassium Chloride",
+      "category": "Electrolytes",
+      "dose": "20 mEq/L",
+      "route": "IV",
+      "frequency": "As needed",
+      "indication": "Hypokalemia",
+      "status": "Ongoing",
+      "date_ordered": "2024-09-07",
+      "date_start": "2024-09-07",
+      "date_end": "2024-09-08",
+      "ongoing_at_discharge": false
+    },
+    {
+      "name": "Insulin Glargine",
+      "category": "Antidiabetic",
+      "dose": "15 units",
+      "route": "Subcutaneous",
+      "frequency": "Nightly",
+      "indication": "Long-acting glycemic control",
+      "status": "Reordered",
+      "date_ordered": "2024-09-09",
+      "date_start": "2024-09-09",
+      "date_end": null,
+      "ongoing_at_discharge": true
+    },
+    {
+      "name": "Omeprazole",
+      "category": "Proton Pump Inhibitor",
       "dose": "40 mg",
       "route": "Oral",
-      "frequency": "Once daily",
-      "indication": "GERD, Proton Pump Inhibitor (PPI)",
-      "status": "Ordered",
-      "date_ordered": "2024-10-01",
-      "date_start": "2024-10-02",
-      "date_end": "2024-10-16",
-      "is_ongoing_for_discharge": false,
+      "frequency": "Twice daily",
+      "indication": "H. pylori treatment",
+      "status": "Completed",
+      "date_ordered": "2024-08-28",
+      "date_start": "2024-08-28",
+      "date_end": "2024-09-11",
+      "ongoing_at_discharge": false,
       "recommendation": "Deprescribe",
       "recommendation_notes": [
       "Patient showing decreased symptoms of GERD.",
@@ -175,56 +197,43 @@
     ]
     },
     {
-      "medication_name": "Tacrolimus",
-      "category": "Calcineurin Inhibitor",
-      "dose": "2 mg",
+      "name": "Clarithromycin",
+      "category": "Antibiotic",
+      "dose": "500 mg",
       "route": "Oral",
       "frequency": "Twice daily",
-      "indication": "Liver transplant immunosuppression",
+      "indication": "H. pylori treatment",
+      "status": "Completed",
+      "date_ordered": "2024-08-28",
+      "date_start": "2024-08-28",
+      "date_end": "2024-09-11",
+      "ongoing_at_discharge": false
+    },
+    {
+      "name": "Amoxicillin",
+      "category": "Antibiotic",
+      "dose": "500 mg",
+      "route": "Oral",
+      "frequency": "Twice daily",
+      "indication": "H. pylori treatment",
+      "status": "Completed",
+      "date_ordered": "2024-08-28",
+      "date_start": "2024-08-28",
+      "date_end": "2024-09-11",
+      "ongoing_at_discharge": false
+    },
+    {
+      "name": "Multivitamins",
+      "category": "Supplement",
+      "dose": "1 tablet",
+      "route": "Oral",
+      "frequency": "Daily",
+      "indication": "Nutritional support",
       "status": "Ongoing",
-      "date_ordered": "2024-09-28",
-      "date_start": "2024-09-29",
-      "date_end": "N/A",
-      "is_ongoing_for_discharge": true
-    },
-    {
-      "medication_name": "Furosemide",
-      "category": "Diuretic",
-      "dose": "40 mg",
-      "route": "Oral",
-      "frequency": "Once daily",
-      "indication": "Fluid retention management post-transplant",
-      "status": "Reordered",
-      "date_ordered": "2024-10-18",
-      "date_start": "2024-10-19",
-      "date_end": "2024-11-02",
-      "is_ongoing_for_discharge": false
-    },
-    {
-      "medication_name": "Prednisone",
-      "category": "Corticosteroid",
-      "dose": "5 mg",
-      "route": "Oral",
-      "frequency": "Once daily",
-      "indication": "Immunosuppression post-liver transplant",
-      "status": "Canceled",
-      "date_ordered": "2024-10-05",
-      "date_start": "2024-10-06",
-      "date_end": "2024-10-15",
-      "is_ongoing_for_discharge": false
-    },
-    {
-      "medication_name": "Pantoprazole",
-      "category": "Proton Pump Inhibitor (PPI)",
-      "dose": "40 mg",
-      "route": "Oral",
-      "frequency": "Once daily",
-      "indication": "Proton Pump Inhibitor (PPI) for GERD",
-      "status": "Ordered",
-      "date_ordered": "2024-10-15",
-      "date_start": "2024-10-16",
-      "date_end": "Ongoing",
-      "is_ongoing_for_discharge": true
+      "date_ordered": "2024-09-13",
+      "date_start": "2024-09-13",
+      "date_end": null,
+      "ongoing_at_discharge": true
     }
   ]
 
