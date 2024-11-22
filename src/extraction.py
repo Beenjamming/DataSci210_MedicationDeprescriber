@@ -1,7 +1,6 @@
 import json
 from pathlib import Path
 
-from langchain.output_parsers import PydanticOutputParser
 from langchain_community.document_loaders import DataFrameLoader
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
@@ -16,15 +15,11 @@ from query import DataLoader
 embeddings = HuggingFaceEmbeddings(model_name="NeuML/pubmedbert-base-embeddings")
 text_splitter = RecursiveCharacterTextSplitter()
 
-from pydantic import BaseModel, Field
 from langchain_core.output_parsers import JsonOutputParser
-from langchain_core.prompts import PromptTemplate
 
 
 class DiagnosisSearchDict(BaseModel):
-    diagnosis_boolean: str = Field(
-        description="True if the diagnosis is found, else False"
-    )
+    diagnosis_boolean: str = Field(description="1 if the diagnosis is found, else 0")
     explanation: str = Field(
         description="A concise explanation for how the determination of the diagnosis was made"
     )
@@ -100,35 +95,48 @@ class llmAgent:
         else:
             return json_obj
 
-    def search(self, encounter_key: str, diagnosis: str):
-        """Search for a diagnosis given an encounter key and source."""
-        # search diagnosis source data
-        diagnosis_data_dict = self.get_data(
-            encounter_key=encounter_key, source="diagnosis"
-        )
-        diagnosis_dict = self.extract_diagnosis(
-            diagnosis_data_dict=diagnosis_data_dict, diagnosis=diagnosis
-        )
-        # search encounter source data
-        encounters_data_dict = self.get_data(
-            encounter_key=encounter_key, source="encounters"
-        )
-        encounter_dict = self.extract_encounter(
-            encounters_data_dict=encounters_data_dict, diagnosis=diagnosis
-        )
-        # search note source data
-        noteText = self.get_data(encounter_key=encounter_key, source="notes")
-        notes_dict = self.extract_notes(noteText=noteText, diagnosis=diagnosis)
+    # @staticmethod
+    def get_bool(output):
+        """ """
+        bo = False
+        if output in [0, "0", "0", "F", "False"]:
+            bo = False
+        elif output in [1, "1", "1", "T", "True"]:
+            bo = True
+        else:
+            print(f"Issue parsing {output} into Boolean...")
 
-        # package dictinoaries into dictionary
-        diagnosis_dict = {
-            "diagnosis": diagnosis_dict,
-            "encounters": encounter_dict,
-            "notes": notes_dict,
-        }
-        # token_count = diagnosis_token_count + encounter_token_count + notes_token_count
+        return bo
 
-        return diagnosis_dict  # , token_count, notes_context
+    # def search(self, encounter_key: str, diagnosis: str):
+    #     """Search for a diagnosis given an encounter key and source."""
+    #     # search diagnosis source data
+    #     diagnosis_data_dict = self.get_data(
+    #         encounter_key=encounter_key, source="diagnosis"
+    #     )
+    #     diagnosis_dict = self.extract_diagnosis(
+    #         diagnosis_data_dict=diagnosis_data_dict, diagnosis=diagnosis
+    #     )
+    #     # search encounter source data
+    #     encounters_data_dict = self.get_data(
+    #         encounter_key=encounter_key, source="encounters"
+    #     )
+    #     encounter_dict = self.extract_encounter(
+    #         encounters_data_dict=encounters_data_dict, diagnosis=diagnosis
+    #     )
+    #     # search note source data
+    #     noteText = self.get_data(encounter_key=encounter_key, source="notes")
+    #     notes_dict = self.extract_notes(noteText=noteText, diagnosis=diagnosis)
+
+    #     # package dictinoaries into dictionary
+    #     diagnosis_dict = {
+    #         "diagnosis": diagnosis_dict,
+    #         "encounters": encounter_dict,
+    #         "notes": notes_dict,
+    #     }
+    #     # token_count = diagnosis_token_count + encounter_token_count + notes_token_count
+
+    #     return diagnosis_dict  # , token_count, notes_context
 
     def get_data(self, encounter_key: str, source: str):
         """Return the data given an encounter_key."""
@@ -144,56 +152,99 @@ class llmAgent:
 
         return data
 
-    def extract_diagnosis(self, diagnosis_data_dict: dict, diagnosis: str):
-        """
-        Extraction Agent/Step 1
-
-        Extraction agent for the descrete hospital acquired diagnosis or
-        present on admit diagnosis.
-        """
+    def extract_without_RAG(self, data_dict, diagnosis_searched_for):
+        """ """
         parser = JsonOutputParser(pydantic_object=DiagnosisSearchDict)
 
         prompt = PromptTemplate(
-            template="You are a knowledgeable medical provider who specializes in medication management. In the following case, your patient is prescribed a PPI (proton pump inhibitor) and need to make a decision to continue, reduce, or stop the PPI. Determine if there is evidence of the specific condition which will help determine whether to continue, reduce, or stop the medication on discharge.\n{format_instructions}\n{query}\n",
+            template="""You are a knowledgeable medical provider who specializes in medication management. In the following case, your patient is prescribed
+            a PPI (proton pump inhibitor) and need to make a decision to continue, reduce, or stop the PPI. Determine if there is evidence of the specific
+            condition which will help determine whether to continue, reduce, or stop the medication on discharge.
+            # Response Format Instructions #
+            {format_instructions}
+            # Question #
+            {query}""",
             input_variables=["query"],
             partial_variables={"format_instructions": parser.get_format_instructions()},
         )
 
-        chain = prompt | self.llm | parser
+        chain = prompt | self.llm
 
-        output_dict = chain.invoke(
+        output = chain.invoke(
             {
-                "query": f"Based on the provided information here: {diagnosis_data_dict}, is there evidence of {diagnosis}? Do NOT assume a condition based on prescribed medication. We know all of these patients are prescribed a ppi, but we need to know why. Be very sure of a diagnosis."
+                "query": f"Based on the provided information here: {data_dict}, is there evidence of {diagnosis_searched_for}? Do NOT assume a condition based on prescribed medication. We know all of these patients are prescribed a ppi, but we need to know why. Be very sure of a diagnosis."
             }
         )
 
-        return output_dict
+        token_count = output.response_metadata["token_usage"]["total_tokens"]
+        output_dict = parser.parse(output.content)
 
-    def extract_encounter(self, encounters_data_dict: dict, diagnosis: str):
-        """
-        Extraction Agent/Step 2
+        return output_dict, token_count
 
-        Extraction agent for encounter information.
-        """
-        parser = JsonOutputParser(pydantic_object=DiagnosisSearchDict)
+    # def extract_diagnosis(self, diagnosis_data_dict: dict, diagnosis: str):
+    #     """
+    #     Extraction agent for the descrete hospital acquired diagnosis or
+    #     present on admit diagnosis.
+    #     """
+    #     parser = JsonOutputParser(pydantic_object=DiagnosisSearchDict)
 
-        prompt = PromptTemplate(
-            template="You are a knowledgeable medical provider who specializes in medication management. In the following case, your patient is prescribed a PPI (proton pump inhibitor) and need to make a decision to continue, reduce, or stop the PPI. Determine if there is evidence of the specific condition which will help determine whether to continue, reduce, or stop the medication on discharge.\n{format_instructions}\n{query}\n",
-            input_variables=["query"],
-            partial_variables={"format_instructions": parser.get_format_instructions()},
-        )
+    #     prompt = PromptTemplate(
+    #         template="""You are a knowledgeable medical provider who specializes in medication management. In the following case, your patient is prescribed
+    #         a PPI (proton pump inhibitor) and need to make a decision to continue, reduce, or stop the PPI. Determine if there is evidence of the specific
+    #         condition which will help determine whether to continue, reduce, or stop the medication on discharge.
+    #         # Response Format Instructions #
+    #         {format_instructions}
+    #         # Question #
+    #         {query}""",
+    #         input_variables=["query"],
+    #         partial_variables={"format_instructions": parser.get_format_instructions()},
+    #     )
 
-        chain = prompt | self.llm | parser
+    #     chain = prompt | self.llm
 
-        output_dict = chain.invoke(
-            {
-                "query": f"Based on the provided information here: {encounters_data_dict}, is there evidence of {diagnosis}? Do NOT assume a condition based on prescribed medication. We know all of these patients are prescribed a ppi, but we need to know why. Be very sure of a diagnosis."
-            }
-        )
+    #     output = chain.invoke(
+    #         {
+    #             "query": f"Based on the provided information here: {diagnosis_data_dict}, is there evidence of {diagnosis}? Do NOT assume a condition based on prescribed medication. We know all of these patients are prescribed a ppi, but we need to know why. Be very sure of a diagnosis."
+    #         }
+    #     )
 
-        return output_dict
+    #     token_count = output.response_metadata["token_usage"]["total_tokens"]
+    #     output_dict = parser.parse(output.content)
 
-    def extract_notes(self, noteText, diagnosis: str):
+    #     return output_dict, token_count
+
+    # def extract_encounter(self, encounters_data_dict: dict, diagnosis: str):
+    #     """
+    #     Extraction agent for encounter information.
+    #     """
+    #     parser = JsonOutputParser(pydantic_object=DiagnosisSearchDict)
+
+    #     prompt = PromptTemplate(
+    #         template="""You are a knowledgeable medical provider who specializes in medication management. In the following case, your patient is prescribed
+    #         a PPI (proton pump inhibitor) and need to make a decision to continue, reduce, or stop the PPI. Determine if there is evidence of the specific
+    #         condition which will help determine whether to continue, reduce, or stop the medication on discharge.
+    #         # Response Format Instructions #
+    #         {format_instructions}
+    #         # Question #
+    #         {query}""",
+    #         input_variables=["query"],
+    #         partial_variables={"format_instructions": parser.get_format_instructions()},
+    #     )
+
+    #     chain = prompt | self.llm
+
+    #     output = chain.invoke(
+    #         {
+    #             "query": f"Based on the provided information here: {encounters_data_dict}, is there evidence of {diagnosis}? Do NOT assume a condition based on prescribed medication. We know all of these patients are prescribed a ppi, but we need to know why. Be very sure of a diagnosis."
+    #         }
+    #     )
+
+    #     token_count = output.response_metadata["token_usage"]["total_tokens"]
+    #     output_dict = parser.parse(output.content)
+
+    #     return output_dict, token_count
+
+    def extract_RAG(self, noteText, diagnosis_searched_for: str):
         """
         Extraction Agent/Step 3
 
@@ -208,12 +259,21 @@ class llmAgent:
 
         vector_store = FAISS.from_documents(documents, embeddings)
 
-        retriever = vector_store.as_retriever(search_type="similarity", k=5)
+        retriever = vector_store.as_retriever(search_type="similarity", k=4)
 
         parser = JsonOutputParser(pydantic_object=DiagnosisSearchDict)
 
         prompt = PromptTemplate(
-            template="You are a knowledgeable medical provider who specializes in medication management. In the following case, your patient is prescribed a PPI (proton pump inhibitor) and need to make a decision to continue, reduce, or stop the PPI. Determine if there is evidence of the specific condition which will help determine whether to continue, reduce, or stop the medication on discharge.\n{format_instructions}\nUse this information for your answer: {context}\n{query}\n",
+            template="""You are a knowledgeable medical provider who specializes in medication management. In the following case, your patient is prescribed a PPI (proton pump inhibitor) and need to make a decision to continue, reduce, or stop the PPI. Determine if there is evidence of the specific condition which will help determine whether to continue, reduce, or stop the medication on discharge.
+            Use the Context as information for your answer: 
+            # Context #
+            {context}
+            Do NOT assume a condition based on prescribed medication. We know all of these patients are prescribed a ppi, but we need to know why. Be very sure of a diagnosis.
+            # Format Instructions #
+            {format_instructions}
+            # Question #
+            {query}
+            """,
             input_variables=["context", "query"],
             partial_variables={"format_instructions": parser.get_format_instructions()},
         )
@@ -225,16 +285,18 @@ class llmAgent:
             }
             | prompt
             | self.llm
-            | parser
         )
 
-        chain_result = rag_chain.invoke(
-            f"Is there evidence of {diagnosis}? Do NOT assume a condition based on prescribed medication. We know all of these patients are prescribed a ppi, but we need to know why. Be very sure of a diagnosis."
+        rag_chain_output = rag_chain.invoke(
+            f"Is there evidence of {diagnosis_searched_for}?"
         )
 
-        return chain_result
+        token_count = rag_chain_output.response_metadata["token_usage"]["total_tokens"]
+        output_dict = parser.parse(rag_chain_output.content)
 
-    def summarize_reasonings(self, recommendation_str, diagnosis_dict_dict):
+        return output_dict, token_count
+
+    def summarize_reasonings(self, recommendation_str, search_history_so_far):
         """Summarize a final explanation for the recommendation."""
         system = "You are a knowledgeable medical provider who specializes in medication management."
         human = "{text}"
@@ -245,7 +307,10 @@ class llmAgent:
         chain = prompt | self.llm
         chain_result = chain.invoke(
             {
-                "text": f"""Medications can either be continued, deprescribed, or stopped. The recommendation ({recommendation_str}) was given because the diagnosis ({list(diagnosis_dict_dict.keys())[-1]}) was found in the patient's data. Provide a short and concise summary of the recommendation and the explanation for the recommendation: {diagnosis_dict_dict}. Provide your answer in a single line of text."""
+                "text": f"""Medications can either be continued, deprescribed, or stopped. 
+                The recommendation ({recommendation_str}) was given because the diagnosis ({list(search_history_so_far.keys())[-1]}) was found in the patient's data. 
+                Provide a short and concise summary of the recommendation and the explanation for the recommendation: {search_history_so_far}. 
+                Provide your answer in a single line of text."""
             }
         )
         return chain_result.content, chain_result.response_metadata["token_usage"][

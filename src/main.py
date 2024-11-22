@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 
 from extraction import llmAgent
@@ -22,6 +23,14 @@ Order:
 if non, recommend "deprescribe"  
 """
 
+# Configure basic logging
+logging.basicConfig(
+    filename="app.log",  # File name for the log
+    level=logging.INFO,  # Set logging level
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",  # Log message format
+    filemode="w",  # (use 'a' to append, 'w' to overwrite)
+)
+
 
 def main(
     groq_key="",
@@ -39,6 +48,9 @@ def main(
     encounter_key : str, optional
         the encounter key for the patient data, by default ""
     """
+
+    logger = logging.getLogger("FileLogger")
+
     # used to iterate through recommendations and associated diagnosis
     recommendation_dict = {
         "continue": [
@@ -58,86 +70,155 @@ def main(
             "GERD",
         ],
     }
-    # could be used to map from recommendation strings to integers
-    rec_to_int = {
-        "continue": 0,
-        "stop": 1,
-        "deprescribe": 2,
-    }
 
     llm_agent = llmAgent(groq_key=groq_key, data_path=data_path)
 
     # track the number of tokens used
+    final_recommendation = "deprescribe"
+    exit_bool = False
     token_usage = 0
-    final_bool = False
-    diagnosis_dict_dict = {}
-    # Loop over recommendations in their order
-    # if none exits recommend "deprescribe"
+    search_history_so_far = {}
+    token_count_history = {}
+
+    logger.info("Start loop 1...")
+
+    # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+    # # #   Diagnosis & Encounters Information Source   # # #
+    # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
     for recommendation_str, diagnosis_list in recommendation_dict.items():
-        # iterate through diagnosis
-        for diagnosis_str in diagnosis_list:
-            diagnosis_dict = llm_agent.search(
-                encounter_key=encounter_key, diagnosis=diagnosis_str
-            )
-            diagnosis_dict_dict[diagnosis_str] = diagnosis_dict
-            # track token usage
-            # TODO? track each search individually
-            # token_usage += token_count
+        logger.info(f"rec: {recommendation_str}, diagnosis: {diagnosis_list}")
+        # # # # # # # # # # # # # # # # # # # # # # #
+        # # #   Diagnosis Information Source    # # #
+        # # # # # # # # # # # # # # # # # # # # # # #
+        # get diagnosis source data
+        diagnosis_data_dict = llm_agent.get_data(
+            encounter_key=encounter_key, source="diagnosis"
+        )
+        # extract information
+        diagnosis_dict, diagnosis_token_count = llm_agent.extract_without_RAG(
+            data_dict=diagnosis_data_dict, diagnosis_searched_for=diagnosis_list
+        )
 
-            # # #   master formatter step   # # #
-            # merge the diagnosis booleans (just use OR logic for now)
-            diagnosis_bool_str = diagnosis_dict["diagnosis"]["diagnosis_boolean"]
-            if diagnosis_bool_str in ["True", "true"]:
-                diagnosis_bool = True
-            elif diagnosis_bool_str in ["False", "false"]:
-                diagnosis_bool = False
+        # format boolean
+        diagnosis_source_bool = llmAgent.get_bool(diagnosis_dict["diagnosis_boolean"])
 
-            encounters_bool_str = diagnosis_dict["encounters"]["diagnosis_boolean"]
-            if encounters_bool_str in ["True", "true"]:
-                encounters_bool = True
-            elif encounters_bool_str in ["False", "false"]:
-                encounters_bool = False
+        # store the bool, explanation and token count
+        search_history_so_far[f"diagnosis_source_{recommendation_str}"] = diagnosis_dict
+        token_count_history[f"diagnosis_source_{recommendation_str}"] = (
+            diagnosis_token_count
+        )
 
-            notes_bool_str = diagnosis_dict["notes"]["diagnosis_boolean"]
-            if notes_bool_str in ["True", "true"]:
-                notes_bool = True
-            elif notes_bool_str in ["False", "false"]:
-                notes_bool = False
+        # track overall token usage
+        token_usage += diagnosis_token_count
 
-            final_bool = diagnosis_bool or encounters_bool or notes_bool
+        logger.info(f"diagnosis_source_bool: {diagnosis_source_bool}")
+        logger.info(f"diagnosis_dict: {diagnosis_dict}")
+        logger.info(f"diagnosis_token_count: {diagnosis_token_count}")
 
-            # break out of the loop over the diagnosis list
-            if final_bool:
-                break
-        # break out of the loop over recommendations
-        if final_bool:
+        # early exit opportunity
+        if diagnosis_source_bool:
+            exit_bool = True
+            final_recommendation = recommendation_str
+            logger.info("early break from loop 1!!!")
             break
 
-    # NOTE: if it never exits early then recommendation_str should still be "deprescribe"
+        # # # # # # # # # # # # # # # # # # # # # # #
+        # # #   Encounters Information Source   # # #
+        # # # # # # # # # # # # # # # # # # # # # # #
+        # get encounters source data
+        encounters_data_dict = llm_agent.get_data(
+            encounter_key=encounter_key, source="encounters"
+        )
+        # extract information
+        encounters_dict, encounters_token_count = llm_agent.extract_without_RAG(
+            data_dict=encounters_data_dict, diagnosis_searched_for=diagnosis_list
+        )
+
+        # format boolean
+        encounters_source_bool = llmAgent.get_bool(encounters_dict["diagnosis_boolean"])
+
+        # store the bool, explanation and token count
+        search_history_so_far[f"encounters_source_{recommendation_str}"] = (
+            encounters_dict
+        )
+        token_count_history[f"encounters_source_{recommendation_str}"] = (
+            encounters_token_count
+        )
+
+        # track overall token usage
+        token_usage += encounters_token_count
+
+        logger.info(f"encounters_source_bool: {encounters_source_bool}")
+        logger.info(f"encounters_dict: {encounters_dict}")
+        logger.info(f"encounters_token_count: {encounters_token_count}")
+
+        # early exit opportunity
+        if encounters_source_bool:
+            exit_bool = True
+            final_recommendation = recommendation_str
+            logger.info("early break from loop 1!!!")
+            break
+
+    # # # # # # # # # # # # # # # # # # # # #
+    # # #   Notes Information Source    # # #
+    # # # # # # # # # # # # # # # # # # # # #
+    # make sure not to enter the notes loop unless a diagnosis has yet to be found
+    if not exit_bool:
+        logger.info("loop 2")
+        for recommendation_str, diagnosis_list in recommendation_dict.items():
+            logger.info(f"rec: {recommendation_str}, diagnosis: {diagnosis_list}")
+            # get notes source data
+            noteText = llm_agent.get_data(encounter_key=encounter_key, source="notes")
+            # extract information
+            notes_dict, notes_token_count = llm_agent.extract_RAG(
+                noteText=noteText, diagnosis_searched_for=diagnosis_list
+            )
+
+            # format boolean
+            notes_source_bool = llmAgent.get_bool(notes_dict["diagnosis_boolean"])
+
+            # store the bool, explanation and token count
+            search_history_so_far[f"notes_source_{recommendation_str}"] = notes_dict
+            token_count_history[f"notes_source_{recommendation_str}"] = (
+                notes_token_count
+            )
+
+            # track overall token usage
+            token_usage += notes_token_count
+
+            logger.info(f"notes_source_bool: {notes_source_bool}")
+            logger.info(f"notes_dict: {notes_dict}")
+            logger.info(f"notes_token_count: {notes_token_count}")
+
+            # early exit opportunity
+            if notes_source_bool:
+                final_recommendation = recommendation_str
+                logger.info("\n\nearly break from loop 2!!!\n\n")
+                break
 
     # summary of explanation
-    final_reasoning, token_count = llm_agent.summarize_reasonings(
-        recommendation_str=recommendation_str, diagnosis_dict_dict=diagnosis_dict_dict
+    final_reasoning, summary_token_count = llm_agent.summarize_reasonings(
+        recommendation_str=final_recommendation,
+        search_history_so_far=search_history_so_far,
     )
+    token_usage += summary_token_count
+    token_count_history["final_summary"] = summary_token_count
 
-    # TODO figure out how to get the token counts easily
-    # count tokens used by LLM queries
-    # total_token_count = (
-    #     diagnosis_token_count
-    #     + encounter_token_count
-    #     + notes_token_count
-    #     + reasoning_summary_token_count
-    # )
+    logger.info(f"\n\n final_recommendation: {final_recommendation}")
+    logger.info(f"final_reasoning: {final_reasoning}")
+    logger.info(f"token_usage: {token_usage}")
+    logger.info(f"search_history_so_far: {search_history_so_far}")
+    logger.info(f"token_count_history: {token_count_history}")
 
-    # print("Recommendation: ")
-    # print(recommendation_str)
-    # print("\nReasoning: ")
-    # print(final_reasoning)
-    # print("\nTotal Token Count: ")
-    # print(total_token_count)
-
-    return recommendation_str, final_reasoning  # , total_token_count
+    return (
+        final_recommendation,
+        final_reasoning,
+        token_usage,
+        search_history_so_far,
+        token_count_history,
+    )
 
 
 if __name__ == "__main__":
+    main()
     main()
