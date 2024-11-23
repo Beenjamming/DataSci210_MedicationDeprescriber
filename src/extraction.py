@@ -108,36 +108,6 @@ class llmAgent:
 
         return bo
 
-    # def search(self, encounter_key: str, diagnosis: str):
-    #     """Search for a diagnosis given an encounter key and source."""
-    #     # search diagnosis source data
-    #     diagnosis_data_dict = self.get_data(
-    #         encounter_key=encounter_key, source="diagnosis"
-    #     )
-    #     diagnosis_dict = self.extract_diagnosis(
-    #         diagnosis_data_dict=diagnosis_data_dict, diagnosis=diagnosis
-    #     )
-    #     # search encounter source data
-    #     encounters_data_dict = self.get_data(
-    #         encounter_key=encounter_key, source="encounters"
-    #     )
-    #     encounter_dict = self.extract_encounter(
-    #         encounters_data_dict=encounters_data_dict, diagnosis=diagnosis
-    #     )
-    #     # search note source data
-    #     noteText = self.get_data(encounter_key=encounter_key, source="notes")
-    #     notes_dict = self.extract_notes(noteText=noteText, diagnosis=diagnosis)
-
-    #     # package dictinoaries into dictionary
-    #     diagnosis_dict = {
-    #         "diagnosis": diagnosis_dict,
-    #         "encounters": encounter_dict,
-    #         "notes": notes_dict,
-    #     }
-    #     # token_count = diagnosis_token_count + encounter_token_count + notes_token_count
-
-    #     return diagnosis_dict  # , token_count, notes_context
-
     def get_data(self, encounter_key: str, source: str):
         """Return the data given an encounter_key."""
         if source == "diagnosis":
@@ -180,69 +150,6 @@ class llmAgent:
         output_dict = parser.parse(output.content)
 
         return output_dict, token_count
-
-    # def extract_diagnosis(self, diagnosis_data_dict: dict, diagnosis: str):
-    #     """
-    #     Extraction agent for the descrete hospital acquired diagnosis or
-    #     present on admit diagnosis.
-    #     """
-    #     parser = JsonOutputParser(pydantic_object=DiagnosisSearchDict)
-
-    #     prompt = PromptTemplate(
-    #         template="""You are a knowledgeable medical provider who specializes in medication management. In the following case, your patient is prescribed
-    #         a PPI (proton pump inhibitor) and need to make a decision to continue, reduce, or stop the PPI. Determine if there is evidence of the specific
-    #         condition which will help determine whether to continue, reduce, or stop the medication on discharge.
-    #         # Response Format Instructions #
-    #         {format_instructions}
-    #         # Question #
-    #         {query}""",
-    #         input_variables=["query"],
-    #         partial_variables={"format_instructions": parser.get_format_instructions()},
-    #     )
-
-    #     chain = prompt | self.llm
-
-    #     output = chain.invoke(
-    #         {
-    #             "query": f"Based on the provided information here: {diagnosis_data_dict}, is there evidence of {diagnosis}? Do NOT assume a condition based on prescribed medication. We know all of these patients are prescribed a ppi, but we need to know why. Be very sure of a diagnosis."
-    #         }
-    #     )
-
-    #     token_count = output.response_metadata["token_usage"]["total_tokens"]
-    #     output_dict = parser.parse(output.content)
-
-    #     return output_dict, token_count
-
-    # def extract_encounter(self, encounters_data_dict: dict, diagnosis: str):
-    #     """
-    #     Extraction agent for encounter information.
-    #     """
-    #     parser = JsonOutputParser(pydantic_object=DiagnosisSearchDict)
-
-    #     prompt = PromptTemplate(
-    #         template="""You are a knowledgeable medical provider who specializes in medication management. In the following case, your patient is prescribed
-    #         a PPI (proton pump inhibitor) and need to make a decision to continue, reduce, or stop the PPI. Determine if there is evidence of the specific
-    #         condition which will help determine whether to continue, reduce, or stop the medication on discharge.
-    #         # Response Format Instructions #
-    #         {format_instructions}
-    #         # Question #
-    #         {query}""",
-    #         input_variables=["query"],
-    #         partial_variables={"format_instructions": parser.get_format_instructions()},
-    #     )
-
-    #     chain = prompt | self.llm
-
-    #     output = chain.invoke(
-    #         {
-    #             "query": f"Based on the provided information here: {encounters_data_dict}, is there evidence of {diagnosis}? Do NOT assume a condition based on prescribed medication. We know all of these patients are prescribed a ppi, but we need to know why. Be very sure of a diagnosis."
-    #         }
-    #     )
-
-    #     token_count = output.response_metadata["token_usage"]["total_tokens"]
-    #     output_dict = parser.parse(output.content)
-
-    #     return output_dict, token_count
 
     def extract_RAG(self, noteText, diagnosis_searched_for: str):
         """

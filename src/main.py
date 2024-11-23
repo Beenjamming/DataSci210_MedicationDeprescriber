@@ -54,20 +54,20 @@ def main(
     # used to iterate through recommendations and associated diagnosis
     recommendation_dict = {
         "continue": [
-            "Barretts Esophagus",
+            "Barrett's Esophagus",
             "Chronic NSAID used with bleeding risk",
             "Severe esophagitis",
             "Documented history of bleeding GUI ulcer",
         ],
         "stop": [
-            "Peptic Ulcer Disease",
-            "Chronic NSAID use with bleeding risk",
-            "ICU Stress Ulcer Prophylaxis",
-            "H Pylori infection",
+            "Peptic Ulcer Disease treated 2 2-12 weeks (from NSAID; H. pylori)",
+            "Upper GI symptoms without endoscopy; asmptomatic for 3 consecutive days"
+            "ICU Stress Ulcer prophylaxis treated beyond ICU admission",
+            "Uncomplicated H. pylori treated for 2 weeks and asymptomatic",
         ],
         "deprescribe": [
             "Mild to moderate esophagitis",
-            "GERD",
+            "GERD treated for 4-8 weeks (esophagitis healed, symptoms controlled)",
         ],
     }
 
@@ -204,7 +204,7 @@ def main(
     token_usage += summary_token_count
     token_count_history["final_summary"] = summary_token_count
 
-    logger.info(f"\n\n final_recommendation: {final_recommendation}")
+    logger.info(f"final_recommendation: {final_recommendation}")
     logger.info(f"final_reasoning: {final_reasoning}")
     logger.info(f"token_usage: {token_usage}")
     logger.info(f"search_history_so_far: {search_history_so_far}")
