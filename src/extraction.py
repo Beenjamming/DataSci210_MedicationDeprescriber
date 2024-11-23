@@ -1,7 +1,6 @@
 import json
 from pathlib import Path
 
-from langchain.output_parsers import PydanticOutputParser
 from langchain_community.document_loaders import DataFrameLoader
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
@@ -15,6 +14,15 @@ from query import DataLoader
 
 embeddings = HuggingFaceEmbeddings(model_name="NeuML/pubmedbert-base-embeddings")
 text_splitter = RecursiveCharacterTextSplitter()
+
+from langchain_core.output_parsers import JsonOutputParser
+
+
+class DiagnosisSearchDict(BaseModel):
+    diagnosis_boolean: str = Field(description="1 if the diagnosis is found, else 0")
+    explanation: str = Field(
+        description="A concise explanation for how the determination of the diagnosis was made"
+    )
 
 
 class NoteResponse(BaseModel):
@@ -87,142 +95,67 @@ class llmAgent:
         else:
             return json_obj
 
-    def extract_diagnosis(self, encounter_key: str):
-        """
-        Extraction Agent/Step 1
+    # @staticmethod
+    def get_bool(output):
+        """ """
+        bo = False
+        if output in [0, "0", "0", "F", "False"]:
+            bo = False
+        elif output in [1, "1", "1", "T", "True"]:
+            bo = True
+        else:
+            print(f"Issue parsing {output} into Boolean...")
 
-        Extraction agent for the descrete hospital acquired diagnosis or
-        present on admit diagnosis.
-        """
-        diagnosis_data_dict = self.data_loader.get_diagnosis_data(
-            encounter_key=encounter_key
-        )
+        return bo
 
-        hospitalAcquiredDx_json = diagnosis_data_dict["hospitalAcquiredDx"]
-        presentOnAdmitDx_json = diagnosis_data_dict["presentOnAdmitDx"]
+    def get_data(self, encounter_key: str, source: str):
+        """Return the data given an encounter_key."""
+        if source == "diagnosis":
+            # diagnosis_data_dict
+            data = self.data_loader.get_diagnosis_data(encounter_key=encounter_key)
+        elif source == "encounters":
+            # encounters_data_dict
+            data = self.data_loader.get_encounter_data(encounter_key=encounter_key)
+        elif source == "notes":
+            # noteText
+            data = self.data_loader.get_notes_data(encounter_key=encounter_key)
 
-        # pydantic parser
-        # parser = PydanticOutputParser(pydantic_object=NoteResponse)
+        return data
 
-        system = "You are a knowledgeable medical provider who specializes in medication management."
-        human = "{input}"
-        prompt = ChatPromptTemplate.from_messages(
-            [("system", system), ("human", human)]
-        )
-        # prompt = PromptTemplate(
-        #     template="Answer the user query.\n{format_instructions}\nFormat your response as a json as directed.",
-        #     input_variables=[("system", system), ("human", human)],
-        #     partial_variables={"format_instructions": parser.get_format_instructions()},
-        # )
+    def extract_without_RAG(self, data_dict, diagnosis_searched_for):
+        """ """
+        parser = JsonOutputParser(pydantic_object=DiagnosisSearchDict)
 
-        chain = prompt | self.llm
-
-        # chain_result = chain.invoke(
-        #     {
-        #         "input": f"""Based on the information from this JSON information: {hospitalAcquiredDx_json}, {presentOnAdmitDx_json}, does the patient have any of the following:
-        #             1. Mild to moderate esophagitis
-        #             2. GERD
-        #             3. Peptic Ulcer Disease
-        #             4. Upper GI symptoms
-        #             5. ICU Stress Ulcer Prophylaxis
-        #             6. Barretts Esophagus
-        #             7. Chronic NSAID use with bleeding risk
-        #             8. Severe esophagitis
-        #             9. Documented history of bleeding GI ulcer
-        #             10. H pylori infection
-        #             11. Explain the reasoning for your answer with the key being 'Reasoning'
-        #             Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 10.  For the final question, return a string with the reasoning for your answer.
-        #             """
-        #     }
-        # )
-        chain_result = chain.invoke(
-            {
-                "input": f"""Based on the information from this JSON information: {hospitalAcquiredDx_json}, {presentOnAdmitDx_json}, does the patient have any of the following:
-                    Mild to moderate esophagitis
-                    GERD 
-                    Peptic Ulcer Disease
-                    Upper GI symptoms
-                    ICU Stress Ulcer Prophylaxis
-                    Barretts Esophagus
-                    Chronic NSAID use with bleeding risk
-                    Severe esophagitis
-                    Documented history of bleeding GI ulcer
-                    H pylori infection
-                    Explain the reasoning for your answer with the key being 'Reasoning'
-                    Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 10.  For the final question, return a string with the reasoning for your answer.
-                    """
-            }
-        )
-        return (
-            llmAgent.extract_json_from_content(chain_result.content),
-            chain_result.response_metadata["token_usage"]["total_tokens"],
-        )
-
-    def extract_encounter_info(self, encounter_key: str):
-        """
-        Extraction Agent/Step 2
-
-        Extraction agent for encounter information.
-        """
-        encounters_json = self.data_loader.get_encounter_data(
-            encounter_key=encounter_key
-        )
-
-        system = "You are a knowledgeable medical provider who specializes in medication management."
-        human = "{text}"
-        prompt = ChatPromptTemplate.from_messages(
-            [("system", system), ("human", human)]
+        prompt = PromptTemplate(
+            template="""You are a knowledgeable medical provider who specializes in medication management. In the following case, your patient is prescribed
+            a PPI (proton pump inhibitor) and need to make a decision to continue, reduce, or stop the PPI. Determine if there is evidence of the specific
+            condition which will help determine whether to continue, reduce, or stop the medication on discharge.
+            # Response Format Instructions #
+            {format_instructions}
+            # Question #
+            {query}""",
+            input_variables=["query"],
+            partial_variables={"format_instructions": parser.get_format_instructions()},
         )
 
         chain = prompt | self.llm
-        # chain_result = chain.invoke(
-        #     {
-        #         "text": f"""Based on the information from this JSON information: {encounters_json}, does the patient have any of the following:
-        #             1. Mild to moderate esophagitis
-        #             2. GERD
-        #             3. Peptic Ulcer Disease
-        #             4. Upper GI symptoms
-        #             5. ICU Stress Ulcer Prophylaxis
-        #             6. Barretts Esophagus
-        #             7. Chronic NSAID use with bleeding risk
-        #             8. Severe esophagitis
-        #             9. Documented history of bleeding GI ulcer
-        #             10. H pylori infection
-        #             11. Explain the reasoning for your answer with the key being 'Reasoning'
-        #             Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 10.  For the final question, return a string with the reasoning for your answer.
-        #             """
-        #     }
-        # )
-        chain_result = chain.invoke(
+
+        output = chain.invoke(
             {
-                "text": f"""Based on the information from this JSON information: {encounters_json}, does the patient have any of the following:
-                    Mild to moderate esophagitis
-                    GERD 
-                    Peptic Ulcer Disease
-                    Upper GI symptoms
-                    ICU Stress Ulcer Prophylaxis
-                    Barretts Esophagus
-                    Chronic NSAID use with bleeding risk
-                    Severe esophagitis
-                    Documented history of bleeding GI ulcer
-                    H pylori infection
-                    Explain the reasoning for your answer with the key being 'Reasoning'
-                    Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 10.  For the final question, return a string with the reasoning for your answer.
-                    """
+                "query": f"Based on the provided information here: {data_dict}, is there evidence of {diagnosis_searched_for}? Do NOT assume a condition based on prescribed medication. We know all of these patients are prescribed a ppi, but we need to know why. Be very sure of a diagnosis."
             }
         )
-        return (
-            llmAgent.extract_json_from_content(chain_result.content),
-            chain_result.response_metadata["token_usage"]["total_tokens"],
-        )
 
-    def extract_notes(self, encounter_key: str):
+        token_count = output.response_metadata["token_usage"]["total_tokens"]
+        output_dict = parser.parse(output.content)
+
+        return output_dict, token_count
+
+    def extract_RAG(self, noteText, diagnosis_searched_for: str):
         """
         Extraction Agent/Step 3
 
         """
-        noteText = self.data_loader.get_notes_data(encounter_key=encounter_key)
-
         loader = DataFrameLoader(
             data_frame=noteText,
             page_content_column="NoteText",
@@ -233,105 +166,45 @@ class llmAgent:
 
         vector_store = FAISS.from_documents(documents, embeddings)
 
-        retriever = vector_store.as_retriever(search_type="similarity", k=5)
+        retriever = vector_store.as_retriever(search_type="similarity", k=4)
 
-        # Pydantic example
-        # You can add custom validation logic easily with Pydantic.
-        # @classmethod
-        # def validate_question(cls, value: str) -> str:
-        #     if not value.endswith("?"):
-        #         raise ValueError("Badly formed question!")
-        #     return value
+        parser = JsonOutputParser(pydantic_object=DiagnosisSearchDict)
 
-        # parser = PydanticOutputParser(pydantic_object=NoteResponse)
-
-        system = "You are a knowledgeable medical provider who specializes in medication management. Given a list of diagnosis and some snippets from patients notes {context}, answer if the patient notes contain any of the diagnosis."
-        parser = PydanticOutputParser(pydantic_object=NoteResponse)
         prompt = PromptTemplate(
-            template="Answer the user query.\n{format_instructions}\n{context}\n",
-            input_variables=[("system", system), ("human", "{input}")],
+            template="""You are a knowledgeable medical provider who specializes in medication management. In the following case, your patient is prescribed a PPI (proton pump inhibitor) and need to make a decision to continue, reduce, or stop the PPI. Determine if there is evidence of the specific condition which will help determine whether to continue, reduce, or stop the medication on discharge.
+            Use the Context as information for your answer: 
+            # Context #
+            {context}
+            Do NOT assume a condition based on prescribed medication. We know all of these patients are prescribed a ppi, but we need to know why. Be very sure of a diagnosis.
+            # Format Instructions #
+            {format_instructions}
+            # Question #
+            {query}
+            """,
+            input_variables=["context", "query"],
             partial_variables={"format_instructions": parser.get_format_instructions()},
         )
 
         rag_chain = (
-            RunnablePassthrough.assign(
-                context=(lambda x: llmAgent.format_docs(x["context"]))
-            )
+            {
+                "context": retriever | llmAgent.format_docs,
+                "query": RunnablePassthrough(),
+            }
             | prompt
             | self.llm
         )
 
-        retrieve_docs = (lambda x: x["input"]) | retriever
-        chain = RunnablePassthrough.assign(context=retrieve_docs).assign(
-            answer=rag_chain
+        rag_chain_output = rag_chain.invoke(
+            f"Is there evidence of {diagnosis_searched_for}?"
         )
 
-        chain_result = chain.invoke(
-            {
-                "input": """Based on the information from the note {context}, does the patient have any of the following:
-              1. Mild to moderate esophagitis
-              2. GERD 
-              3. Peptic Ulcer Disease
-              4. Upper GI symptoms
-              5. ICU Stress Ulcer Prophylaxis
-              6. Barretts Esophagus
-              7. Chronic NSAID use with bleeding risk
-              8. Severe esophagitis
-              9. Documented history of bleeding GI ulcer
-              10. H pylori infection
-              11. Explain the reasoning for your answer
-            Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 10.  For the final question, return a string with the reasoning for your answer."""
-            }
-        )
+        token_count = rag_chain_output.response_metadata["token_usage"]["total_tokens"]
+        output_dict = parser.parse(rag_chain_output.content)
 
-        # resulting json output
-        # try:
-        temp_json = llmAgent.extract_json_from_content(chain_result["answer"].content)
-        # temp_json = llmAgent.extract_json_from_content(StrOutputParser(result))
-        # except:
-        #    rag_chain = (
-        #    RunnablePassthrough.assign(
-        #        context=(lambda x: llmAgent.format_docs(x["context"]))
-        #    )
-        #    | prompt
-        #    | self.llm2
-        #    | StrOutputParser()
-        #    )
-        #    result = chain.invoke(
-        #        {
-        #            "input": """Based on the information from the note context, does the patient have any of the following:
-        #        1. Mild to moderate esophagitis
-        #        2. GERD
-        #        3. Peptic Ulcer Disease
-        #        4. Upper GI symptoms
-        #        5. ICU Stress Ulcer Prophylaxis
-        #        6. Barretts Esophagus
-        #        7. Chronic NSAID use with bleeding risk
-        #        8. Severe esophagitis
-        #        9. Documented history of bleeding GI ulcer
-        #        10. H pylori infection
-        #        11. Explain the reasoning for your answer with the key being 'Reasoning'
-        #        Return the answer for each of these as a formatted JSON object with the key being the condition and the value being a boolean value for the first 10.  For the final question, return a string with the reasoning for your answer.
-        #
-        #           """
-        #        }
-        #        )
-        # temp_json = llmAgent.extract_json_from_content(result["answer"])
-        result_json = llmAgent.replace_underscores_in_keys(temp_json)
+        return output_dict, token_count
 
-        # returning the pydantic json and token count (int)
-        return (
-            result_json,
-            chain_result["answer"].response_metadata["token_usage"]["total_tokens"],
-            chain_result["context"],
-        )
-
-    def summarize_reasonings(self, results_dict):
-        """Summarize the reasonings from the three sources."""
-        diagnosis_dict = results_dict["diagnosis_dict"]
-        encounter_dict = results_dict["encounter_dict"]
-        notes_dict = results_dict["notes_dict"]
-
+    def summarize_reasonings(self, recommendation_str, search_history_so_far):
+        """Summarize a final explanation for the recommendation."""
         system = "You are a knowledgeable medical provider who specializes in medication management."
         human = "{text}"
         prompt = ChatPromptTemplate.from_messages(
@@ -341,11 +214,10 @@ class llmAgent:
         chain = prompt | self.llm
         chain_result = chain.invoke(
             {
-                "text": f"""Based on the following json files, please provide a single explanation of the reasoning given by the 'Reasoning' key. Summarize given equal 
-                weight to each. Do not add any additional information, only summarize what is given.
-                {diagnosis_dict}
-                {encounter_dict}
-                {notes_dict}"""
+                "text": f"""Medications can either be continued, deprescribed, or stopped. 
+                The recommendation ({recommendation_str}) was given because the diagnosis ({list(search_history_so_far.keys())[-1]}) was found in the patient's data. 
+                Provide a short and concise summary of the recommendation and the explanation for the recommendation: {search_history_so_far}. 
+                Provide your answer in a single line of text."""
             }
         )
         return chain_result.content, chain_result.response_metadata["token_usage"][
