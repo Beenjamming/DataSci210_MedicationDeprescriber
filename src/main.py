@@ -54,22 +54,41 @@ def main(
     # used to iterate through recommendations and associated diagnosis
     recommendation_dict = {
         "continue": [
-            "Barrett's Esophagus",
-            "Chronic NSAID used with bleeding risk",
-            "Severe esophagitis",
-            "Documented history of bleeding GUI ulcer",
+            "Barretts Esophagus or esophageal cell changes",
+            "Chronic Non-Steroidal Anti Inflammatory (NSAID) use or GI prophylaxis NSAID use",
+            "Severe esophagitis including bleeding esophagitis or esophageal ulcer",
+            "History of bleeding GI/gastric ulcer, upper GI bleed, or peptic ulcer hemorrhage",
         ],
         "stop": [
-            "Peptic Ulcer Disease treated 2 2-12 weeks (from NSAID; H. pylori)",
-            "Upper GI symptoms without endoscopy; asmptomatic for 3 consecutive days"
-            "ICU Stress Ulcer prophylaxis treated beyond ICU admission",
-            "Uncomplicated H. pylori treated for 2 weeks and asymptomatic",
+            "Peptic Ulcer Disease or Gastroduodenal ulcer treated for 2 - 12 weeks caused from H Pylori infection or NSAID use without bleeding",
+            "Upper GI Symptoms such as reflux, difficulty swallowing, nausea, or vomiting without endoscopy - asymptomatic for 3 consecutive days",
+            "ICU Stress Ulcer Prophylaxis",
+            "Completed Heliobacter Pylori (H. Pylori) infection treated for 14 days with combination therapy",
         ],
         "deprescribe": [
-            "Mild to moderate esophagitis",
-            "GERD treated for 4-8 weeks (esophagitis healed, symptoms controlled)",
+            "Mild to moderate esophagitis or esophageal inflammation",
+            "Treated Gastroesophageal Reflux Disease (GERD) or reflux symptoms such as acid reflux, heartburn, or regurgitation",
         ],
     }
+ 
+    #recommendation_dict = {
+    #    "continue": [
+    #        "Barrett's Esophagus",
+    #        "Chronic NSAID used with bleeding risk",
+    #        "Severe esophagitis",
+    #        "Documented history of bleeding GUI ulcer",
+    #    ],
+    #    "stop": [
+    #        "Peptic Ulcer Disease treated 2 2-12 weeks (from NSAID; H. pylori)",
+    #        "Upper GI symptoms without endoscopy; asmptomatic for 3 consecutive days"
+    #        "ICU Stress Ulcer prophylaxis treated beyond ICU admission",
+    #        "Uncomplicated H. pylori treated for 2 weeks and asymptomatic",
+    #    ],
+    #    "deprescribe": [
+    #        "Mild to moderate esophagitis",
+    #        "GERD treated for 4-8 weeks (esophagitis healed, symptoms controlled)",
+    #    ],
+    #}
 
     llm_agent = llmAgent(groq_key=groq_key, data_path=data_path)
 
