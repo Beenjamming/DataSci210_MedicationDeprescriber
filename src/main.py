@@ -184,16 +184,39 @@ def main(
     # make sure not to enter the notes loop unless a diagnosis has yet to be found
     if not exit_bool:
         logger.info("loop 2")
+
+        noteText = llm_agent.get_data(encounter_key=encounter_key, source="notes")
+        
+        # Check if noteText is empty, then pre-processor found no diagnoses
+        # return appropriate reccs
+        if noteText.empty:
+            print('no notes found')
+            final_recommendation = 'deprescribe'
+            final_reasoning = 'No diagnoses found in notes'
+            logger.info("No diagnoses found in notes, bypassing further logic.")
+            return (
+                final_recommendation,
+                final_reasoning,
+                token_usage,
+                search_history_so_far,
+                token_count_history,
+            )
+
+        #setup vectore store retriever with noteText, setup here before loop
+        llm_agent.set_retriever(noteText)
+
+
         for recommendation_str, diagnosis_list in recommendation_dict.items():
             logger.info(f"rec: {recommendation_str}, diagnosis: {diagnosis_list}")
             # get notes source data
-            noteText = llm_agent.get_data(encounter_key=encounter_key, source="notes")
-            #setup vectore store retriever with noteText
-            llm_agent.set_retriever(noteText)
+           
             # extract information
             notes_dict, notes_token_count = llm_agent.extract_RAG(
                  diagnosis_searched_for=diagnosis_list
             )
+            
+            #sometimes the llm returns a dict contained in a list
+            #check to see if returned object is a list, if so get the first item
             if isinstance(notes_dict, list) and notes_dict:
                 notes_dict = notes_dict[0]
             # format boolean
