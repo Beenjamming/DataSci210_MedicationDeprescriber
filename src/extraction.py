@@ -94,6 +94,17 @@ class llmAgent:
             return [llmAgent.replace_underscores_in_keys(item) for item in json_obj]
         else:
             return json_obj
+        
+    def set_retriever(self, noteText):
+        
+        loader = DataFrameLoader(
+            data_frame=noteText,
+            page_content_column="NoteText",
+            engine="pandas",
+        )
+        documents = loader.load_and_split()
+        vector_store = FAISS.from_documents(documents, embeddings)
+        self.retriever = vector_store.as_retriever(search_type="similarity", k=5)
 
     # @staticmethod
     def get_bool(output):
@@ -151,22 +162,11 @@ class llmAgent:
 
         return output_dict, token_count
 
-    def extract_RAG(self, noteText, diagnosis_searched_for: str):
+    def extract_RAG(self, diagnosis_searched_for: str):
         """
         Extraction Agent/Step 3
 
         """
-        loader = DataFrameLoader(
-            data_frame=noteText,
-            page_content_column="NoteText",
-            engine="pandas",
-        )
-
-        documents = loader.load_and_split()
-
-        vector_store = FAISS.from_documents(documents, embeddings)
-
-        retriever = vector_store.as_retriever(search_type="similarity", k=4)
 
         parser = JsonOutputParser(pydantic_object=DiagnosisSearchDict)
 
@@ -187,7 +187,7 @@ class llmAgent:
 
         rag_chain = (
             {
-                "context": retriever | llmAgent.format_docs,
+                "context": self.retriever | llmAgent.format_docs,
                 "query": RunnablePassthrough(),
             }
             | prompt

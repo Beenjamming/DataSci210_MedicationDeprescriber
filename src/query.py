@@ -54,10 +54,9 @@ class DataLoader:
         }
         return data_dict
 
-    def get_label_df(self, encounter_key: str):
+    def get_label_df(self):
         """Return a single row with the key, reason and recommendation."""
-        labels_df = pd.read_csv(self.data_path / "LabeledResponses.csv")
-        return labels_df.loc[labels_df["key"] == encounter_key]
+        return pd.read_csv(self.data_path / "LabeledResponses.csv")
 
     def get_diagnosis_data(self, encounter_key: str) -> dict:
         """Return only diagnosis data filtered by encounter_key."""

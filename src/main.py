@@ -188,9 +188,11 @@ def main(
             logger.info(f"rec: {recommendation_str}, diagnosis: {diagnosis_list}")
             # get notes source data
             noteText = llm_agent.get_data(encounter_key=encounter_key, source="notes")
+            #setup vectore store retriever with noteText
+            llm_agent.set_retriever(noteText)
             # extract information
             notes_dict, notes_token_count = llm_agent.extract_RAG(
-                noteText=noteText, diagnosis_searched_for=diagnosis_list
+                 diagnosis_searched_for=diagnosis_list
             )
             if isinstance(notes_dict, list) and notes_dict:
                 notes_dict = notes_dict[0]
