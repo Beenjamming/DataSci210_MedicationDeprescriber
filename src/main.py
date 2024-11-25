@@ -57,7 +57,7 @@ def main(
             "Barretts Esophagus or esophageal cell changes",
             "Chronic Non-Steroidal Anti Inflammatory (NSAID) use or GI prophylaxis NSAID use",
             "Severe esophagitis including bleeding esophagitis or esophageal ulcer",
-            "History of bleeding GI/gastric ulcer, upper GI bleed, or peptic ulcer hemorrhage",
+            "History of gastrointestinal bleeding, gastric ulcer, upper GI bleed, or peptic ulcer hemorrhage",
         ],
         "stop": [
             "Peptic Ulcer Disease or Gastroduodenal ulcer treated for 2 - 12 weeks caused from H Pylori infection or NSAID use without bleeding",
@@ -192,7 +192,8 @@ def main(
             notes_dict, notes_token_count = llm_agent.extract_RAG(
                 noteText=noteText, diagnosis_searched_for=diagnosis_list
             )
-
+            if isinstance(notes_dict, list) and notes_dict:
+                notes_dict = notes_dict[0]
             # format boolean
             notes_source_bool = llmAgent.get_bool(notes_dict["diagnosis_boolean"])
 

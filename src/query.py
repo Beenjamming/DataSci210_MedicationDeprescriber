@@ -124,72 +124,8 @@ class DataLoader:
 
         """
 
-        # labeled encounters df
-        le_df = self.get_labled_encounters()
-
-        notes = pd.read_csv(self.data_path / "noteText.csv")
-
-        # Step 1: Find the maximum NoteDate for each EncounterKey
-        max_note_date = notes.groupby("EncounterKey")["NoteDate"].transform("max")
-        # Step 2: Create a binary column indicating if it's the latest note for that encounter
-
-        notes["is_on_last_note_date"] = (notes["NoteDate"] == max_note_date).astype(int)
-
-        notes = notes.merge(
-            le_df[["key", "PtDischargeDate"]], left_on="EncounterKey", right_on="key"
-        )
-
-           # Convert dates to datetime
-        notes["PtDischargeDate"] = pd.to_datetime(notes["PtDischargeDate"], errors="coerce")
-        notes["NoteDate"] = pd.to_datetime(notes["NoteDate"], errors="coerce")
-        
-        # Filter out notes that are after discharge date
-        notes = notes[notes["NoteDate"] <= notes["PtDischargeDate"]]
-
-        selected_providers = [
-            "Resident",
-            "Physician",
-            "Registered Nurse",
-            "Nurse Practitioner",
-            "Physician Assistant",
-            "Pharmacist",
-            "Licensed Vocational Nurse",
-            "Medical Student",
-            "Pharmacy Student",
-            "Nursing Student",
-            "Registered Dietitian",
-            "Dietetic Intern",
-        ]
-        notes = notes[
-            (notes["ProviderType"].isin(selected_providers))
-            | (notes["ProviderType"].isnull())
-        ]
-
-        # Apply the function to the text column
-        notes["discharge_text"] = notes["NoteText"].apply(
-            DataLoader.extract_surrounding_text
-        )
-
-        if notes_rm_debug:
-            # REMOVED these Notes
-            rm_notes = notes[~notes.discharge_text.isna()]
-            rm_notes["PtDischargeDate"] = pd.to_datetime(
-                rm_notes["PtDischargeDate"], errors="coerce"
-            )
-            rm_notes["NoteDate"] = pd.to_datetime(rm_notes["NoteDate"], errors="coerce")
-
-            # Calculate the difference while handling missing values
-            rm_notes["dis-note_vs_dis-date"] = (
-                rm_notes["PtDischargeDate"] - rm_notes["NoteDate"]
-            )
-
-            rm_notes.to_csv(
-                self.data_path / "removed_discharged_notes.csv", index=False
-            )
-        #exclude all death encounters
-        if encounter_key in DataLoader.death_encs:
-            return None
-
+        notes = pd.read_csv(self.data_path / "labled_notes_w_summary.csv")
         notes = notes[notes["EncounterKey"] == encounter_key]
+        notes = notes[~notes.llm_summary.str.contains("No diagnoses", na=False)]
 
         return notes[notes.discharge_text.isna()]
