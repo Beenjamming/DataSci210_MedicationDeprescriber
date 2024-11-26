@@ -33,16 +33,20 @@ diagnosis_label_key = {
 }
 
 def get_best_diagnosis_match(reasoning):
-    # Extract the diagnosis labels from the dictionary
-    labels = list(diagnosis_label_key.values())
-    # Use fuzzy matching to find the best match
-    best_match = get_close_matches(reasoning, labels, n=1, cutoff=0.1) 
-    matched_key = None  # Initialize matched_key to None
-    if best_match:  # Check if best_match is not empty
-        matched_key = list(diagnosis_label_key.keys())[list(diagnosis_label_key.values()).index(best_match[0])]
-    
-    
-    return matched_key, best_match[0] # Return the matched key and label
+    print(reasoning)
+    try:
+        # Extract the diagnosis labels from the dictionary
+        labels = list(diagnosis_label_key.values())
+        # Use fuzzy matching to find the best match
+        best_match = get_close_matches(reasoning, labels, n=1, cutoff=0.05) 
+        matched_key = None  # Initialize matched_key to None
+        if best_match:  # Check if best_match is not empty
+            matched_key = list(diagnosis_label_key.keys())[list(diagnosis_label_key.values()).index(best_match[0])]
+        
+        
+        return matched_key, best_match[0] # Return the matched key and label
+    except:
+        return -9,'Fail diagnosis match'
 
 
 
@@ -64,6 +68,7 @@ def evaluate_multiclass_classification(y_true, y_pred, class_labels):
     
     # Precision, Recall, F1-score
     precision, recall, f1, _ = precision_recall_fscore_support(y_true, y_pred, average='macro')  # macro-averaging
+
     
     # Classification report (optional detailed breakdown for each class)
     class_report = classification_report(y_true, y_pred, target_names=class_labels)
