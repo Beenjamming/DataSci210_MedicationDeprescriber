@@ -11,7 +11,6 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from pydantic import BaseModel, Field
 
 
-
 from query import DataLoader
 
 embeddings = HuggingFaceEmbeddings(model_name="NeuML/pubmedbert-base-embeddings")
@@ -21,34 +20,13 @@ from langchain_core.output_parsers import JsonOutputParser
 
 
 class DiagnosisSearchDict(BaseModel):
-    diagnosis_boolean: str = Field(description="1 if the diagnosis is found, else 0")
+    # diagnosis_boolean: str = Field(description="1 if the diagnosis is found, else 0")
+    diagnosis_boolean: str = Field(
+        description="True if the diagnosis is found, else return False"
+    )
     explanation: str = Field(
         description="A concise explanation for how the determination of the diagnosis was made"
     )
-
-
-class NoteResponse(BaseModel):
-    """Pydantic class for the diagnosis jsons."""
-
-    Mild_to_moderate_esophagitis: bool = Field(
-        description="Mild to moderate esophagitis"
-    )
-    GERD: bool = Field(description="GERD")
-    Peptic_Ulcer_Disease: bool = Field(description="Peptic Ulcer Disease")
-    Upper_GI_symptoms: bool = Field(description="Upper GI symptoms")
-    ICU_Stress_Ulcer_Prophylaxis: bool = Field(
-        description="ICU Stress Ulcer Prophylaxis"
-    )
-    Barretts_Esophagus: bool = Field(description="Barrett's Esophagus")
-    Chronic_NSAID_use_with_bleeding_risk: bool = Field(
-        description="Chronic NSAID use with bleeding risk"
-    )
-    Severe_esophagitis: bool = Field(description="Severe esophagitis")
-    Documented_history_of_bleeding_GI_ulcer: bool = Field(
-        description="Documented history of bleeding GI ulcer"
-    )
-    H_pylori_infection: bool = Field(description="H pylori infection")
-    Reasoning: str = Field(description="Explain the reasoning for your answer")
 
 
 class llmAgent:
@@ -96,9 +74,8 @@ class llmAgent:
             return [llmAgent.replace_underscores_in_keys(item) for item in json_obj]
         else:
             return json_obj
-        
+
     def set_retriever(self, noteText):
-        
         loader = DataFrameLoader(
             data_frame=noteText,
             page_content_column="NoteText",
@@ -108,7 +85,7 @@ class llmAgent:
         vector_store = FAISS.from_documents(documents, embeddings)
         self.retriever = vector_store.as_retriever(search_type="similarity", k=5)
 
-    # @staticmethod
+    @staticmethod
     def get_bool(output):
         """ """
         bo = False
@@ -136,13 +113,16 @@ class llmAgent:
         return data
 
     def extract_without_RAG(self, data_dict, diagnosis_searched_for):
-        """ """
+        """
+        Extract without RAG
+        """
         parser = JsonOutputParser(pydantic_object=DiagnosisSearchDict)
 
         prompt = PromptTemplate(
             template="""You are a knowledgeable medical provider who specializes in medication management. In the following case, your patient is prescribed
             a PPI (proton pump inhibitor) and need to make a decision to continue, reduce, or stop the PPI. Determine if there is evidence of the specific
             condition which will help determine whether to continue, reduce, or stop the medication on discharge.
+            Do NOT assume a condition based on prescribed medication. We know all of these patients are prescribed a ppi, but we need to know why. Be very sure of a diagnosis.
             # Response Format Instructions #
             {format_instructions}
             # Question #
@@ -155,7 +135,7 @@ class llmAgent:
 
         output = chain.invoke(
             {
-                "query": f"Based on the provided information here: {data_dict}, is there evidence of {diagnosis_searched_for}? Do NOT assume a condition based on prescribed medication. We know all of these patients are prescribed a ppi, but we need to know why. Be very sure of a diagnosis."
+                "query": f"Based on the provided information here: {data_dict}, is there evidence of {diagnosis_searched_for}?"
             }
         )
 
@@ -166,8 +146,7 @@ class llmAgent:
 
     def extract_RAG(self, diagnosis_searched_for: str):
         """
-        Extraction Agent/Step 3
-
+        Extraction with RAG
         """
 
         parser = JsonOutputParser(pydantic_object=DiagnosisSearchDict)
@@ -205,9 +184,16 @@ class llmAgent:
 
         return output_dict, token_count
 
-    def summarize_reasonings(self, recommendation_str, search_history_so_far):
+    def summarize_reasonings(self, search_history_so_far):
         """Summarize a final explanation for the recommendation."""
-        system = "You are a knowledgeable medical provider who specializes in medication management."
+
+        system = """You are a knowledgeable medical provider who specializes in medication management. You are now evaluating the patients medications during
+        a patient discharge. Based on patient health information medications can be recommended to continued, deprescribed, or stopped. The patient health 
+        information has been searched in three information locations: patient diagnosis record, patient encounter record, and patient medical notes history. 
+        The threee recommendations are a result of identifying one or more diagnoses. Use the following json containing the search information and results to 
+        write a summary of the findings. Cite which information source an identified diagnosis was identified from. Keep your response non-conversational, 
+        professional and concise.
+        """
         human = "{text}"
         prompt = ChatPromptTemplate.from_messages(
             [("system", system), ("human", human)]
@@ -216,12 +202,17 @@ class llmAgent:
         chain = prompt | self.llm
         chain_result = chain.invoke(
             {
-                "text": f"""Medications can either be continued, deprescribed, or stopped. 
-                The recommendation ({recommendation_str}) was given because the diagnosis ({list(search_history_so_far.keys())[-1]}) was found in the patient's data. 
-                Provide a short and concise summary of the recommendation and the explanation for the recommendation: {search_history_so_far}. 
-                Provide your answer in a single line of text."""
+                "text": f"""In the following json containing the information extracted from the patient records, if the diagnosis_boolean
+                associated with the recommendation to continue is True, then recommend that the patient continue the medication and give an 
+                explanation for the recommendation. If the diagnosis_boolean associated with the recommendation to stop is True, then recommend 
+                that the patient stop the medication and give an explanation. Otherwise, if a diagnosis_boolean associated with the recommendation
+                to deprescribe is True or no diagnosis_boolean are True, recommend deprescribe and provide an explanation.
+                Use the following json containing the search information and results: {search_history_so_far}."""
             }
         )
+        # If there is a clear indication to recommend continue, then continue and give the explanation for continuing.
+        # If there is only an indication to recommend stop, then stop and give the explanation for stopping.
+        # Otherwise recommend deprescribe and provide an explanation for deprescribing.
         return chain_result.content, chain_result.response_metadata["token_usage"][
             "total_tokens"
         ]
