@@ -135,11 +135,11 @@ def main(
         logger.info(f"diagnosis_token_count: {diagnosis_token_count}")
 
         # early exit opportunity
-        if diagnosis_source_bool:
-            exit_bool = True
-            final_recommendation = recommendation_str
-            logger.info("early break from loop 1!!!")
-            break
+        #if diagnosis_source_bool:
+        #    exit_bool = True
+        #    final_recommendation = recommendation_str
+        #    logger.info("early break from loop 1!!!")
+        #    break
 
         # # # # # # # # # # # # # # # # # # # # # # #
         # # #   Encounters Information Source   # # #
@@ -172,11 +172,11 @@ def main(
         logger.info(f"encounters_token_count: {encounters_token_count}")
 
         # early exit opportunity
-        if encounters_source_bool:
-            exit_bool = True
-            final_recommendation = recommendation_str
-            logger.info("early break from loop 1!!!")
-            break
+        #if encounters_source_bool:
+        #    exit_bool = True
+        #    final_recommendation = recommendation_str
+        #    logger.info("early break from loop 1!!!")
+        #    break
 
     # # # # # # # # # # # # # # # # # # # # #
     # # #   Notes Information Source    # # #

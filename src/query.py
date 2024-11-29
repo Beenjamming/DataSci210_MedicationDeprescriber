@@ -125,6 +125,8 @@ class DataLoader:
 
         notes = pd.read_csv(self.data_path / "labled_notes_w_summary.csv")
         notes = notes[notes["EncounterKey"] == encounter_key]
+        #order by NoteDate descending
+        notes = notes.sort_values(by='NoteDate', ascending=False)
         notes = notes[~notes.llm_summary.str.contains("No diagnoses", na=False)]
 
         return notes[notes.discharge_text.isna()]
