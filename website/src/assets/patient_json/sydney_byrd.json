@@ -45,28 +45,28 @@
     }
 ],
     "notes": [
-    {
+    {   "id": "note_1",
         "provider_name": "Michael Palmolivi, MD",
         "provider_specialty": "Gastroenterology",
         "note_type": "Admission Note",
         "note_date": "2024-09-15",
         "note_content": "<p><strong>Date:</strong> 09/15/2024</p><p><strong>Author:</strong> Michael Palmolivi, MD</p><p><strong>Subjective:</strong></p><ul><li><strong>CC:</strong> Abdominal pain</li><li><strong>HPI:</strong> Patient presents with a 2-day history of diffuse abdominal pain, primarily located in the epigastric region. Pain is described as dull and cramping, associated with decreased appetite, nausea, and difficulty passing stool. PMH includes GERD. NKDA.</li></ul><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> T 98.6°F, HR 85 bpm, RR 18, BP 120/80 mmHg, O2 Sat 98% on RA</li><li><u>Physical Exam:</u> General: Appears comfortable. Abdomen: Soft, slightly tender to palpation in the epigastric region, bowel sounds hypoactive.</li><li><u>Labs:</u> CBC: WNL, CMP: WNL, Lipase: WNL</li></ul><p><strong>Assessment:</strong></p><ul><li>Acute abdominal pain, likely due to constipation</li></ul><p><strong>Plan:</strong></p><ul><li>Admit to the hospital for observation and bowel regimen</li><li>Stool softener (e.g., docusate sodium)</li><li>Laxative (e.g., polyethylene glycol)</li><li>Encourage increased fluid intake and fiber-rich diet</li><li>Discontinue ibuprofen</li></ul>"
     },
-    {
+    {   "id": "note_2",
         "provider_name": "Michael Palmolivi, MD",
         "provider_specialty": "Gastroenterology",
         "note_type": "Progress Note",
         "note_date": "2024-09-16",
         "note_content": "<p><strong>Date:</strong> 09/16/2024</p><p><strong>Author:</strong> Michael Palmolivi, MD</p><p><strong>Subjective:</strong> Patient reports decreased abdominal pain and improved bowel movements.</p><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> T 98.6°F, HR 80 bpm, RR 18, BP 120/80 mmHg, O2 Sat 98% on RA</li><li><u>Physical Exam:</u> Abdomen: Softer, less tender, bowel sounds hypoactive but present.</li></ul><p><strong>Assessment:</strong></p><ul><li>Improving constipation</li></ul><p><strong>Plan:</strong></p><ul><li>Continue bowel regimen</li><li>Encourage increased fluid intake and fiber-rich diet</li></ul>"
     },
-    {
+    {   "id": "note_3",
         "provider_name": "Michael Palmolivi, MD",
         "provider_specialty": "Gastroenterology",
         "note_type": "Progress Note",
         "note_date": "2024-09-16",
         "note_content": "<p><strong>Date:</strong> 09/16/2024</p><p><strong>Author:</strong> Michael Palmolivi, MD</p><p><strong>Subjective:</strong> Patient reports no abdominal pain and normal bowel movements.</p><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> T 98.6°F, HR 80 bpm, RR 18, BP 120/80 mmHg, O2 Sat 98% on RA</li><li><u>Physical Exam:</u> Abdomen: Soft, non-tender, bowel sounds normoactive.</li></ul><p><strong>Assessment:</strong></p><ul><li>Resolved constipation</li></ul><p><strong>Plan:</strong></p><ul><li>Discharge home</li><li>Continue fiber-rich diet and increased fluid intake</li><li>Avoid NSAIDs</li><li>Follow-up with primary care physician</li></ul>"
     },
-    {
+    {   "id": "note_4",
         "provider_name": "Michael Palmolivi, MD",
         "provider_specialty": "Gastroenterology",
         "note_type": "Discharge Note",
@@ -88,10 +88,9 @@
         "date_end": null,
         "ongoing_at_discharge": true,
         "recommendation": "Deprescribe",
-      "recommendation_notes": [
-      "Patient showing decreased symptoms of GERD.",
-      "No significant acid reflux observed over the last 3 months.",
-      "Alternative non-pharmacological treatments available."]
+        "recommendation_diagnosis": "GERD",
+        "recommendation_reason": "The recommendation is to deprescribe the medication due to the presence of a diagnosis of GERD in the patient's data, which suggests ongoing management of GERD symptoms, but further evaluation is needed to confirm the indication for PPI use in this patient. The patient is taking ibuprofen 800 mg twice daily, which represents chronic NSAID use with potential GI bleeding risk, but this is not the reason for the PPI prescription as the ibuprofen is discontinued",
+        "related_notes_ids": ["note_1", "note_3"]
     },
     {
         "name": "Ibuprofen",
@@ -122,7 +121,7 @@
     {
         "name": "Polyethylene Glycol",
         "category": "Laxative",
-        "dose": "As prescribed",
+        "dose": "17 grams",
         "route": "Oral",
         "frequency": "Daily",
         "indication": "Bowel regimen for constipation",

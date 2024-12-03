@@ -51,28 +51,28 @@
     }
 ],
     "notes": [
-    {
+    {   "id": "note_1",
         "provider_name": "Bianca Gzario, MD",
         "provider_specialty": "Infectious Disease",
         "note_type": "Admission Note",
         "note_date": "2024-09-11",
         "note_content": "<p><strong>Date:</strong> 09/11/2024</p><p><strong>Author:</strong> Bianca Gzario, MD</p><p><strong>Subjective:</strong></p><ul><li><strong>CC:</strong> Right knee pain, swelling, redness</li><li><strong>HPI:</strong> Patient presents with a 3-day history of increasing pain, swelling, and redness in the right knee. PMH includes mild esophagitis. NKDA.</li></ul><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> T 101.2°F, HR 95 bpm, RR 18, BP 120/80 mmHg, O2 Sat 98% on RA</li><li><u>Physical Exam:</u> General: Appears ill. Musculoskeletal: Right knee is red, swollen, warm, and tender to palpation. Fluctuant area noted.</li><li><u>Labs:</u> WBC 15,000/µL, CRP 120 mg/L, ESR 50 mm/hr</li><li><u>Imaging:</u> Knee X-ray: Suggestive of soft tissue infection</li></ul><p><strong>Assessment:</strong></p><ul><li>Acute right knee cellulitis and possible septic arthritis secondary to MRSA infection</li></ul><p><strong>Plan:</strong></p><ul><li>Admit to the hospital for IV antibiotics</li><li>Obtain blood and wound cultures</li><li>Consult Infectious Disease</li><li>Initiate vancomycin IV</li><li>Pain management</li><li>Wound care</li></ul>"
     },
-    {
+    {   "id": "note_2",
         "provider_name": "Bianca Gzario, MD",
         "provider_specialty": "Infectious Disease",
         "note_type": "Progress Note",
         "note_date": "2024-09-12",
         "note_content": "<p><strong>Date:</strong> 09/12/2024</p><p><strong>Author:</strong> Bianca Gzario, MD</p><p><strong>Subjective:</strong> Patient reports persistent knee pain and decreased appetite.</p><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> T 100.5°F, HR 90 bpm, RR 18, BP 120/80 mmHg, O2 Sat 98% on RA</li><li><u>Physical Exam:</u> Right knee: Less erythema, decreased swelling, still tender.</li><li><u>Labs:</u> WBC 12,000/µL, CRP 100 mg/L, ESR 40 mm/hr</li><li><u>Wound Culture:</u> MRSA identified</li></ul><p><strong>Assessment:</strong></p><ul><li>Improving right knee cellulitis, likely septic arthritis</li><li>Mild esophagitis</li></ul><p><strong>Plan:</strong></p><ul><li>Continue vancomycin IV</li><li>Pain management</li><li>Wound care</li><li>Continue esomeprazole 40 mg daily PO</li></ul>"
     },
-    {
+    {   "id": "note_3",
         "provider_name": "Bianca Gzario, MD",
         "provider_specialty": "Infectious Disease",
         "note_type": "Progress Note",
         "note_date": "2024-09-13",
         "note_content": "<p><strong>Date:</strong> 09/13/2024</p><p><strong>Author:</strong> Bianca Gzario, MD</p><p><strong>Subjective:</strong> Patient reports decreased knee pain and improved appetite.</p><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> T 98.6°F, HR 85 bpm, RR 18, BP 120/80 mmHg, O2 Sat 98% on RA</li><li><u>Physical Exam:</u> Right knee: Minimal erythema, decreased swelling, tenderness improving.</li><li><u>Labs:</u> WBC 10,000/µL, CRP 80 mg/L, ESR 30 mm/hr</li></ul><p><strong>Assessment:</strong></p><ul><li>Improving right knee cellulitis and septic arthritis</li></ul><p><strong>Plan:</strong></p><ul><li>Continue vancomycin IV</li><li>Pain management</li><li>Wound care</li><li>Continue esomeprazole 40 mg daily PO</li><li>Discuss potential transition to oral antibiotics</li></ul>"
     },
-    {
+    {   "id": "note_4",
         "provider_name": "Bianca Gzario, MD",
         "provider_specialty": "Infectious Disease",
         "note_type": "Discharge Note",
@@ -107,22 +107,21 @@
         "date_end": null,
         "ongoing_at_discharge": true,
         "recommendation": "Deprescribe",
-      "recommendation_notes": [
-      "Patient showing decreased symptoms of GERD.",
-      "No significant acid reflux observed over the last 3 months.",
-      "Alternative non-pharmacological treatments available."]
+        "recommendation_diagnosis": "Mild Esophagitis",
+        "recommendation_reason": "The recommendation is to deprescribe the medication due to evidence of mild to moderate esophagitis or esophageal inflammation and treated Gastroesophageal Reflux Disease (GERD) or reflux symptoms, as mentioned in the patient's clinician notes on 09/12/2024 and past medical history.", 
+        "related_notes_ids": ["note_1", "note_2"]
     },
     {
-        "name": "Trimethoprim-Sulfamethoxazole",
+        "name": "Linezolid 600mg tablet",
         "category": "Antibiotic",
         "dose": "As prescribed",
         "route": "Oral",
-        "frequency": "Every 12 hours",
+        "frequency": "Take 1 tablet every 12 hours for 14 days",
         "indication": "Post-discharge treatment for MRSA-related cellulitis and septic arthritis",
         "status": "Planned",
         "date_ordered": "2024-09-14",
         "date_start": "2024-09-14",
-        "date_end": null,
+        "date_end": "2024-09-28",
         "ongoing_at_discharge": true
     }
 ]

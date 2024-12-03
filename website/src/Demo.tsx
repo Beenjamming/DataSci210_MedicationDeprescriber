@@ -1,10 +1,15 @@
 import React, { useState } from "react";
-import Box from "@mui/material/Box";
-import { Grid2 as Grid } from "@mui/material";
-import Tab from "@mui/material/Tab";
-import Tabs from "@mui/material/Tabs";
-import Button from "@mui/material/Button";
-import Divider from "@mui/material/Divider";
+import {
+  Box,
+  Grid2 as Grid,
+  Tab,
+  Tabs,
+  Divider,
+  Select,
+  MenuItem,
+  Typography,
+  SelectChangeEvent,
+} from "@mui/material";
 import { styled } from "@mui/material/styles";
 import PatientSummary from "./Demo_summary";
 import PatientNotes from "./Demo_note";
@@ -29,7 +34,7 @@ function CustomTabPanel(props: TabPanelProps) {
       style={{
         height: "calc(88vh - 48px)",
         overflowY: "auto",
-        backgroundColor: value === index ? "#e3f2fd" : "inherit", // Very light blue for active panel
+        backgroundColor: value === index ? "#e3f2fd" : "inherit",
       }}
     >
       {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
@@ -43,85 +48,109 @@ export default function Demo() {
     | "Drew Buck"
     | "Melinda Scott"
     | "Shelton Park"
-    | "Sydney Byrd";
+    | "Sydney Byrd"
+    | "Willow Harper";
 
   const [patientName, setPatientName] = useState<PatientName>("Donny Dunlap");
-
-  // for tabs
   const [value, setValue] = useState(0);
 
   const handleChange = (_: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
-  const handlePatientChange = (name: PatientName) => {
-    setPatientName(name);
+  const handlePatientChange = (event: SelectChangeEvent<PatientName>) => {
+    setPatientName(event.target.value as PatientName);
   };
 
-  // for tabs styling
   const StyledTab = styled(Tab)(({ theme }) => ({
     fontWeight: theme.typography.fontWeightBold,
-    border: "1px solid", // Add a border around the tab
-    borderColor: "#004c8c", // Dark blue border
-    borderBottom: "none", // Remove the underline
-    backgroundColor: "#bbdefb", // Light blue background for unselected tabs
-    position: "relative", // Required for pseudo-element positioning
+    border: "1px solid",
+    borderColor: "#004c8c",
+    borderBottom: "none",
+    backgroundColor: "#bbdefb",
+    position: "relative",
     "&.Mui-selected": {
-      color: "#ffffff", // White text for the selected tab
-      backgroundColor: "#1976d2", // Primary blue for the selected tab
-      borderColor: "#004c8c", // Keep the border consistent
+      color: "#ffffff",
+      backgroundColor: "#1976d2",
+      borderColor: "#004c8c",
       "&::before": {
-        content: '""', // Add a pseudo-element
+        content: '""',
         position: "absolute",
         top: 0,
         left: 0,
         right: 0,
-        height: "4px", // Thickness of the underline
-        backgroundColor: "#004c8c", // Dark blue underline
+        height: "4px",
+        backgroundColor: "#004c8c",
       },
     },
   }));
 
   return (
     <Grid container spacing={0.2} sx={{ height: "100vh", overflow: "hidden" }}>
+      {/* Header Section */}
       <Grid size={12}>
         <Box
-          height="5vh"
+          height="9vh"
           display="flex"
           alignItems="center"
-          justifyContent="space-around"
+          px={4}
           sx={{ bgcolor: "#e3f2fd" }}
         >
-          {(
-            [
-              "Donny Dunlap",
-              "Drew Buck",
-              "Melinda Scott",
-              "Shelton Park",
-              "Sydney Byrd",
-            ] as PatientName[]
-          ).map((name) => (
-            <Button
-              key={name}
-              onClick={() => handlePatientChange(name)}
-              sx={{
-                bgcolor: patientName === name ? "#B8DABF" : "#e3f2fd", // Slightly darker for selected
-                color: "black", // Set text color to black
-                fontWeight: "bold",
-                "&:hover": {
-                  bgcolor: "#B8DABF", // Darker green for hover
-                  color: "black", // Ensure text remains black on hover
-                },
-              }}
-            >
-              {name}
-            </Button>
-          ))}
+          {/* "Select Patient:" Label */}
+          <Typography
+            variant="h6"
+            fontWeight="bold"
+            color="#004c8c"
+            sx={{ mr: 2 }}
+          >
+            Select Patient:
+          </Typography>
+
+          {/* Patient Selector */}
+          <Select
+            value={patientName}
+            onChange={handlePatientChange}
+            displayEmpty
+            sx={{
+              minWidth: 200,
+              bgcolor: "white",
+              borderRadius: 1,
+              "& .MuiSelect-select": { fontWeight: "bold" },
+            }}
+          >
+            {(
+              [
+                "Donny Dunlap",
+                "Drew Buck",
+                "Melinda Scott",
+                "Shelton Park",
+                "Sydney Byrd",
+                "Willow Harper",
+              ] as PatientName[]
+            ).map((name) => (
+              <MenuItem
+                key={name}
+                value={name}
+                sx={{
+                  bgcolor: "white", // White background for menu items
+                  "&:hover": {
+                    bgcolor: "#f5f5f5", // Light gray on hover
+                  },
+                }}
+              >
+                {name}
+              </MenuItem>
+            ))}
+          </Select>
         </Box>
       </Grid>
+
+      {/* Patient Info */}
       <Grid size={2}>
         <PatientInfo patient={patientName} />
       </Grid>
+
+      {/* Tabs Section */}
       <Grid size={10} sx={{ height: "100vh", overflow: "hidden" }}>
         <Box
           display="flex"
@@ -136,12 +165,12 @@ export default function Demo() {
             variant="fullWidth"
             TabIndicatorProps={{
               style: {
-                display: "none", // Hides the default underline indicator
+                display: "none",
               },
             }}
             sx={{
-              bgColor: "#e3f2fd", // Very light blue background
-              borderBottom: "1px solid #004c8c", // Dark blue border below tabs
+              bgColor: "#e3f2fd",
+              borderBottom: "1px solid #004c8c",
             }}
           >
             <StyledTab label="Summary" />

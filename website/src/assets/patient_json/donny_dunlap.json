@@ -73,49 +73,49 @@
       }
   ],
     "notes": [
-    {
+    { "id": "note_1",
       "provider_name": "Andrew Smith, MD",
       "provider_specialty": "Emergency Medicine",
       "note_type": "Admission Note",
       "note_date": "2024-09-07",
       "note_content": "<p><strong>Date:</strong> 09/07/2024&nbsp;</p><p><strong>Author:</strong> Andrew Smith, MD</p><p><strong>Subjective:&nbsp;</strong></p><ul><li><strong>CC:</strong> Altered mental status, abdominal pain, vomiting, and shortness of breath.&nbsp;</li><li><strong>HPI:&nbsp;</strong>A 35-year-old male with a known history of type 1 diabetes mellitus presents to the emergency department with a 3-day history of worsening abdominal pain, vomiting, and altered mental status. He reports poor oral intake and decreased insulin dosing due to illness.&nbsp;</li></ul><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> <strong>T:&nbsp;</strong>101.2 F, <strong>HR:</strong> 120 bpm, <strong>RR</strong> 24, <strong>BP</strong> 100/60 mmHg, <strong>O2</strong> Sat 92% on RA, 70kg&nbsp;</li><li><u>Physical Exam:</u> &nbsp;<ul><li><u>General:</u> Appears ill, lethargic, and dehydrated.&nbsp;</li><li><u>Cardiovascular:</u> Tachycardic, regular rhythm.&nbsp;</li><li><u>Respiratory:</u> Tachypneic, clear lung fields.&nbsp;</li><li><u>Abdomen:</u> Tender to palpation, hypoactive bowel sounds.&nbsp;</li><li><u>Neurological:</u> Somnolent, sluggish pupillary response.&nbsp;</li></ul></li><li><u>Labs:</u> &nbsp;<ul><li><u>CBC:</u> <strong>WBC</strong> 15,000/&micro;L, <strong>Hgb</strong> 12 g/dL, <strong>Hct&nbsp;</strong>36% o</li><li><u>BMP:</u> <strong>Na</strong> 132 mEq/L, <strong>K</strong> 3.5 mEq/L, <strong>Cl</strong> 102 mEq/L, <strong>CO2</strong> 15 mmol/L, <strong>BUN</strong> 20 mg/dL, <strong>Cr</strong> 1.0 mg/dL, <strong>Glucose</strong> 450 mg/dL&nbsp;</li><li><u>ABG</u><u>:</u> <strong>pH</strong> 7.25, <strong>PaCO2</strong> 30 mmHg, <strong>PaO2</strong> 90 mmHg, <strong>HCO3</strong> 12 mmol/L&nbsp;</li><li><u>Urinalysis:</u> <strong>Ketones</strong> ++, <strong>glucose</strong> +++</li></ul></li><li><u>Imaging:</u><ul><li><u>Chest X-ray:</u> Clear lungs&nbsp;</li></ul></li></ul><p><strong>Assessment:</strong>&nbsp;</p><ul><li>Diabetic ketoacidosis (DKA)</li><li>Dehydration</li><li>Acute gastroenteritis</li><li>H Pylori infection (treatment day 10)&nbsp;</li></ul><p><strong>Plan:</strong></p><ul><li>Admit to the medical ICU&nbsp;</li><li>Aggressive fluid resuscitation with normal saline&nbsp;</li><li>Insulin drip initiation&nbsp;</li><li>Electrolyte replacement&nbsp;</li><li>Continuous cardiac monitoring&nbsp;</li><li>Consult endocrinology &nbsp;</li></ul>"
       },
-    {
+    { "id": "note_2",
       "provider_name": "Whitney Trelelis, PharmD",
       "provider_specialty": "Pharmacy",
       "note_type": "Medication Reconciliation",
       "note_date": "2024-09-07",
       "note_content": "<p><strong>Date:</strong> 09/07/2024&nbsp;</p><p><strong>Pharmacist:</strong> Whitney Trelelis, PharmD</p><p><strong>Patient Name:</strong> Donny Dunlap&nbsp;</p><p><strong>Medical Record Number:</strong> 361412</p><p><strong>Home Medications:</strong></p><ul><li>Insulin: lispro 15u per carbohydrate exchange 40:1 correction ratio, glargine 15 units daily at bedtime - Continued as per endocrinology consult</li><li>H. pylori Treatment: &nbsp;<ul><li>Omeprazole: 40mg twice daily - Day 10 of 14-day course&nbsp;</li><li>Clarithromycin: 500mg twice daily - Day 10 of 14-day course&nbsp;</li><li>Amoxicillin: 500mg twice daily - Day 10 of 14-day course&nbsp;</li></ul></li></ul><p>Hospital Medications:</p><ul><li>Insulin: 6u/h - IV insulin drip&nbsp;</li><li>Normal Saline: 60mL/h - IV fluid&nbsp;</li><li>Potassium Chloride: 20mEq/L- IV supplement&nbsp;</li></ul><p>Recommendations:&nbsp;</p><ul><li>Continue home medications as prescribed upon discharge.&nbsp;</li><li>Schedule a follow-up H. pylori test in 4 weeks.&nbsp;</li><li>Monitor blood glucose levels closely and adjust insulin dosing as needed.&nbsp;</li><li>Advise patient to contact their primary care physician or endocrinologist for any concerns or questions. &nbsp;</li></ul><p><br></p>"      
     },
-    {
+    { "id": "note_3",
       "provider_name": "Sarah Burlington, MD",
       "provider_specialty": "Endocrinology",
       "note_type": "Progress Note",
       "note_date": "2024-09-08",
       "note_content": "<p><strong>Date:</strong> 09/08/2024</p><p><strong>Author:</strong> Sarah Burlington, MD</p><p><strong>Subjective:</strong></p><ul><li>Patient remains lethargic but is arousable to voice.</li><li>Reports persistent nausea and abdominal pain.</li></ul><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> T 99.8&deg;F, HR 100 bpm, RR 20, BP 110/70 mmHg, O2 Sat 95% on RA</li><li><u>Physical Exam:</u><ul><li><u>General:</u> Less lethargic, improved skin turgor.</li><li><u>Cardiovascular:</u> Tachycardic, regular rhythm.</li><li><u>Respiratory:</u> Tachypneic, clear lung fields.</li><li><u>Abdomen:</u> Soft, tenderness improving.</li><li><u>Neurological:</u> Arousable, oriented to person, place, and time.</li></ul></li><li><u>Labs:</u><ul><li><u>BMP:</u> Na 135 mEq/L, K 4.0 mEq/L, Cl 105 mEq/L, CO2 20 mmol/L, BUN 18 mg/dL, Cr 1.1 mg/dL, Glucose 150 mg/dL</li><li><u>ABG:</u> pH 7.35, PaCO2 35 mmHg, PaO2 92 mmHg, HCO3 20 mmol/L</li></ul></li></ul><p><strong>Assessment:</strong></p><ul><li>Improving DKA</li><li>Mild dehydration</li></ul><p><strong>Plan:</strong></p><ul><li>Continue insulin drip and electrolyte replacement</li><li>Advance diet as tolerated</li><li>Monitor for hypoglycemia</li></ul>"
       },
-    {
+    { "id": "note_4",
       "provider_name": "Victoria Reynalds, MD",
       "provider_specialty": "Endocrinology",
       "note_type": "Progress Note",
       "note_date": "2024-09-09",
       "note_content": "<p><strong>Date:</strong> 09/09/2024</p><p><strong>Author:</strong> Victoria Reynalds, MD</p><p><strong>Subjective:</strong></p><ul><li>Patient reports feeling less nauseous and abdominal pain has improved.</li></ul><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> T 98.6&deg;F, HR 90 bpm, RR 18, BP 115/75 mmHg, O2 Sat 96% on RA</li><li><u>Physical Exam:</u><ul><li><u>General:</u> Improved mental status, alert and oriented.</li><li><u>Cardiovascular:</u> Regular rhythm, no murmurs.</li><li><u>Respiratory:</u> Clear lung fields.</li><li><u>Abdomen:</u> Soft, mild tenderness.</li><li><u>Neurological:</u> Normal neurological exam.</li></ul></li><li><u>Labs:</u><ul><li><u>BMP:</u> Na 136 mEq/L, K 4.2 mEq/L, Cl 104 mEq/L, CO2 22 mmol/L, BUN 16 mg/dL, Cr 1.0 mg/dL, Glucose 120 mg/dL</li><li><u>ABG:</u> pH 7.40, PaCO2 40 mmHg, PaO2 95 mmHg, HCO3 24 mmol/L</li></ul></li></ul><p><strong>Assessment:</strong></p><ul><li>Significant improvement in DKA</li><li>Resolving gastroenteritis</li></ul><p><strong>Plan:</strong></p><ul><li>Continue insulin drip and taper as needed</li><li>Advance diet as tolerated</li><li>Consult gastroenterology for H. pylori treatment</li></ul>"
       },
-    {
+    { "id": "note_5",
       "provider_name": "Victoria Reynalds, MD",
       "provider_specialty": "Endocrinology",
       "note_type": "Progress Note",
       "note_date": "2024-09-11",
         "note_content": "<p><strong>Date:</strong> 09/11/2024</p><p><strong>Author:</strong> Victoria Reynalds, MD</p><p><strong>Subjective:</strong></p><ul><li>Patient reports feeling much better. No nausea or vomiting.</li><li>Abdominal pain has resolved.</li></ul><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> T 98.2&deg;F, HR 85 bpm, RR 16, BP 120/80 mmHg, O2 Sat 98% on RA</li><li><u>Physical Exam:</u><ul><li><u>General:</u> Appears well, alert, and oriented.</li><li><u>Cardiovascular:</u> Regular rhythm, no murmurs.</li><li><u>Respiratory:</u> Clear lung fields.</li><li><u>Abdomen:</u> Soft, non-tender.</li><li><u>Neurological:</u> Normal neurological exam.</li></ul></li><li><u>Labs:</u><ul><li><u>BMP:</u> Normal electrolytes</li><li><u>HgbA1c:</u> 8.5%</li></ul></li></ul><p><strong>Assessment:</strong></p><ul><li>Resolved DKA</li><li>Improved glycemic control</li><li>Discontinued H. pylori treatment</li></ul><p><strong>Plan:</strong></p><ul><li>Discontinue insulin drip and transition to subcutaneous insulin</li><li>Continue H. pylori treatment</li><li>Advance diet as tolerated</li><li>Plan for discharge</li></ul>"
       },
-    {
+    { "id": "note_6",
       "provider_name": "Victoria Reynalds, MD",
       "provider_specialty": "Endocrinology",
       "note_type": "Progress Note",
       "note_date": "2024-09-12",
       "note_content": "<p><strong>Date:</strong> 09/12/2024</p><p><strong>Author:</strong> Victoria Reynalds, MD</p><p><strong>Subjective:</strong></p><ul><li>Patient reports feeling well. Tolerating diet well.</li></ul><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> Stable vital signs</li><li><u>Physical Exam:</u> Unremarkable physical exam</li><li><u>Labs:</u><ul><li><u>BMP:</u> Normal electrolytes</li><li><u>HgbA1c:</u> Stable</li></ul></li></ul><p><strong>Assessment:</strong></p><ul><li>Stable clinical condition</li><li>Tolerating oral intake</li></ul><p><strong>Plan:</strong></p><ul><li>Continue current medical management</li><li>Anticipate discharge in the next 24-48 hours</li></ul>"
       },
-      {
+      { "id": "note_7",
         "provider_name": "Andrew Smith, MD",
         "provider_specialty": "Endocrinology",
         "note_type": "Discharge Summary",
@@ -125,19 +125,19 @@
         
   ],
     "medication_orders": [
-    {
-      "name": "Insulin Lispro",
-      "category": "Antidiabetic",
-      "dose": "6 units/hour",
-      "route": "IV",
-      "frequency": "Continuous",
-      "indication": "Diabetic ketoacidosis (DKA)",
-      "status": "Ongoing",
-      "date_ordered": "2024-09-07",
-      "date_start": "2024-09-07",
-      "date_end": "2024-09-09",
-      "ongoing_at_discharge": false
-    },
+      {
+        "name": "Insulin Lispro",
+        "category": "Antidiabetic",
+        "dose": "2 units per 15 grams of carbs per carbohydrate ratio",
+        "route": "Subcutaneous",
+        "frequency": "With meals as directed",
+        "indication": "Short acting glycemic control",
+        "status": "New medication",
+        "date_ordered": "2024-09-09",
+        "date_start": "2024-09-09",
+        "date_end": null,
+        "ongoing_at_discharge": true
+      },
     {
       "name": "Normal Saline",
       "category": "Fluids",
@@ -189,12 +189,10 @@
       "date_start": "2024-08-28",
       "date_end": "2024-09-11",
       "ongoing_at_discharge": false,
-      "recommendation": "Deprescribe",
-      "recommendation_notes": [
-      "Patient showing decreased symptoms of GERD.",
-      "No significant acid reflux observed over the last 3 months.",
-      "Alternative non-pharmacological treatments available."
-    ]
+      "recommendation": "Stop",
+      "recommendation_diagnosis": "Completed Heliobacter Pylori (H. Pylori) infection treated for 14 days with combination therapy",
+      "recommendation_reason": "The recommendation is to stop the medication as the patient has completed H. pylori treatment and is scheduled for a follow-up test, indicating that the patient has a Completed Heliobacter Pylori (H. Pylori) infection treated for 14 days with combination therapy.",
+      "related_notes_ids": ["note_1", "note_2", "note_5"]
     },
     {
       "name": "Clarithromycin",

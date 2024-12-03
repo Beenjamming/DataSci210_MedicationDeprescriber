@@ -1,0 +1,175 @@
+{
+    "patient_id": "583742",
+    "name": "Willow Harper",
+    "age": 45,
+    "gender": "Female",
+    "race": "unknown",
+    "DOB": "9/15/1979",
+    "precautions": "None",
+    "provider": {"name": "Michael Palmolivi",
+  "provider_specialty":"Internal Medicine"},
+    "allergies": "None",
+"summary_visit": {
+    "AdmissionDate": "09-15-2024",
+    "visit_reason": "Influenza A infection",
+    "AdmissionSummary": "A 45-year-old female with a history of hypertension, hyperlipidemia, and arthritis was admitted on 09/15/2024 with acute influenza A infection following a 2-day history of fever, cough, sore throat, and body aches. On admission, she was febrile and appeared ill, with a positive rapid antigen test confirming influenza A. Laboratory findings included an elevated white blood cell count of 12,000/µL, with other labs within normal limits. Initial management included supportive care with hydration, antipyretics (acetaminophen), and a cough suppressant (dextromethorphan). During the hospital course, the patient showed gradual improvement in symptoms, with decreased fever and resolution of the cough by 09/17/2024."
+},
+    "admission_diagnoses": [
+      {
+        "condition": "Arthritis"
+      },
+      {
+        "condition": "Hypertension"
+      },
+      {
+        "condition": "Hyperlipidemia"
+      }
+    ],
+    "acquired_diagnoses": [
+      {
+        "condition": "Unspecified"
+      }
+    ],
+    "medications": [
+        {
+            "name": "Esomeprazole",
+            "dosage": "40 mg daily",
+            "reason": "Management of GERD"
+        },
+        {
+            "name": "Lisinopril",
+            "dosage": "20 mg daily",
+            "reason": "Management of hypertension"
+        },
+        {
+            "name": "Atorvastatin",
+            "dosage": "40 mg daily",
+            "reason": "Management of hyperlipidemia"
+        },
+        {
+            "name": "Docusate Sodium",
+            "dosage": "As prescribed",
+            "reason": "Stool softener for constipation"
+        },
+        {
+            "name": "Polyethylene Glycol",
+            "dosage": "As prescribed",
+            "reason": "Laxative for constipation"
+        },
+        {
+            "name": "Acetaminophen",
+            "dosage": "As needed for fever",
+            "reason": "Antipyretic for fever"
+        },
+        {
+            "name": "Dextromethorphan",
+            "dosage": "As needed for cough",
+            "reason": "Cough suppressant for influenza symptoms"
+        }
+    ],
+    "notes": [
+    { "id": "note_1",
+        "provider_name": "Michael Palmolivi, MD",
+        "provider_specialty": "Gastroenterology",
+        "note_type": "Admission Note",
+        "note_date": "2024-09-15",
+        "note_content": "<p><strong>Date:</strong> 09/15/2024</p><p><strong>Author:</strong> Michael Palmolivi, MD</p><p><strong>Subjective:</strong></p><ul><li><strong>CC:</strong> Fever, cough, body aches</li><li><strong>HPI:</strong> Patient presents with a 2-day history of fever, cough, sore throat, and body aches. PMH includes arthritis, hypertension, hyperlipidemia. Medications: Esomeprazole 40 mg daily PO, Lisinopril 20 mg daily, Atorvastatin 40 mg daily, [Arthritis medications]. Allergies: NKDA.</li></ul><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> T 101.5°F, HR 95 bpm, RR 20, BP 130/80 mmHg, O2 Sat 96% on RA</li><li><u>Physical Exam:</u> General: Appears ill. Cardiovascular: RRR, no murmurs, rubs, or gallops. Respiratory: Clear lung sounds bilaterally, mild cough. Abdomen: Soft, non-tender, non-distended. Throat: Erythematous pharynx.</li><li><u>Labs:</u> Influenza A positive by rapid antigen test. CBC: WBC 12,000/µL. CMP: WNL.</li></ul><p><strong>Assessment:</strong></p><ul><li>Acute influenza A infection</li></ul><p><strong>Plan:</strong></p><ul><li>Admit to the hospital for supportive care and monitoring</li><li>Rest, hydration</li><li>Antipyretics (e.g., acetaminophen)</li><li>Cough suppressant (e.g., dextromethorphan)</li></ul>"
+    },
+    {   "id": "note_2",
+        "provider_name": "Michael Palmolivi, MD",
+        "provider_specialty": "Gastroenterology",
+        "note_type": "Progress Note",
+        "note_date": "2024-09-16",
+        "note_content": "<p><strong>Date:</strong> 09/16/2024</p><p><strong>Author:</strong> Michael Palmolivi, MD</p><p><strong>Subjective:</strong></p><ul><li>Patient Report: Persistent cough, mild fatigue</li></ul><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> T 100.2°F, HR 85 bpm, RR 18, BP 120/80 mmHg, O2 Sat 98% on RA</li><li><u>Physical Exam:</u> Respiratory: Improved lung sounds, less productive cough.</li></ul><p><strong>Assessment:</strong></p><ul><li>Improving influenza A infection</li></ul><p><strong>Plan:</strong></p><ul><li>Continue supportive care</li></ul>"
+    },
+    {   "id": "note_3",
+        "provider_name": "Michael Palmolivi, MD",
+        "provider_specialty": "Gastroenterology",
+        "note_type": "Progress Note",
+        "note_date": "2024-09-17",
+        "note_content": "<p><strong>Date:</strong> 09/17/2024</p><p><strong>Author:</strong> Michael Palmolivi, MD</p><p><strong>Subjective:</strong></p><ul><li>Patient Report: Decreased symptoms, feeling better</li></ul><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> T 98.6°F, HR 80 bpm, RR 18, BP 120/80 mmHg, O2 Sat 98% on RA</li><li><u>Physical Exam:</u> Respiratory: Clear lung sounds, no cough.</li></ul><p><strong>Assessment:</strong></p><ul><li>Resolving influenza A infection</li></ul><p><strong>Plan:</strong></p><ul><li>Discharge home</li><li>Continue rest, hydration</li><li>Follow-up with primary care physician as needed</li></ul>"
+    },
+    {   "id": "note_4",
+        "provider_name": "Michael Palmolivi, MD",
+        "provider_specialty": "Gastroenterology",
+        "note_type": "Discharge Note",
+        "note_date": "2024-09-18",
+        "note_content": "<p><strong>Date:</strong> 09/18/2024</p><p><strong>Author:</strong> Michael Palmolivi, MD</p><p><strong>Subjective:</strong></p><ul><li>Summary of Hospital Course: Patient was admitted with acute influenza A infection. Treated with supportive care. Patient has clinically improved.</li></ul><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> T 98.6°F, HR 80 bpm, RR 18, BP 120/80 mmHg, O2 Sat 98% on RA</li><li><u>Physical Exam:</u> General: Appears well. Respiratory: Clear lung sounds.</li></ul><p><strong>Assessment:</strong></p><ul><li>Resolved influenza A infection</li></ul><p><strong>Plan:</strong></p><ul><li>Discharge home</li><li>Continue rest, hydration</li><li>Continue Lisinopril 20 mg daily and Atorvastatin 40 mg daily</li><li>Follow-up with primary care physician as needed</li></ul>"
+    }
+    
+],
+    "medication_orders": [
+    {
+        "name": "Esomeprazole",
+        "category": "Proton Pump Inhibitor",
+        "dose": "40 mg",
+        "route": "Oral",
+        "frequency": "Daily",
+        "indication": "",
+        "status": "Ongoing",
+        "date_ordered": "2024-09-15",
+        "date_start": "2024-09-15",
+        "date_end": null,
+        "ongoing_at_discharge": true,
+        "recommendation": "Deprescribe",
+        "recommendation_diagnosis": "No Diagnosis",
+        "recommendation_reason": "No diagnoses found in notes",
+        "related_notes_ids":[]
+    },
+    {
+        "name": "Ibuprofen",
+        "category": "NSAID",
+        "dose": "800 mg",
+        "route": "Oral",
+        "frequency": "Twice daily",
+        "indication": "Pain management",
+        "status": "Discontinued",
+        "date_ordered": "2024-09-15",
+        "date_start": "2024-09-15",
+        "date_end": "2024-09-15",
+        "ongoing_at_discharge": false
+    },
+    {
+        "name": "Docusate Sodium",
+        "category": "Stool Softener",
+        "dose": "As prescribed",
+        "route": "Oral",
+        "frequency": "Daily",
+        "indication": "Bowel regimen for constipation",
+        "status": "Ongoing",
+        "date_ordered": "2024-09-15",
+        "date_start": "2024-09-15",
+        "date_end": null,
+        "ongoing_at_discharge": true
+    },
+    {
+        "name": "Polyethylene Glycol",
+        "category": "Laxative",
+        "dose": "17 grams",
+        "route": "Oral",
+        "frequency": "Daily",
+        "indication": "Bowel regimen for constipation",
+        "status": "Ongoing",
+        "date_ordered": "2024-09-15",
+        "date_start": "2024-09-15",
+        "date_end": null,
+        "ongoing_at_discharge": true
+    },
+    {
+        "name": "Acetaminophen",
+        "category": "Analgesic/Antipyretic",
+        "dose": "500 mg",
+        "route": "Oral",
+        "frequency": "As needed",
+        "indication": "Pain or fever management",
+        "status": "Ongoing",
+        "date_ordered": "2024-09-15",
+        "date_start": "2024-09-15",
+        "date_end": null,
+        "ongoing_at_discharge": true
+    }
+]
+
+  }
+
+  

@@ -3,6 +3,7 @@ import drew from "./assets/patient_json/drew_buck.json";
 import melinda from "./assets/patient_json/melinda_scott.json";
 import shelton from "./assets/patient_json/shelton_park.json";
 import sydney from "./assets/patient_json/sydney_byrd.json";
+import willow from "./assets/patient_json/willow_harper.json";
 
 interface Diagnosis {
   condition: string;
@@ -20,6 +21,7 @@ interface Medication {
   reason: string;
 }
 interface Notes {
+  id: string;
   provider_name: string;
   provider_specialty: string;
   note_type: string;
@@ -40,7 +42,9 @@ interface Orders {
   date_end: string | null;
   ongoing_at_discharge: boolean;
   recommendation?: string;
-  recommendation_notes?: string[];
+  recommendation_diagnosis?: string;
+  recommendation_reason?: string;
+  related_notes_ids?: string[];
 }
 
 interface Provider {
@@ -71,11 +75,13 @@ export type PatientName =
   | "Drew Buck"
   | "Melinda Scott"
   | "Shelton Park"
-  | "Sydney Byrd";
+  | "Sydney Byrd"
+  | "Willow Harper";
 export const patientData: Record<PatientName, Patient> = {
   "Donny Dunlap": donny,
   "Drew Buck": drew,
   "Melinda Scott": melinda,
   "Shelton Park": shelton,
   "Sydney Byrd": sydney,
+  "Willow Harper": willow,
 };

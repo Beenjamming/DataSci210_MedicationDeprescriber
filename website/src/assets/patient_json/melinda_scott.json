@@ -73,35 +73,35 @@
         }
     ], 
     "notes": [
-        {
+        {   "id": "note_1",
             "provider_name": "Michael Davis, MD",
             "provider_specialty": "Cardiology",
             "note_type": "Admission Note",
             "note_date": "2024-09-22",
             "note_content": "<p><strong>Date:</strong> 09/22/2024</p><p><strong>Author:</strong> Michael Davis, MD</p><p><strong>Subjective:</strong></p><ul><li><strong>CC:</strong> Chest pain, shortness of breath</li><li><strong>HPI:</strong> A 65-year-old presents to the emergency department with chest pain and shortness of breath. The patient has a history of atrial fibrillation, hypertension, and hyperlipidemia. The chest pain started 2 hours ago and is described as pressure-like, radiating to the left arm. The patient also reports shortness of breath and diaphoresis.</li></ul><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> BP 140/90, HR 110, RR 20, T 98.6, O2 Sat 95% on RA</li><li><u>Physical Exam:</u> Chest: Clear to auscultation, no murmurs, rubs, or gallops, no JVD</li><li><u>Labs:</u> Troponin: 2.0 ng/mL, CK-MB: 20 U/L, BNP: 100 pg/mL</li><li><u>ECG:</u> Sinus tachycardia, no ST-segment changes</li></ul><p><strong>Assessment:</strong></p><ul><li>Acute myocardial infarction (MI)</li><li>Atrial fibrillation</li><li>Hypertension</li><li>Hyperlipidemia</li></ul><p><strong>Plan:</strong></p><ul><li>Admit to the cardiac ICU</li><li>Medications: Aspirin 81 mg daily, Clopidogrel 75 mg daily, Metoprolol 25 mg BID, Benzazepril 10 mg daily, Atorvastatin 40 mg daily, Apixaban 5 mg BID</li><li>Procedures: Continuous ECG monitoring, Cardiac enzyme monitoring</li><li>Consult cardiology</li></ul>"
         },
-        {
+        {   "id": "note_2",
             "provider_name": "Sarah Lee, MD",
             "provider_specialty": "Cardiology",
             "note_type": "Progress Note",
             "note_date": "2024-09-23",
             "note_content": "<p><strong>Date:</strong> 09/23/2024</p><p><strong>Author:</strong> Sarah Lee, MD</p><p><strong>Subjective:</strong> Patient condition: Unstable, requiring intensive care.</p><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> [As above]</li><li><u>Physical Exam:</u> [As above]</li><li><u>Labs:</u> [As above]</li><li><u>ECG:</u> [As above]</li></ul><p><strong>Assessment:</strong></p><ul><li>Acute myocardial infarction</li><li>Atrial fibrillation</li><li>Hemodynamic instability</li></ul><p><strong>Plan:</strong></p><ul><li>Medications: Continue medications from admission note, Add Pantoprazole 40 mg daily for stress ulcer prophylaxis</li><li>Procedures: Continuous ECG monitoring, Invasive hemodynamic monitoring (if needed), Consider PCI or CABG</li></ul>"
         },
-        {
+        {   "id": "note_3",
             "provider_name": "Sarah Lee, MD",
             "provider_specialty": "Cardiology",
             "note_type": "Progress Note",
             "note_date": "2024-09-24",
             "note_content": "<p><strong>Date:</strong> 09/24/2024</p><p><strong>Author:</strong> Sarah Lee, MD</p><p><strong>Subjective:</strong> Symptoms: Dysuria, urgency, frequency, suprapubic pain.</p><p><strong>Objective:</strong></p><ul><li><u>Urine Analysis:</u> Leukocyte esterase positive, nitrite positive, bacteria present</li><li><u>Urine Culture:</u> Pending</li></ul><p><strong>Assessment:</strong></p><ul><li>Urinary tract infection</li></ul><p><strong>Plan:</strong></p><ul><li>Medications: Start empiric antibiotic therapy (Ciprofloxacin 500 mg twice daily) pending culture results</li></ul>"
         },
-        {
+        {   "id": "note_4",
             "provider_name": "John Baxter, MD",
             "provider_specialty": "Cardiology",
             "note_type": "Progress Note",
             "note_date": "2024-09-26",
             "note_content": "<p><strong>Date:</strong> 09/26/2024</p><p><strong>Author:</strong> John Baxter, MD</p><p><strong>Subjective:</strong> Patient reports mild fatigue but no chest pain or shortness of breath.</p><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> BP 120/80 mmHg, HR 80 bpm, RR 18, T 98.6°F, O2 Sat 98% on room air</li><li><u>Physical Exam:</u> Cardiovascular: Regular rate and rhythm, no murmurs, rubs, or gallops. Respiratory: Clear lung sounds bilaterally. Abdomen: Soft, non-tender, non-distended. Extremities: No edema.</li></ul><p><strong>Assessment:</strong></p><ul><li>Stable post-MI</li><li>Atrial fibrillation</li><li>Hypertension</li><li>Hyperlipidemia</li><li>UTI, resolving</li></ul><p><strong>Plan:</strong></p><ul><li>Continue current medication regimen</li><li>Monitor for any new symptoms or complications</li><li>Schedule cardiology follow-up</li></ul>"
         },
-        {
+        {"id": "note_5",
             "provider_name": "John Baxter, MD",
             "provider_specialty": "Cardiology",
             "note_type": "Discharge Note",
@@ -168,7 +168,7 @@
         "category": "Statin",
         "dose": "40 mg",
         "route": "Oral",
-        "frequency": "Daily",
+        "frequency": "Daily at bedtime",
         "indication": "Management of hyperlipidemia",
         "status": "Ongoing",
         "date_ordered": "2024-09-22",
@@ -194,18 +194,17 @@
         "category": "Proton Pump Inhibitor",
         "dose": "40 mg",
         "route": "Oral",
-        "frequency": "Daily",
+        "frequency": "Take 1 tablet by mouth daily in the morning",
         "indication": "Stress ulcer prophylaxis",
         "status": "Ongoing",
         "date_ordered": "2024-09-23",
         "date_start": "2024-09-23",
         "date_end": null,
         "ongoing_at_discharge": true,
-        "recommendation": "Deprescribe",
-      "recommendation_notes": [
-      "Patient showing decreased symptoms of GERD.",
-      "No significant acid reflux observed over the last 3 months.",
-      "Alternative non-pharmacological treatments available."]
+        "recommendation": "Stop",
+        "recommendation_diagnosis": "Stress Ulcer Prophylaxis",
+      "recommendation_reason": "The recommendation is to stop the medication as the diagnosis indicates the patient is receiving Pantoprazole 40 mg daily for stress ulcer prophylaxis in an ICU setting, which is a standard preventative measure, but this indication is not a long-term requirement.",
+      "related_notes_ids": ["note_2"]
     },
     {
         "name": "Ciprofloxacin",
@@ -221,6 +220,7 @@
         "ongoing_at_discharge": false
     }
 ]
+
   }
 
   

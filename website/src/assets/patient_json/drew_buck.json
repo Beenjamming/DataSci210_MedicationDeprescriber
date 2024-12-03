@@ -12,7 +12,7 @@
     "summary_visit": {
       "AdmissionDate": "09-15-2024",
       "visit_reason": "COPD exacerbation",
-      "AdmissionSummary": "A 67-year-old male with a history of COPD was admitted on 09/15/2024 for a COPD exacerbation following a 3-day history of worsening shortness of breath, productive cough, and increased sputum production. He also has a history of GERD managed with pantoprazole. On admission, he was tachypneic, using accessory muscles for respiration, with bilateral rales and decreased breath sounds at lung bases. Initial management included supplemental oxygen therapy, bronchodilator therapy with nebulized albuterol and ipratropium, corticosteroid therapy, and continuation of pantoprazole. Diagnostics included a chest X-ray and blood gas analysis. Pulmonary medicine consultation was obtained. Over subsequent days, the patient showed significant improvement in respiratory symptoms and oxygenation. By 09/18/2024, his symptoms had resolved, and he was transitioned to outpatient management."
+      "AdmissionSummary": "A 67-year-old male with a history of COPD was admitted on 09/15/2024 for a COPD exacerbation following a 3-day history of worsening shortness of breath, productive cough, and increased sputum production. He also has a history of GERD managed with pantoprazole. On admission, he was tachypneic, using accessory muscles for respiration, with bilateral rales and decreased breath sounds at lung bases. Initial management included supplemental oxygen therapy, bronchodilator therapy with nebulized albuterol and ipratropium, corticosteroid therapy, and continuation of pantoprazole. Diagnostics included a chest X-ray and blood gas analysis. Pulmonary medicine consultation was obtained. Over subsequent days, the patient showed significant improvement in respiratory symptoms and oxygenation."
     },
     "admission_diagnoses": [
       {
@@ -67,6 +67,7 @@
     ],      
     "notes": [
     {
+      "id": "note_1",
       "provider_name": "Emily Chen, MD",
       "provider_specialty": "Pulmonary Medicine",
       "note_type": "Admission Note",
@@ -74,6 +75,7 @@
       "note_content": "<p><strong>Date:</strong> 09/15/2024</p><p><strong>Author:</strong> Emily Chen, MD</p><p><strong>Subjective:</strong></p><ul><li><strong>CC:</strong> Shortness of breath, cough, and increased sputum production.</li><li><strong>HPI:</strong> A 67-year-old male with a history of COPD presents to the emergency department with a 3-day history of worsening shortness of breath, productive cough, and increased sputum production. He reports increased dyspnea on exertion and orthopnea. He also reports a history of GERD and takes pantoprazole 40 mg daily.</li></ul><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> T 98.6°F, HR 100 bpm, RR 24, BP 130/80 mmHg, O2 Sat 88% on RA</li><li><u>Physical Exam:</u><ul><li><u>General:</u> Appears ill, tachypneic, and using accessory muscles of respiration.</li><li><u>Cardiovascular:</u> Tachycardic, regular rhythm.</li><li><u>Respiratory:</u> Rales bilaterally, decreased breath sounds at lung bases.</li><li><u>Abdomen:</u> Soft, non-tender.</li><li><u>Extremities:</u> No edema.</li></ul></li><li><u>Medication Reconciliation:</u> Ibuprofen 400 mg TID PRN pain, albuterol inhaler PRN, ipratropium inhaler daily, pantoprazole 40 mg daily, flovent inhaler BID</li></ul><p><strong>Assessment:</strong></p><ul><li>COPD exacerbation</li><li>GERD</li></ul><p><strong>Plan:</strong></p><ul><li>Admit to the medical floor</li><li>Supplemental oxygen therapy</li><li>Bronchodilator therapy (albuterol and ipratropium nebulizers)</li><li>Corticosteroid therapy (prednisone)</li><li>Pantoprazole 40 mg daily PO</li><li>Chest X-ray</li><li>Blood gas analysis</li><li>Consult pulmonary medicine</li></ul>"
       },
     {
+      "id": "note_2",
       "provider_name": "Michael Davis, MD",
       "provider_specialty": "Pulmonary Medicine",
       "note_type": "Progress Note",
@@ -81,6 +83,7 @@
       "note_content": "<p><strong>Date:</strong> 09/16/2024</p><p><strong>Author:</strong> Michael Davis, MD</p><p><strong>Subjective:</strong> Patient reports improvement in shortness of breath and cough. Denies chest pain or fevers.</p><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> T 98.6°F, HR 90 bpm, RR 20, BP 120/80 mmHg, O2 Sat 92% on 2 L NC</li><li><u>Physical Exam:</u><ul><li><u>General:</u> Improved respiratory effort.</li><li><u>Cardiovascular:</u> Regular rhythm, no murmurs.</li><li><u>Respiratory:</u> Rhonchi persisting in bilateral lung bases.</li><li><u>Abdomen:</u> Soft, non-tender.</li><li><u>Extremities:</u> No edema.</li></ul></li></ul><p><strong>Assessment:</strong> Improving COPD exacerbation</p><p><strong>Plan:</strong></p><ul><li>Continue current medical management</li><li>Consider adding antibiotics if evidence of infection</li><li>Pulmonary rehabilitation consult</li></ul>"
     },
     {
+      "id": "note_3",
       "provider_name": "Emily Chen, MD",
       "provider_specialty": "Pulmonary Medicine",
       "note_type": "Progress Note",
@@ -88,6 +91,7 @@
       "note_content": "<p><strong>Date:</strong> 09/17/2024</p><p><strong>Author:</strong> Emily Chen, MD</p><p><strong>Subjective:</strong> Patient reports continued improvement in symptoms. Denies chest pain, fever, or worsening shortness of breath.</p><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> T 98.6°F, HR 85 bpm, RR 18, BP 125/80 mmHg, O2 Sat 94% on RA</li><li><u>Physical Exam:</u><ul><li><u>General:</u> Appears comfortable.</li><li><u>Cardiovascular:</u> Regular rhythm, no murmurs.</li><li><u>Respiratory:</u> Decreased rhonchi bilaterally.</li><li><u>Abdomen:</u> Soft, non-tender.</li><li><u>Extremities:</u> No edema.</li></ul></li></ul><p><strong>Assessment:</strong> Significant improvement in COPD exacerbation</p><p><strong>Plan:</strong></p><ul><li>Continue current medical management</li><li>Discuss discharge planning with patient</li></ul>"
     },
     {
+        "id": "note_4",
         "provider_name": "Sarah Lee, MD",
         "provider_specialty": "Pulmonary Medicine",
         "note_type": "Progress Note",
@@ -95,6 +99,7 @@
         "note_content": "<p><strong>Date:</strong> 09/18/2024</p><p><strong>Author:</strong> Sarah Lee, MD</p><p><strong>Subjective:</strong> Patient reports feeling much better. Minimal cough and shortness of breath.</p><p><strong>Objective:</strong></p><ul><li><u>Vitals:</u> T 98.6°F, HR 80 bpm, RR 16, BP 120/80 mmHg, O2 Sat 96% on RA</li><li><u>Physical Exam:</u><ul><li><u>General:</u> Appears well.</li><li><u>Cardiovascular:</u> Regular rhythm, no murmurs.</li><li><u>Respiratory:</u> Clear lung fields.</li><li><u>Abdomen:</u> Soft, non-tender.</li><li><u>Extremities:</u> No edema.</li></ul></li></ul><p><strong>Assessment:</strong> Resolved COPD exacerbation</p><p><strong>Plan:</strong></p><ul><li>Discuss discharge planning with patient</li><li>Counsel patient on the risks of long-term ibuprofen use and recommend switching to acetaminophen for pain relief</li><li>Instruct patient to limit ibuprofen use to occasional use and to consult with their primary care physician before starting any new medications</li></ul>"
       },
       {
+        "id": "note_5",
         "provider_name": "Sarah Lee, MD",
         "provider_specialty": "Pulmonary Medicine",
         "note_type": "Discharge Summary",
@@ -106,7 +111,7 @@
     {
       "name": "Albuterol Inhaler",
       "category": "Bronchodilator",
-      "dose": "As needed",
+      "dose": "1-2 puffs every 6 hours as needed",
       "route": "Inhalation",
       "frequency": "PRN",
       "indication": "COPD exacerbation",
@@ -119,7 +124,7 @@
     {
       "name": "Ipratropium Inhaler",
       "category": "Bronchodilator",
-      "dose": "As prescribed",
+      "dose": "1 inhalation daily",
       "route": "Inhalation",
       "frequency": "Daily",
       "indication": "COPD management",
@@ -132,7 +137,7 @@
     {
       "name": "Fluticasone (Flovent) Inhaler",
       "category": "Inhaled Corticosteroid",
-      "dose": "As prescribed",
+      "dose": "1 puff twice daily",
       "route": "Inhalation",
       "frequency": "BID",
       "indication": "COPD management",
@@ -154,17 +159,15 @@
       "date_start": "2024-09-15",
       "date_end": null,
       "ongoing_at_discharge": true,
-      "recommendation": "Deprescribe",
-      "recommendation_notes": [
-      "Patient showing decreased symptoms of GERD.",
-      "No significant acid reflux observed over the last 3 months.",
-      "Alternative non-pharmacological treatments available."
-    ]
+      "recommendation": "Continue",
+      "recommendation_diagnosis": "Chronic NSAID Use",
+      "recommendation_reason": "The recommendation is to continue the medication due to evidence of chronic NSAID use, specifically ibuprofen, which may require gastrointestinal protection, as noted in the patient's data.",
+      "related_notes_ids": ["note_1", "note_4"]
     },
     {
       "name": "Prednisone",
       "category": "Corticosteroid",
-      "dose": "As prescribed",
+      "dose": "Taper as directed.  Take 2 tablets by mouth daily for 2d then 1 tablet by mouth daily for 3 days.",
       "route": "Oral",
       "frequency": "Daily",
       "indication": "Acute COPD exacerbation",

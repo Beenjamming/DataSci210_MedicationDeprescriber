@@ -9,7 +9,14 @@ import Logo from "./assets/logo.png";
 export default function ButtonAppBar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ backgroundColor: "#12737D", padding: 0 }}>
+      <AppBar
+        sx={{
+          backgroundColor: "#12737D",
+          padding: 0,
+          position: "sticky",
+          top: 0,
+        }}
+      >
         <Toolbar sx={{ minHeight: 64, padding: 0 }}>
           <Button
             component={RouterLink}
@@ -66,11 +73,25 @@ export default function ButtonAppBar() {
                   color: "#C6E2F0",
                 },
               }}
+              href="/DataSci210_MedicationDeprescriber/#why-rxreduce"
+            >
+              <Typography>Why RxReduce?</Typography>
+            </Button>
+            <Button
+              sx={{
+                color: "inherit",
+                "&:hover": {
+                  color: "#C6E2F0",
+                },
+                "&:active": {
+                  color: "#C6E2F0",
+                },
+              }}
               href="/DataSci210_MedicationDeprescriber/#our-mission"
             >
               <Typography>Our Mission</Typography>
             </Button>
-            <Button
+            {/* <Button
               sx={{
                 color: "inherit",
                 "&:hover": {
@@ -83,21 +104,6 @@ export default function ButtonAppBar() {
               href="/DataSci210_MedicationDeprescriber/#impact"
             >
               <Typography>Impact</Typography>
-            </Button>
-            {/* <Button
-              component={RouterLink}
-              to="/DataSci210_MedicationDeprescriber/Demo"
-              sx={{
-                color: "inherit",
-                "&:hover": {
-                  color: "#C6E2F0",
-                },
-                "&:active": {
-                  color: "#C6E2F0",
-                },
-              }}
-            >
-              <Typography>Live Demo</Typography>
             </Button> */}
             <Button
               sx={{
@@ -126,6 +132,36 @@ export default function ButtonAppBar() {
               href="/DataSci210_MedicationDeprescriber/#our-team"
             >
               <Typography>Our Team</Typography>
+            </Button>
+            <Button
+              component={RouterLink}
+              to="/DataSci210_MedicationDeprescriber/Demo"
+              sx={{
+                color: "inherit",
+                "&:hover": {
+                  color: "#C6E2F0",
+                },
+                "&:active": {
+                  color: "#C6E2F0",
+                },
+              }}
+            >
+              <Typography>Live Demo</Typography>
+            </Button>
+            <Button
+              component={RouterLink}
+              to="https://github.com/Beenjamming/DataSci210_MedicationDeprescriber"
+              sx={{
+                color: "inherit",
+                "&:hover": {
+                  color: "#C6E2F0",
+                },
+                "&:active": {
+                  color: "#C6E2F0",
+                },
+              }}
+            >
+              <Typography>GitHub Repo</Typography>
             </Button>
           </Box>
         </Toolbar>

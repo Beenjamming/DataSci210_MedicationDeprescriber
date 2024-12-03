@@ -91,16 +91,17 @@ export default function Orders(props: PatientOrdersProps) {
               display: "block",
               borderRightWidth: "2px !important", // thicker column divider
             },
+            "--DataGrid-containerBackground": "#bbdefb",
           }}
         />
       </Box>
 
       <Dialog open={open} onClose={handleCloseDialog} fullWidth maxWidth="sm">
-        <DialogTitle color="white" sx={{ fontWeight: "bold" }}>
+        <DialogTitle color="black" sx={{ fontWeight: "bold" }}>
           {selectedOrder?.name} ({selectedOrder?.dose})
         </DialogTitle>
         <DialogContent>
-          <TableContainer component={Paper} sx={{ backgroundColor: "white" }}>
+          <TableContainer component={Paper} sx={{ backgroundColor: "#f2f5fa" }}>
             <Table>
               <TableBody>
                 <TableRow>

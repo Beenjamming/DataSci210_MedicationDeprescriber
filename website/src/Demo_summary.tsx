@@ -71,7 +71,7 @@ export default function PatientSummary(props: PatientSummaryProps) {
             bgcolor: "#ffffff",
             mb: 1,
             boxShadow: 3,
-            height: "300px", // Set a fixed height to match Acquired Diagnoses
+            height: "250px", // Set a fixed height to match Acquired Diagnoses
             overflowY: "auto", // Enable scrolling if content overflows
           }}
         >
@@ -121,7 +121,7 @@ export default function PatientSummary(props: PatientSummaryProps) {
             bgcolor: "#ffffff",
             mb: 1,
             boxShadow: 3,
-            height: "300px", // Set a fixed height
+            height: "250px", // Set a fixed height
             overflowY: "auto", // Enable scrolling if content overflows
           }}
         >
@@ -164,51 +164,64 @@ export default function PatientSummary(props: PatientSummaryProps) {
       </Grid>
 
       {/* Current Medications */}
-      <Grid size={12}>
+      <Grid
+        size={12}
+        sx={{
+          overflow: "visible",
+        }}
+      >
         <Box
           sx={{
-            borderRadius: "16px",
-            borderLeft: "6px solid #c8e6c9",
-            bgcolor: "#ffffff",
-            mt: 1,
+            minHeight: "250px", // Ensure enough height for the box
+            overflow: "visible", // Prevent clipping
           }}
         >
           <Box
             sx={{
-              display: "inline-block",
-              px: 1,
-              py: 0.5,
-              borderRadius: "16px 0px 16px 0",
-              bgcolor: "#c8e6c9",
-              color: "#388e3c",
-              position: "relative",
-              left: "-6px",
-              top: 0,
+              borderRadius: "16px",
+              borderLeft: "6px solid #c8e6c9",
+              bgcolor: "#ffffff",
+              mt: 1,
+              height: "200px",
             }}
           >
-            <Typography variant="h6" textAlign="left">
-              Current Medication
-            </Typography>
+            <Box
+              sx={{
+                display: "inline-block",
+                px: 1,
+                py: 0.5,
+                borderRadius: "16px 0px 16px 0",
+                bgcolor: "#c8e6c9",
+                color: "#388e3c",
+                position: "relative",
+                left: "-6px",
+                top: 0,
+              }}
+            >
+              <Typography variant="h6" textAlign="left">
+                Current Medication
+              </Typography>
+            </Box>
+            <List sx={{ maxHeight: 150, overflowY: "auto", bgcolor: "white" }}>
+              {medications.map((medication, index) => (
+                <div key={index}>
+                  <ListItem>
+                    <ListItemText
+                      primary={medication.name}
+                      secondary={`Dosage: ${medication.dosage}`}
+                      sx={{ color: "black" }}
+                    />
+                    <Tooltip title={medication.reason} placement="top">
+                      <IconButton>
+                        <InfoIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </ListItem>
+                  {index < medications.length - 1 && <Divider />}
+                </div>
+              ))}
+            </List>
           </Box>
-          <List sx={{ maxHeight: 300, overflow: "auto", bgcolor: "white" }}>
-            {medications.map((medication, index) => (
-              <div key={index}>
-                <ListItem>
-                  <ListItemText
-                    primary={medication.name}
-                    secondary={`Dosage: ${medication.dosage}`}
-                    sx={{ color: "black" }}
-                  />
-                  <Tooltip title={medication.reason} placement="top">
-                    <IconButton>
-                      <InfoIcon />
-                    </IconButton>
-                  </Tooltip>
-                </ListItem>
-                {index < medications.length - 1 && <Divider />}
-              </div>
-            ))}
-          </List>
         </Box>
       </Grid>
     </Grid>

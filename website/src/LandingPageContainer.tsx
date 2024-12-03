@@ -1,17 +1,18 @@
 import * as React from "react";
-import { Typography, Box, Grid2 as Grid } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import Button from "@mui/material/Button";
 import { Link as RouterLink } from "react-router-dom";
 import { TypeAnimation } from "react-type-animation";
 import backgroundImage from "./assets/landingPage_blur.jpg";
-import MedicationIcon from "@mui/icons-material/Medication";
-import SpeedIcon from "@mui/icons-material/Speed";
-import SavingsIcon from "@mui/icons-material/Savings";
+// import MedicationIcon from "@mui/icons-material/Medication";
+// import SpeedIcon from "@mui/icons-material/Speed";
+// import SavingsIcon from "@mui/icons-material/Savings";
 import "./LandingPageContainer.css";
 import About_Us from "./About_Us.tsx";
-import ImpactCard from "./Impact.tsx";
+// import ImpactCard from "./Impact.tsx";
 import MethodologyTabs from "./Methodology.tsx";
 import ProblemStatement from "./ProblemStatement.tsx";
+import WhyRxReduce from "./Why_RxReduce.tsx";
 
 const CURSOR_CLASS_NAME = "custom-type-animation-cursor";
 
@@ -95,6 +96,16 @@ export default function LandingPageContainer() {
         <ProblemStatement />
       </Box>
       <Box
+        id="why-rxreduce"
+        sx={{
+          backgroundColor: "#6F8F79",
+          textAlign: "center",
+          color: "#003249",
+        }}
+      >
+        <WhyRxReduce />
+      </Box>
+      <Box
         id="our-mission"
         height="50vh"
         display="flex"
@@ -134,7 +145,7 @@ export default function LandingPageContainer() {
         </Typography>
       </Box>
 
-      <Box
+      {/* <Box
         id="impact"
         sx={{
           backgroundColor: "#1c1f33",
@@ -172,7 +183,7 @@ export default function LandingPageContainer() {
             details="Eliminating unnecessary medications through deprescribing helps lower costs for both patients and the broader healthcare system."
           />
         </Grid>
-      </Box>
+      </Box> */}
 
       <Box
         id="methodology"

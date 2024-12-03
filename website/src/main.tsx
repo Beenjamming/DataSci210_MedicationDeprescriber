@@ -22,7 +22,7 @@ const theme = createTheme({
     },
     background: {
       default: "#D6F0E0", // Light Seafoam for background
-      paper: "#6F8F79", // Muted Forest Green for boxes
+      paper: "white", // Muted Forest Green for boxes
     },
     text: {
       primary: "#2E3D46", // Deep Blue Gray for text

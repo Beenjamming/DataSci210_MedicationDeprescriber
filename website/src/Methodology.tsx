@@ -7,7 +7,6 @@ import { AccountTree, PrecisionManufacturing } from "@mui/icons-material";
 import { Typography } from "@mui/material";
 import DeprescribingPicture from "./assets/deprescribing_algorithm.png";
 import toolAlgorithm from "./assets/tool_algorithm.png";
-import SettingsIcon from "@mui/icons-material/Settings";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -72,7 +71,7 @@ export default function BasicTabs() {
           <Tab
             icon={<AccountTree />}
             iconPosition="start"
-            label="Deprescribing Algorithm"
+            label="Deprescribing Algorithm and Our Tool"
             {...a11yProps(1)}
             sx={{
               fontSize: "1.2rem",
@@ -87,7 +86,7 @@ export default function BasicTabs() {
           <Tab
             icon={<PrecisionManufacturing />}
             iconPosition="start"
-            label="Our Tool"
+            label="Integration"
             {...a11yProps(2)}
             sx={{
               fontSize: "1.2rem",
@@ -99,32 +98,18 @@ export default function BasicTabs() {
               },
             }}
           />
-          <Tab
-            icon={<SettingsIcon />}
-            iconPosition="start"
-            label="Integration"
-            {...a11yProps(3)}
-            sx={{
-              fontSize: "1.2rem",
-              color: value === 3 ? "white" : "#1c1f33", // Black when not active, white when active
-              bgcolor: value === 3 ? "#12897D" : "transparent",
-              "&.Mui-selected": {
-                outline: `2px solid #12897D`,
-                color: "white",
-              },
-            }}
-          />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
         <Typography variant="h5">Data</Typography>
         <Typography variant="body1" sx={{ mb: 3 }}>
-          We are using de-identified UCSF Health Deidentified Information
-          Commons Data for the development and testing of the project. It is
-          pulled using a query into the MS SQL Server.
+          Our project uses de-identified data from the UCSF Health Deidentified
+          Information Commons Data for the development and testing of the
+          project. This dataset is accessed through a query to the MS SQL
+          Server.
         </Typography>
         <Typography variant="h5">Sampled Patient Information</Typography>
-        <Typography variant="body1">
+        <Typography variant="body1" sx={{ mb: 3 }}>
           Our patient criterion includes any individual 18 years or older and
           came in on, were administered, or discharged on a proton pump
           inhibitor (PPI) relative to their inpatient stay. We identified 520
@@ -132,44 +117,49 @@ export default function BasicTabs() {
           spans 18 to 90 years of age. All patients were discharged in September
           2023 with admission dates spanning May 2023 to September 2023.
         </Typography>
+        <Typography variant="h5">Data Inclusion and Exclusions</Typography>
+        <Typography variant="body1" sx={{ mb: 3 }}>
+          For model testing and tuning, only clinical notes from the current
+          encounter, written prior to the discharge date, were utilized. Notes
+          were filtered to only Physicians, Residents, Registered Nurses, Nurse
+          Practitioner, Physician Assistant, Pharmacist, and Registered
+          Dietitian.
+        </Typography>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Box sx={{ flex: 1, pr: 2 }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Box sx={{ width: "100%", mb: 3 }}>
             <p>
-              Our focus lies on Proton Pump Inhibitors (PPI) and identifying
-              recommendation of continuing, deprescribing, or stopping
-              medication prescription at discharge. Our goal is to identify the
-              symptoms and conditions listed within the algorithm from advanced
-              data science techniques and supply it to this deprescription
-              algorithm to recommend an option to the provider.
+              Our focus lies on recommending continuing, deprescribing, or
+              stopping Proton Pump Inhibitors (PPI) at discharge. We are
+              utilizing Our goal is to identify the symptoms and conditions
+              listed within the algorithm from advanced data science techniques
+              and supply it to this deprescription algorithm to recommend an
+              option to the provider.
             </p>
           </Box>
-          <Box sx={{ flexShrink: 0 }}>
+          <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
             <img
               src={DeprescribingPicture}
               alt="Description"
-              style={{ width: "800px", height: "auto" }}
+              style={{ width: "600px", height: "auto" }}
+            />
+            <img
+              src={toolAlgorithm}
+              alt="Description"
+              style={{ width: "600px", height: "auto" }}
             />
           </Box>
         </Box>
       </CustomTabPanel>
+
       <CustomTabPanel value={value} index={2}>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <img
-            src={toolAlgorithm}
-            alt="Description"
-            style={{ width: "800px", height: "auto" }}
-          />
-        </Box>
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={3}>
         API in EPIC
       </CustomTabPanel>
     </Box>
