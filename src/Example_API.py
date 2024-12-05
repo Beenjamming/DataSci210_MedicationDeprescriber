@@ -6,7 +6,7 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 
-from extraction import llmAgent
+from extraction import ExtractionAgent
 from ppi_deprescribe import merge_results, ppi_deprescribe
 
 app = FastAPI()
@@ -39,7 +39,7 @@ def deprescribe(encounter_key):
         _description_
     """
     # extract information
-    llm_agent = llmAgent(groq_key=groq, data_path=path)
+    llm_agent = ExtractionAgent(groq_key=groq, data_path=path)
 
     diagnosis_json, diagnosis_token_count = llm_agent.extract_diagnosis(
         encounter_key=encounter_key

@@ -4,29 +4,30 @@ from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 import uvicorn
 from IPython.display import Markdown, display
-from extraction import llmAgent
+from extraction import ExtractionAgent
 from ppi_deprescribe import merge_results, ppi_deprescribe
-import os 
-from pathlib import Path 
+import os
+from pathlib import Path
 
 app = FastAPI()
-path = Path('F:/LangChain/data')
-groq = os.environ['groqkey']
+path = Path("F:/LangChain/data")
+groq = os.environ["groqkey"]
 
 
-@app.get('/')
+@app.get("/")
 def index():
-    #add link to documentation
-    link = 'http://127.0.0.1:8000/docs'
-    content = f'''<h1>Rx Deprescribe API</h1>
+    # add link to documentation
+    link = "http://127.0.0.1:8000/docs"
+    content = f"""<h1>Rx Deprescribe API</h1>
             <h2>Click <a href={link}>here</a> to view the API documentation</h2>
-                ''' 
-    return HTMLResponse(content=content)   
+                """
+    return HTMLResponse(content=content)
 
-@app.get('/Deprescribe')
+
+@app.get("/Deprescribe")
 def deprescribe(key):
     # extract information
-    llm_agent = llmAgent(groq_key=groq, data_path=path)
+    llm_agent = ExtractionAgent(groq_key=groq, data_path=path)
 
     results_dict = {
         "diagnosis_dict": llm_agent.extract_diagnosis(encounter_key=key),
@@ -35,7 +36,7 @@ def deprescribe(key):
         # Should the reasoning be included in any of them or just the diangosis with the reasoning seperate?
         "notes_dict": llm_agent.extract_notes(encounter_key=key),
     }
-    print(results_dict['notes_dict'])
+    print(results_dict["notes_dict"])
     # # #   master formatter step   # # #
     # merge the diagnosis booleans (just use OR logic for now)
     # make a final "reasoning" behind the recommendation
@@ -47,10 +48,11 @@ def deprescribe(key):
     # # #   get recommendation from PPI algorithm   # # #
     recommendation_str = ppi_deprescribe(patient_diagnosis=final_dict)
     return recommendation_str, final_reasoning
-    #print("Recommendation: ")
-    #print(recommendation_str)
-    #print("\nReasoning: ")
-    #print(final_reasoning)
+    # print("Recommendation: ")
+    # print(recommendation_str)
+    # print("\nReasoning: ")
+    # print(final_reasoning)
 
-if __name__ == '__main__':
-    uvicorn.run(app, host='127.0.0.1', port=8000)
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="127.0.0.1", port=8000)

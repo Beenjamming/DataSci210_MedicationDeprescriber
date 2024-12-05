@@ -1,5 +1,4 @@
 import json
-from pathlib import Path
 
 from langchain_community.document_loaders import DataFrameLoader
 from langchain_community.embeddings import HuggingFaceEmbeddings
@@ -25,78 +24,20 @@ class DiagnosisSearchDict(BaseModel):
     )
 
 
-class NoteResponse(BaseModel):
-    """Pydantic class for the diagnosis jsons."""
-
-    Mild_to_moderate_esophagitis: bool = Field(
-        description="Mild to moderate esophagitis"
-    )
-    GERD: bool = Field(description="GERD")
-    Peptic_Ulcer_Disease: bool = Field(description="Peptic Ulcer Disease")
-    Upper_GI_symptoms: bool = Field(description="Upper GI symptoms")
-    ICU_Stress_Ulcer_Prophylaxis: bool = Field(
-        description="ICU Stress Ulcer Prophylaxis"
-    )
-    Barretts_Esophagus: bool = Field(description="Barrett's Esophagus")
-    Chronic_NSAID_use_with_bleeding_risk: bool = Field(
-        description="Chronic NSAID use with bleeding risk"
-    )
-    Severe_esophagitis: bool = Field(description="Severe esophagitis")
-    Documented_history_of_bleeding_GI_ulcer: bool = Field(
-        description="Documented history of bleeding GI ulcer"
-    )
-    H_pylori_infection: bool = Field(description="H pylori infection")
-    Reasoning: str = Field(description="Explain the reasoning for your answer")
-
-
-class llmAgent:
+class ExtractionAgent:
     """ """
 
-    def __init__(self, groq_key: str, data_path: Path) -> None:
+    def __init__(self, groq_key, data_path, logger) -> None:
         """ """
         self.data_path = data_path
         self.data_loader = DataLoader(data_path=data_path)
+        self.logger = logger
 
         # cascade of LLMs
         llama_31_70b = "llama-3.1-70b-versatile"
-        llama_32_90b = "llama-3.2-90b-vision-preview"
         self.llm = ChatGroq(temperature=0, model=llama_31_70b, api_key=groq_key)
 
-        # llama_tool_70 = "llama3-groq-70b-8192-tool-use-preview"
-        # self.llm2 = ChatGroq(temperature=0, model=llama_tool_70, api_key=groq_key)
-
-    @staticmethod
-    def format_docs(docs):
-        return "\n\n".join(doc.page_content for doc in docs)
-
-    @staticmethod
-    def extract_json_from_content(content):
-        """ """
-        # Find the JSON part within the content
-        start_index = content.find("{")
-        end_index = content.rfind("}") + 1
-        json_str = content[start_index:end_index]
-
-        # Parse the JSON string
-        parsed_json = json.loads(json_str)
-
-        return parsed_json
-
-    @staticmethod
-    def replace_underscores_in_keys(json_obj):
-        if isinstance(json_obj, dict):
-            new_obj = {}
-            for key, value in json_obj.items():
-                new_key = key.replace("_", " ")
-                new_obj[new_key] = llmAgent.replace_underscores_in_keys(value)
-            return new_obj
-        elif isinstance(json_obj, list):
-            return [llmAgent.replace_underscores_in_keys(item) for item in json_obj]
-        else:
-            return json_obj
-        
     def set_retriever(self, noteText):
-        
         loader = DataFrameLoader(
             data_frame=noteText,
             page_content_column="NoteText",
@@ -106,16 +47,17 @@ class llmAgent:
         vector_store = FAISS.from_documents(documents, embeddings)
         self.retriever = vector_store.as_retriever(search_type="similarity", k=5)
 
-    # @staticmethod
-    def get_bool(output):
-        """ """
+    def get_bool(self, output):
+        """
+        Return a Boolean.
+        """
         bo = False
         if output in [0, "0", "0", "F", "False"]:
             bo = False
         elif output in [1, "1", "1", "T", "True"]:
             bo = True
         else:
-            print(f"Issue parsing {output} into Boolean...")
+            self.logger.info(f"Issue parsing {output} into Boolean...")
 
         return bo
 
@@ -141,6 +83,7 @@ class llmAgent:
             template="""You are a knowledgeable medical provider who specializes in medication management. In the following case, your patient is prescribed
             a PPI (proton pump inhibitor) and need to make a decision to continue, reduce, or stop the PPI. Determine if there is evidence of the specific
             condition which will help determine whether to continue, reduce, or stop the medication on discharge.
+            Do NOT assume a condition based on prescribed medication. We know all of these patients are prescribed a ppi, but we need to know why. Be very sure of a diagnosis.
             # Response Format Instructions #
             {format_instructions}
             # Question #
@@ -153,7 +96,7 @@ class llmAgent:
 
         output = chain.invoke(
             {
-                "query": f"Based on the provided information here: {data_dict}, is there evidence of {diagnosis_searched_for}? Do NOT assume a condition based on prescribed medication. We know all of these patients are prescribed a ppi, but we need to know why. Be very sure of a diagnosis."
+                "query": f"Based on the provided information here: {data_dict}, is there evidence of {diagnosis_searched_for}?"
             }
         )
 
@@ -187,7 +130,7 @@ class llmAgent:
 
         rag_chain = (
             {
-                "context": self.retriever | llmAgent.format_docs,
+                "context": self.retriever | ExtractionAgent.format_docs,
                 "query": RunnablePassthrough(),
             }
             | prompt
@@ -203,23 +146,81 @@ class llmAgent:
 
         return output_dict, token_count
 
-    def summarize_reasonings(self, recommendation_str, search_history_so_far):
+    def summarize_reasonings(
+        self, recommendation_str, recommendation_source, search_history_so_far
+    ):
         """Summarize a final explanation for the recommendation."""
-        system = "You are a knowledgeable medical provider who specializes in medication management."
+        system = """You are now evaluating the patients medications during patient discharge from the hospital. Patient medications can be recommended to 
+        continued, deprescribed, or be stopped. The patient health information has been searched in three information locations: patient diagnosis record, 
+        patient encounter record, and patient medical notes history. The threee recommendations are a result of identifying one or more associated diagnoses. 
+        Use the following json containing the search information and results to write a summary of the findings. Cite where key information was found.
+        Keep your response non-conversational, professional and concise.
+        """
         human = "{text}"
         prompt = ChatPromptTemplate.from_messages(
             [("system", system), ("human", human)]
         )
 
         chain = prompt | self.llm
-        chain_result = chain.invoke(
-            {
-                "text": f"""Medications can either be continued, deprescribed, or stopped. 
-                The recommendation ({recommendation_str}) was given because the diagnosis ({list(search_history_so_far.keys())[-1]}) was found in the patient's data. 
-                Provide a short and concise summary of the recommendation and the explanation for the recommendation: {search_history_so_far}. 
-                Provide your answer in a single line of text."""
-            }
-        )
+
+        # if recommendation_source not None, provide normal prompt
+        if recommendation_source is not None:
+            chain_result = chain.invoke(
+                {
+                    "text": f"""
+                The recommendation ({recommendation_str}) was given due to finding associated diagnoses in the following patient data location: {recommendation_source}.
+                # Patient Diagnosis Search History # 
+                {search_history_so_far}
+                Provide a concise summary of the recommended action.
+                """
+                }
+            )
+
+        # else recommend "deprescribe" because patient diagnoses was not found
+        else:
+            chain_result = chain.invoke(
+                {
+                    "text": f"""
+                The recommendation ({recommendation_str}) was given due because no patient diagnoses could be determined as the cause of the prescription.
+                # Patient Diagnosis Search History # 
+                {search_history_so_far}
+                Provide a concise summary of the recommended action. Make it clear in your answer that a specific diagnosis is not known.
+                """
+                }
+            )
+
         return chain_result.content, chain_result.response_metadata["token_usage"][
             "total_tokens"
         ]
+
+    @staticmethod
+    def format_docs(docs):
+        return "\n\n".join(doc.page_content for doc in docs)
+
+    @staticmethod
+    def extract_json_from_content(content):
+        """ """
+        # Find the JSON part within the content
+        start_index = content.find("{")
+        end_index = content.rfind("}") + 1
+        json_str = content[start_index:end_index]
+
+        # Parse the JSON string
+        parsed_json = json.loads(json_str)
+
+        return parsed_json
+
+    @staticmethod
+    def replace_underscores_in_keys(json_obj):
+        if isinstance(json_obj, dict):
+            new_obj = {}
+            for key, value in json_obj.items():
+                new_key = key.replace("_", " ")
+                new_obj[new_key] = ExtractionAgent.replace_underscores_in_keys(value)
+            return new_obj
+        elif isinstance(json_obj, list):
+            return [
+                ExtractionAgent.replace_underscores_in_keys(item) for item in json_obj
+            ]
+        else:
+            return json_obj
