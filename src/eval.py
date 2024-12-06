@@ -1,12 +1,12 @@
-from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain_groq import ChatGroq
-
 # from ragas import evaluate
 # from ragas.embeddings import LangchainEmbeddingsWrapper
 # from ragas.llms import LangchainLLMWrapper
 # from ragas.metrics import answer_relevancy, faithfulness, context_recall, context_precision
-from dotenv import load_dotenv
-import os
+
+from difflib import get_close_matches
+
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # from datasets import Dataset
 from sklearn.metrics import (
@@ -15,15 +15,6 @@ from sklearn.metrics import (
     confusion_matrix,
     precision_recall_fscore_support,
 )
-import seaborn as sns
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
-import requests
-import time
-from pathlib import Path
-
-from difflib import get_close_matches
 
 diagnosis_label_key = {
     0: "Barretts Esophagus or esophageal cell changes",

@@ -40,7 +40,7 @@ class ExtractionAgent:
     def set_retriever(self, noteText):
         loader = DataFrameLoader(
             data_frame=noteText,
-            page_content_column="NoteText", # NoteText for summary + note # llm_summary for just summary
+            page_content_column="llm_summary",  # NoteText for summary + note # llm_summary for just summary
             engine="pandas",
         )
         documents = loader.load_and_split()

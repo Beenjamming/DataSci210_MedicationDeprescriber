@@ -249,15 +249,23 @@ class SearchPatientHistory:
         """
         Get the final recommendation using the recommendation_dict.
 
+        This prioritizes a determination from the patient diagnosis data over encounter data over notes.
+        It prioritizes recommendations of continue, stop, then deprescribe.
         """
+        trip_bool = False
         final_recommendation = "deprescribe"
         final_source = None
         for source_key, rec_dict in self.recommendation_history.items():
             for rec_key, rec_bool in rec_dict.items():
                 if rec_bool:
+                    # break inner loop and set trip_bool=True to break outer loop
+                    trip_bool = True
                     final_recommendation = rec_key
                     final_source = source_key
                     break
+            if trip_bool:
+                # if trip_bool True then break loop
+                break
 
         return final_recommendation, final_source
 
