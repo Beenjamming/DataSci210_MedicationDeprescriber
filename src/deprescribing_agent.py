@@ -73,9 +73,10 @@ class SearchPatientHistory:
         self.search_history_thus_far_list = []
         self.token_count_history = {}
         self.recommendation_history = {
+            "source:notes": {},
             "source:diagnosis": {},
             "source:encounter": {},
-            "source:notes": {},
+            # "source:notes": {},
         }
 
     def search_diagnosis_source(self):
