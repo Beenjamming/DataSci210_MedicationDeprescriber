@@ -136,31 +136,50 @@ export default function BasicTabs() {
         >
           <Box sx={{ width: "100%", mb: 3 }}>
             <p>
-              Our focus lies on recommending continuing, deprescribing, or
-              stopping Proton Pump Inhibitors (PPI) at discharge. We are
-              utilizing Our goal is to identify the symptoms and conditions
-              listed within the algorithm from advanced data science techniques
-              and supply it to this deprescription algorithm to recommend an
-              option to the provider.
+              Our primary focus is on recommending whether to continue,
+              deprescribe, or stop medications at discharge. For this Minimum
+              Viable Product (MVP), we concentrated on Proton Pump Inhibitors
+              (PPIs) with the intention of expanding to other medication types
+              in the future. Our approach identifies relevant symptoms and
+              conditions outlined in the deprescribing algorithm published on
+              deprescribing.org by using advanced data science techniques. This
+              data is then fed into the deprescription algorithm to generate
+              actionable recommendations for providers, enhancing
+              decision-making at discharge. The images below illustrate the
+              deprescribing algorithm and a flowchart of how our system accesses
+              patient notes and information to generate recommendations. To
+              ensure transparency, our system also outputs relevant note IDs and
+              other contextual information that can be integrated into the EMR,
+              allowing providers to understand how the algorithm arrived at its
+              conclusions and view the key information supporting each
+              recommendation.
             </p>
           </Box>
           <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
             <img
               src={DeprescribingPicture}
               alt="Description"
-              style={{ width: "600px", height: "auto" }}
+              style={{ width: "500px", height: "auto" }}
             />
             <img
               src={toolAlgorithm}
               alt="Description"
-              style={{ width: "600px", height: "auto" }}
+              style={{ width: "500px", height: "auto" }}
             />
           </Box>
         </Box>
       </CustomTabPanel>
 
       <CustomTabPanel value={value} index={2}>
-        API in EPIC
+        Our application integrates with FHIR (Fast Healthcare Interoperability
+        Resources) standards to access and process healthcare data seamlessly.
+        We have successfully connected to and queried relevant patient test data
+        from the EPIC sandbox environment. We created a FastAPI package to
+        support future connectivity with an electronic medical record (EMR)
+        system. The next step involves connecting the application to a live EMR
+        system to operationalize its use on patient data. The application is
+        designed to run as a batch script, processing all patients expected to
+        be discharged the following day within a unit.
       </CustomTabPanel>
     </Box>
   );

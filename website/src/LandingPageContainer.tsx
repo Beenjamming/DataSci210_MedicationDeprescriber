@@ -13,6 +13,7 @@ import About_Us from "./About_Us.tsx";
 import MethodologyTabs from "./Methodology.tsx";
 import ProblemStatement from "./ProblemStatement.tsx";
 import WhyRxReduce from "./Why_RxReduce.tsx";
+import demoVideo from "./assets/RxReduce_Demo.mp4";
 
 const CURSOR_CLASS_NAME = "custom-type-animation-cursor";
 
@@ -71,7 +72,9 @@ export default function LandingPageContainer() {
         >
           Live Demo
         </Button>
-
+        <Typography variant="h5" color="gray" sx={{ mt: 2 }}>
+          Watch the video below for a demo of our product.
+        </Typography>
         <Box
           mt={4}
           width="80%"
@@ -80,8 +83,7 @@ export default function LandingPageContainer() {
           alignItems="center"
         >
           <video width="60%" controls>
-            {/* <source src={demoVideo} type="video/mp4" /> */}
-            Your browser does not support the video tag.
+            <source src={demoVideo} type="video/mp4" />
           </video>
         </Box>
       </Box>
