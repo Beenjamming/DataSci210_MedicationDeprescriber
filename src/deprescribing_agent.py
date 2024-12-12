@@ -7,11 +7,25 @@ class DeprescribingAgent:
     See extraction.py for the extraction specific steps.
     """
 
-    def __init__(self, groq_key, data_path, logger):
+    def __init__(self, groq_key, data_path, logger, llm_name=None, context_column=None):
         self.logger = logger
 
+        # LLM model
+        if llm_name is None:
+            self.llm_name = "llama-3.3-70b-versatile"  # "llama-3.1-70b-versatile"
+        else:
+            self.llm_name = llm_name
+
+        if context_column is None:
+            self.context_column = "llm_summary"
+        else:
+            self.context_column = context_column
+
         self.llm_agent = ExtractionAgent(
-            groq_key=groq_key, data_path=data_path, logger=logger
+            groq_key=groq_key,
+            data_path=data_path,
+            logger=logger,
+            llm_name=self.llm_name,
         )
 
     def make_recommendation(self, encounter_key, recommendation_dict):
@@ -21,11 +35,12 @@ class DeprescribingAgent:
             recommendation_dict=recommendation_dict,
             logger=self.logger,
             llm_agent=self.llm_agent,
+            context_column=self.context_column,
         )
         # search patient data
+        search_patient.search_notes_source()
         search_patient.search_diagnosis_source()
         search_patient.search_encounter_source()
-        search_patient.search_notes_source()
 
         # make final recommendation
         recommendation_str, final_source = search_patient.get_final_recommendation()
@@ -63,11 +78,14 @@ class SearchPatientHistory:
     Abstraction of a single search of a patients history.
     """
 
-    def __init__(self, encounter_key, recommendation_dict, logger, llm_agent):
+    def __init__(
+        self, encounter_key, recommendation_dict, logger, llm_agent, context_column
+    ):
         self.encounter_key = encounter_key
         self.recommendation_dict = recommendation_dict
         self.logger = logger
         self.llm_agent = llm_agent
+        self.context_column = context_column
 
         self.token_usage = 0
         self.search_history_thus_far_list = []
@@ -76,7 +94,7 @@ class SearchPatientHistory:
             "source:notes": {},
             "source:diagnosis": {},
             "source:encounter": {},
-            # "source:notes": {},
+            # "source:notes": {}, # original notes was the last source considered for a final recommendation
         }
 
     def search_diagnosis_source(self):
@@ -100,6 +118,18 @@ class SearchPatientHistory:
             diagnosis_dict, diagnosis_token_count = self.llm_agent.extract_without_RAG(
                 data_dict=diagnosis_data_dict, diagnosis_searched_for=diagnosis_list
             )
+            self.logger.info(
+                f" -  diagnosis_source_bool: {diagnosis_dict["diagnosis_boolean"]}"
+            )
+            # sometimes the llm returns a dict contained in a list
+            # check to see if returned object is a list, if so get the first item
+            if isinstance(diagnosis_dict, list):
+                self.logger.info(
+                    f" -  llm returned a dict contained in a list, rec: {recommendation_str}, source: diagnosis"
+                )
+                diagnosis_dict = diagnosis_dict[0]
+            self.logger.info(f" -  diagnosis_dict: {diagnosis_dict}")
+            self.logger.info(f" -  diagnosis_token_count: {diagnosis_token_count}")
 
             # track recommendations
             self.recommendation_history["source:diagnosis"][recommendation_str] = (
@@ -124,12 +154,6 @@ class SearchPatientHistory:
             # track overall token usage
             self.token_usage += diagnosis_token_count
 
-            self.logger.info(
-                f" -  diagnosis_source_bool: {diagnosis_dict["diagnosis_boolean"]}"
-            )
-            self.logger.info(f" -  diagnosis_dict: {diagnosis_dict}")
-            self.logger.info(f" -  diagnosis_token_count: {diagnosis_token_count}")
-
     def search_encounter_source(self):
         """ """
         # # # # # # # # # # # # # # # # # # # # # # #
@@ -148,6 +172,18 @@ class SearchPatientHistory:
             encounter_dict, encounters_token_count = self.llm_agent.extract_without_RAG(
                 data_dict=encounters_data_dict,
                 diagnosis_searched_for=diagnosis_list,
+            )
+            self.logger.info(f" -  encounters_dict: {encounter_dict}")
+            # sometimes the llm returns a dict contained in a list
+            # check to see if returned object is a list, if so get the first item
+            if isinstance(encounter_dict, list):
+                self.logger.info(
+                    f" -  llm returned a dict contained in a list, rec: {recommendation_str}, source: encounter"
+                )
+                encounter_dict = encounter_dict[0]
+            self.logger.info(f" -  encounters_token_count: {encounters_token_count}")
+            self.logger.info(
+                f" -  encounters_source_bool: {encounter_dict["diagnosis_boolean"]}"
             )
 
             # track recommendations
@@ -173,12 +209,6 @@ class SearchPatientHistory:
             # track overall token usage
             self.token_usage += encounters_token_count
 
-            self.logger.info(
-                f" -  encounters_source_bool: {encounter_dict["diagnosis_boolean"]}"
-            )
-            self.logger.info(f" -  encounters_dict: {encounter_dict}")
-            self.logger.info(f" -  encounters_token_count: {encounters_token_count}")
-
     def search_notes_source(self):
         """ """
         # # # # # # # # # # # # # # # # # # # # #
@@ -187,6 +217,7 @@ class SearchPatientHistory:
         # make sure not to enter the notes loop unless a diagnosis has yet to be found
         self.logger.info("Searching notes info source...")
 
+        # get notes source data
         noteText = self.llm_agent.get_data(
             encounter_key=self.encounter_key, source="notes"
         )
@@ -194,26 +225,31 @@ class SearchPatientHistory:
         # Check if noteText is empty, then pre-processor found no diagnoses
         if not noteText.empty:
             # setup vectore store retriever with noteText, setup here before loop
-            self.llm_agent.set_retriever(noteText)
+            self.llm_agent.set_retriever(noteText, context_column=self.context_column)
 
             for recommendation_str, diagnosis_list in self.recommendation_dict.items():
                 self.logger.info(
                     f" -  rec: {recommendation_str}, diagnosis: {diagnosis_list}"
                 )
-                # get notes source data
 
                 # extract information
                 notes_dict, notes_token_count = self.llm_agent.extract_RAG(
                     diagnosis_searched_for=diagnosis_list
                 )
 
+                self.logger.info(f" -  notes_dict: {notes_dict}")
                 # sometimes the llm returns a dict contained in a list
                 # check to see if returned object is a list, if so get the first item
-                if isinstance(notes_dict, list) and notes_dict:
+                if isinstance(notes_dict, list):
                     self.logger.info(
-                        f" -  llm returned a dict contained in a list, rec: {recommendation_str}"
+                        f" -  llm returned a dict contained in a list, rec: {recommendation_str}, source: notes"
                     )
                     notes_dict = notes_dict[0]
+
+                self.logger.info(
+                    f" -  notes_source_bool: {notes_dict["diagnosis_boolean"]}"
+                )
+                self.logger.info(f" -  notes_token_count: {notes_token_count}")
 
                 # track recommendations
                 self.recommendation_history["source:notes"][recommendation_str] = (
@@ -237,12 +273,6 @@ class SearchPatientHistory:
 
                 # track overall token usage
                 self.token_usage += notes_token_count
-
-                self.logger.info(
-                    f" -  notes_source_bool: {notes_dict["diagnosis_boolean"]}"
-                )
-                self.logger.info(f" -  notes_dict: {notes_dict}")
-                self.logger.info(f" -  notes_token_count: {notes_token_count}")
         else:
             self.logger.info(" -  No diagnoses found in notes...")
 

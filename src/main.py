@@ -8,7 +8,7 @@ logging.basicConfig(
     filename="app.log",  # File name for the log
     level=logging.INFO,  # Set logging level
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",  # Log message format
-    filemode="w",  # (use 'a' to append, 'w' to overwrite)
+    filemode="a",  # (use 'a' to append, 'w' to overwrite)
 )
 
 
@@ -16,6 +16,8 @@ def main(
     groq_key="",
     data_path=Path(""),
     encounter_key="",
+    llm_name="llama-3.3-70b-versatile",
+    context_column="llm_summary",
 ):
     """Main method
 
@@ -55,6 +57,8 @@ def main(
         groq_key=groq_key,
         data_path=data_path,
         logger=logger,
+        llm_name=llm_name,
+        context_column=context_column,
     )
 
     (

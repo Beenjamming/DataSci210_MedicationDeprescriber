@@ -1,4 +1,5 @@
 import json
+import re
 
 from langchain_community.document_loaders import DataFrameLoader
 from langchain_community.embeddings import HuggingFaceEmbeddings
@@ -27,20 +28,23 @@ class DiagnosisSearchDict(BaseModel):
 class ExtractionAgent:
     """ """
 
-    def __init__(self, groq_key, data_path, logger) -> None:
+    def __init__(self, groq_key, data_path, logger, llm_name) -> None:
         """ """
         self.data_path = data_path
         self.data_loader = DataLoader(data_path=data_path)
         self.logger = logger
 
-        # cascade of LLMs
-        llama_31_70b = "llama-3.1-70b-versatile"
-        self.llm = ChatGroq(temperature=0, model=llama_31_70b, api_key=groq_key)
+        self.llm = ChatGroq(temperature=0, model=llm_name, api_key=groq_key)
 
-    def set_retriever(self, noteText):
+    def set_retriever(self, noteText, context_column):
+        """
+        Set context_column to:
+            llm_summary: for just the summary
+            NoteText: for summary followed by note text
+        """
         loader = DataFrameLoader(
             data_frame=noteText,
-            page_content_column="NoteText",  # NoteText for summary + note # llm_summary for just summary
+            page_content_column=context_column,  # NoteText for summary + note # llm_summary for just summary
             engine="pandas",
         )
         documents = loader.load_and_split()
@@ -99,9 +103,19 @@ class ExtractionAgent:
                 "query": f"Based on the provided information here: {data_dict}, is there evidence of {diagnosis_searched_for}?"
             }
         )
+        self.logger.info(f"No RAG chain invoke output: {output}")
 
         token_count = output.response_metadata["token_usage"]["total_tokens"]
-        output_dict = parser.parse(output.content)
+
+        # try to remove text before the json
+        json_list = ExtractionAgent.extraction_multiple_json(output.content)
+        self.logger.info(
+            f"No RAG chain invoke output after json extraction: {json_list}"
+        )
+
+        # output_dict = parser.parse(output.content)
+        # take the final json if there are multiple
+        output_dict = parser.parse(json.dumps(json_list[-1]))
 
         return output_dict, token_count
 
@@ -140,9 +154,17 @@ class ExtractionAgent:
         rag_chain_output = rag_chain.invoke(
             f"Is there evidence of {diagnosis_searched_for}?"
         )
+        self.logger.info(f"RAG chain invoke output: {rag_chain_output}")
 
         token_count = rag_chain_output.response_metadata["token_usage"]["total_tokens"]
-        output_dict = parser.parse(rag_chain_output.content)
+
+        # try to remove text before the json
+        json_list = ExtractionAgent.extraction_multiple_json(rag_chain_output.content)
+        self.logger.info(f"RAG Chain invoke output after json extraction: {json_list}")
+
+        # output_dict = parser.parse(rag_chain_output.content)
+        # take the final json if there are multiple
+        output_dict = parser.parse(json.dumps(json_list[-1]))
 
         return output_dict, token_count
 
@@ -209,6 +231,32 @@ class ExtractionAgent:
         parsed_json = json.loads(json_str)
 
         return parsed_json
+
+    @staticmethod
+    def extract_json_from_output(output):
+        json_pattern = r"\{.*\}"
+        match = re.search(json_pattern, output, re.DOTALL)
+        if match:
+            return json.loads(match.group(0))
+        else:
+            raise ValueError("No valid JSON found in the output.")
+
+    @staticmethod
+    def extraction_multiple_json(output_str):
+        json_pattern = r"\{[\s\S]*?\}"
+
+        # Find all JSON-like matches in the text
+        matches = re.findall(json_pattern, output_str)
+
+        json_objects = []
+        for match in matches:
+            try:
+                # Attempt to parse the JSON
+                json_objects.append(json.loads(match))
+            except json.JSONDecodeError:
+                continue  # Ignore invalid JSON fragments
+
+        return json_objects
 
     @staticmethod
     def replace_underscores_in_keys(json_obj):
