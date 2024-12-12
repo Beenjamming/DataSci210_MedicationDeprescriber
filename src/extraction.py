@@ -19,6 +19,8 @@ from langchain_core.output_parsers import JsonOutputParser
 
 
 class DiagnosisSearchDict(BaseModel):
+    """Pydantic class definition to encourage LLMs to provide a formatted json."""
+
     diagnosis_boolean: str = Field(description="1 if the diagnosis is found, else 0")
     explanation: str = Field(
         description="A concise explanation for how the determination of the diagnosis was made"
@@ -26,10 +28,13 @@ class DiagnosisSearchDict(BaseModel):
 
 
 class ExtractionAgent:
-    """ """
+    """
+    Python class defining functions necessary to search patient data for relevant diagnosis information.
+    This code is called in the DeprescribingAgent class in deprescribing_agent.py.
+    """
 
     def __init__(self, groq_key, data_path, logger, llm_name) -> None:
-        """ """
+        """Initialize the dataloader to query patient data and groq chat."""
         self.data_path = data_path
         self.data_loader = DataLoader(data_path=data_path)
         self.logger = logger
@@ -38,9 +43,10 @@ class ExtractionAgent:
 
     def set_retriever(self, noteText, context_column):
         """
+        Set the retriever to consider either just the llm summary or the llm summary in addition to the full clinician notes text
         Set context_column to:
-            llm_summary: for just the summary
-            NoteText: for summary followed by note text
+            llm_summary: for just the llm summary
+            NoteText: for the llm summary followed by the full clinician note text
         """
         loader = DataFrameLoader(
             data_frame=noteText,
@@ -53,7 +59,7 @@ class ExtractionAgent:
 
     def get_bool(self, output):
         """
-        Return a Boolean.
+        Return a Boolean
         """
         bo = False
         if output in [0, "0", "0", "F", "False"]:
@@ -80,7 +86,12 @@ class ExtractionAgent:
         return data
 
     def extract_without_RAG(self, data_dict, diagnosis_searched_for):
-        """ """
+        """
+        Evaluate patient data source where RAG is not necessary and the entirety of the patient data can be entered into the context window.
+
+        We found that some models such as llama3.3 often return more than one json object where the final is the most refined after
+        chain of thought like activity. When more than one json object is contained in the output, the last json object is retrieved.
+        """
         parser = JsonOutputParser(pydantic_object=DiagnosisSearchDict)
 
         prompt = PromptTemplate(
@@ -121,8 +132,10 @@ class ExtractionAgent:
 
     def extract_RAG(self, diagnosis_searched_for: str):
         """
-        Extraction Agent/Step 3
+        Evaluate patient data source were RAG is necessary (clinician notes).
 
+        We found that some models such as llama3.3 often return more than one json object where the final is the most refined after
+        chain of thought like activity. When more than one json object is contained in the output, the last json object is retrieved.
         """
 
         parser = JsonOutputParser(pydantic_object=DiagnosisSearchDict)
@@ -171,7 +184,9 @@ class ExtractionAgent:
     def summarize_reasonings(
         self, recommendation_str, recommendation_source, search_history_so_far
     ):
-        """Summarize a final explanation for the recommendation."""
+        """Summarize a final explanation for the recommendation. Consider the final recommendation in addition to the entire search log used to encourage
+        the LLM to cite search metadata. In the special case of a recommendation to 'deprescribe' when no relevant diagnosis information can be found has its
+        own prompt."""
         system = """You are now evaluating the patients medications during patient discharge from the hospital. Patient medications can be recommended to 
         continued, deprescribed, or be stopped. The patient health information has been searched in three information locations: patient diagnosis record, 
         patient encounter record, and patient medical notes history. The threee recommendations are a result of identifying one or more associated diagnoses. 
@@ -217,6 +232,7 @@ class ExtractionAgent:
 
     @staticmethod
     def format_docs(docs):
+        """Helper function to format documents into a single string"""
         return "\n\n".join(doc.page_content for doc in docs)
 
     @staticmethod
@@ -234,6 +250,7 @@ class ExtractionAgent:
 
     @staticmethod
     def extract_json_from_output(output):
+        """Extract the first json object from the output string."""
         json_pattern = r"\{.*\}"
         match = re.search(json_pattern, output, re.DOTALL)
         if match:
@@ -243,6 +260,7 @@ class ExtractionAgent:
 
     @staticmethod
     def extraction_multiple_json(output_str):
+        """Extract multiple json objects from the output string."""
         json_pattern = r"\{[\s\S]*?\}"
 
         # Find all JSON-like matches in the text
@@ -257,18 +275,3 @@ class ExtractionAgent:
                 continue  # Ignore invalid JSON fragments
 
         return json_objects
-
-    @staticmethod
-    def replace_underscores_in_keys(json_obj):
-        if isinstance(json_obj, dict):
-            new_obj = {}
-            for key, value in json_obj.items():
-                new_key = key.replace("_", " ")
-                new_obj[new_key] = ExtractionAgent.replace_underscores_in_keys(value)
-            return new_obj
-        elif isinstance(json_obj, list):
-            return [
-                ExtractionAgent.replace_underscores_in_keys(item) for item in json_obj
-            ]
-        else:
-            return json_obj

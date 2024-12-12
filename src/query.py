@@ -5,11 +5,12 @@ import pandas as pd
 
 
 class DataLoader:
-    """Class to handle loading data by 'EncourterKey'"""
+    """Class to handle loading patient data by 'EncourterKey'"""
 
     def __init__(self, data_path: Path) -> None:
         self.data_path = data_path
 
+    # exclude encounter keys of patients who died during their stay
     death_encs = [
         "D671A9D60DED51",
         "D1A8A0B77B70E0",

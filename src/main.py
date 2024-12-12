@@ -17,18 +17,40 @@ def main(
     data_path=Path(""),
     encounter_key="",
     llm_name="llama-3.3-70b-versatile",
-    context_column="llm_summary",
+    context_column="NoteText",
 ):
-    """Main method
+    """Main method containing the recommendation dictionary configured for the Proton Pump Inhibitor (PPI) medication class. The recommendation
+    dictionary defines the recommendations considered and their associated diagnosis conditions.
+
+    System activity is logged to src/app.log.
 
     Parameters
     ----------
-    groq_key : str, optional
-        groq api key, by default ""
-    data_path : _type_, optional
-        path object to data folder, by default Path( "" )
-    encounter_key : str, optional
-        the encounter key for the patient data, by default ""
+    groq_key : str
+        groq api key
+    data_path : python Path object
+        path object to data folder
+    encounter_key : str
+        the encounter key for the patient data to query
+    llm_name : str
+        the name of the llm available through groq
+    context_column : str
+        in terms of the clinician notes, whether to consider the LLM summary in addition to the full clinician note text
+        or just consider the LLM summary
+
+    Outputs
+    ----------
+    final_recommendation : str
+        the final recommendation as (defined as one of the keys in the recommendation_dict)
+    final_explanation : str
+        the final summary of the recommendation and explanation
+    token_usage : int
+        the number of tokens used across the system activity
+    search_history_thus_far_list : list
+        a list of dictionaries, one dictionary per pair or recommendation and patient data source considered. Search results and metadata are logged and summarized into
+        the final explanation. A more detailed log of activity can be viewed in the system log at src/app.log.
+    token_count_history : dict
+        a dictionary containing keys indicating the search step and counts of the token count used at each step as the values
     """
 
     logger = logging.getLogger("FileLogger")
